@@ -13,6 +13,15 @@ const CONSTRAINT_MESSAGES = {
   teachers_nip_key: 'NIP sudah terdaftar.',
   teachers_nuptk_key: 'NUPTK sudah terdaftar.',
   schedules_time: 'Jam selesai harus setelah jam mulai.',
+  quiz_question_items_question_id_fkey: 'Soal masih dipakai di kuis. Keluarkan dulu dari kuis sebelum menghapusnya.',
+  quiz_question_items_unique: 'Soal tersebut sudah ada di kuis ini.',
+  question_banks_subject_id_fkey: 'Mata pelajaran masih dipakai oleh bank soal.',
+  quizzes_window: 'Waktu tutup harus setelah waktu buka.',
+  quizzes_duration: 'Durasi pengerjaan 1–300 menit.',
+  quizzes_attempts: 'Batas percobaan 1–10 kali.',
+  quiz_questions_tf_key: 'Pilih kunci jawaban Benar atau Salah.',
+  quiz_questions_short_key: 'Soal isian wajib memiliki kunci jawaban.',
+  quiz_questions_points: 'Skor soal harus lebih dari 0 dan maksimal 100.',
 }
 
 const MESSAGES = [

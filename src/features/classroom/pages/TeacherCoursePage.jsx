@@ -15,6 +15,7 @@ import { SectionFormModal } from '../components/SectionFormModal'
 import { ProgressBar, PublishBadge } from '../components/status'
 import { groupLessons, useCourse, useInvalidateClassroom } from '../hooks'
 import { CourseTasksTab } from '@/features/tasks/components/CourseTasksTab'
+import { CourseQuizzesTab } from '@/features/quizzes/components/CourseQuizzesTab'
 
 function LessonsTab({ course, sections, lessons, basePath }) {
   const invalidate = useInvalidateClassroom()
@@ -231,7 +232,6 @@ function ProgressTab({ course }) {
 }
 
 const FUTURE_TABS = [
-  { label: 'Kuis', icon: FileQuestion, stage: 5 },
   { label: 'Diskusi', icon: MessagesSquare, stage: 6 },
 ]
 
@@ -240,7 +240,7 @@ export default function TeacherCoursePage() {
   const { taId } = useParams()
   const { course, sections, lessons } = useCourse(taId)
   const [params, setParams] = useSearchParams()
-  const tab = ['tugas', 'progress'].includes(params.get('tab')) ? params.get('tab') : 'lessons'
+  const tab = ['tugas', 'kuis', 'progress'].includes(params.get('tab')) ? params.get('tab') : 'lessons'
   const setTab = (v) => setParams(v === 'lessons' ? {} : { tab: v }, { replace: true })
   const basePath = `/guru/kelas/${taId}`
 
@@ -259,6 +259,7 @@ export default function TeacherCoursePage() {
           tabs={[
             { value: 'lessons', label: 'Pertemuan & Materi', icon: BookOpen },
             { value: 'tugas', label: 'Tugas', icon: ClipboardList },
+            { value: 'kuis', label: 'Kuis', icon: FileQuestion },
             { value: 'progress', label: 'Progress Siswa', icon: BarChart3 },
           ]}
         />
@@ -270,6 +271,8 @@ export default function TeacherCoursePage() {
       </div>
       {tab === 'tugas' ? (
         <CourseTasksTab course={c} />
+      ) : tab === 'kuis' ? (
+        <CourseQuizzesTab course={c} />
       ) : tab === 'lessons' ? (
         sections.isLoading || lessons.isLoading ? (
           <Skeleton className="h-64 rounded-xl" />
