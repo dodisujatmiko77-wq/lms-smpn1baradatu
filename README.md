@@ -4,7 +4,7 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 
 **Stack:** React 19 + Vite · Tailwind CSS 4 · React Router 7 · TanStack Query · Recharts · Lucide · Supabase (PostgreSQL, Auth, Storage, Edge Functions, RLS)
 
-**Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅ · Tahap 3 — Pembelajaran ✅ · Tahap 4 — Tugas ✅ · Tahap 5 — Kuis & CBT ✅ · Tahap 6 — Interaksi ✅ · Tahap 7 — Monitoring & Laporan ✅
+**Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅ · Tahap 3 — Pembelajaran ✅ · Tahap 4 — Tugas ✅ · Tahap 5 — Kuis & CBT ✅ · Tahap 6 — Interaksi ✅ · Tahap 7 — Monitoring & Laporan ✅ · Tahap 8 — Penyempurnaan ✅
 
 | Dokumen | Isi |
 |---|---|
@@ -16,6 +16,9 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 | [`docs/06-tahap5-kuis.md`](docs/06-tahap5-kuis.md) | Migrasi 0008 (bank soal, kuis, ujian online/CBT), aturan keamanan ujian |
 | [`docs/07-tahap6-interaksi.md`](docs/07-tahap6-interaksi.md) | Migrasi 0009–0010 (notifikasi, pengumuman, forum, kalender, badge) |
 | [`docs/08-tahap7-monitoring-laporan.md`](docs/08-tahap7-monitoring-laporan.md) | Migrasi 0011 (log aktivitas, monitoring, laporan, wali kelas, ekspor Excel/PDF) |
+| [`docs/09-tahap8-penyempurnaan.md`](docs/09-tahap8-penyempurnaan.md) | Migrasi 0012, audit keamanan, indeks, uji beban, aksesibilitas, PWA |
+| [`docs/10-panduan-deploy.md`](docs/10-panduan-deploy.md) | **Panduan deploy produksi** (Supabase + Netlify), perawatan, pemecahan masalah |
+| [`docs/11-panduan-pengguna.md`](docs/11-panduan-pengguna.md) | **Panduan pengguna**: admin, guru, wali kelas, siswa |
 
 ## Menjalankan secara lokal (VS Code)
 
@@ -51,6 +54,8 @@ src/
 - Semua tabel memakai **RLS**. Pemeriksaan role di frontend hanya untuk tampilan.
 - Password tidak pernah disimpan di tabel aplikasi; akun dikelola Supabase Auth.
 - Tindakan sensitif tercatat di `audit_logs` (hanya-baca, tidak bisa dihapus).
+- Audit otomatis: `supabase/tests/80_audit_keamanan.sql` gagal bila ada tabel tanpa RLS atau fungsi yang tidak aman.
+- Header keamanan hosting (CSP, HSTS, anti-clickjacking) di `netlify.toml` / `vercel.json`.
 
 ## Skrip
 

@@ -68,7 +68,7 @@ export default function TeacherDashboard() {
                     <span className="absolute inset-y-0 left-0 w-1.5" style={{ backgroundColor: r.subject_color }} />
                     <p className="font-display text-base font-semibold text-slate-900">{r.class_name}</p>
                     <p className="truncate text-sm text-slate-600">{r.subject_name}</p>
-                    <p className="mt-1 text-xs text-slate-400">{r.student_count} siswa · {r.schedule_count} sesi/minggu</p>
+                    <p className="mt-1 text-xs text-slate-500">{r.student_count} siswa · {r.schedule_count} sesi/minggu</p>
                   </Link>
                 </li>
               ))}

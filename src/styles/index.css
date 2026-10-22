@@ -25,6 +25,7 @@
   --color-accent-500: #f97316;
   --color-accent-600: #ea580c;
   --color-accent-700: #c2410c;
+  --color-accent-800: #9a3412;
 
   /* Hijau — keberhasilan */
   --color-success-50: #f0fdf4;
@@ -32,6 +33,7 @@
   --color-success-500: #22c55e;
   --color-success-600: #16a34a;
   --color-success-700: #15803d;
+  --color-success-800: #166534;
 
   --shadow-card: 0 1px 2px rgb(15 23 42 / 0.06), 0 4px 12px rgb(15 23 42 / 0.04);
   --shadow-card-hover: 0 2px 4px rgb(15 23 42 / 0.06), 0 12px 24px rgb(15 23 42 / 0.08);

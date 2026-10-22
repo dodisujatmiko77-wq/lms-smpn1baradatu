@@ -212,7 +212,7 @@ export default function TaskEditorPage() {
             <Card>
               <CardHeader icon={Paperclip} title="Lampiran" description="Lembar kerja, contoh, atau sumber" action={<Button size="sm" icon={Plus} onClick={() => setAddOpen(true)}>Tambah</Button>} />
               <CardBody>
-                {attachments.length === 0 ? <p className="py-4 text-center text-sm text-slate-400">Belum ada lampiran.</p> : <MaterialList materials={attachments} mode="manage" onDelete={setRemoveAtt} />}
+                {attachments.length === 0 ? <p className="py-4 text-center text-sm text-slate-500">Belum ada lampiran.</p> : <MaterialList materials={attachments} mode="manage" onDelete={setRemoveAtt} />}
               </CardBody>
             </Card>
             <Card>

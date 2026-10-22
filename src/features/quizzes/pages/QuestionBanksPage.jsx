@@ -47,7 +47,7 @@ export default function QuestionBanksPage() {
               {b.description && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{b.description}</p>}
               <div className="mt-auto flex items-center justify-between pt-4">
                 <Badge tone="blue">{b.question_count} soal</Badge>
-                <span className="flex items-center gap-1 text-xs text-slate-400">diubah {formatRelative(b.updated_at)} <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" /></span>
+                <span className="flex items-center gap-1 text-xs text-slate-500">diubah {formatRelative(b.updated_at)} <ChevronRight className="h-4 w-4 transition group-hover:translate-x-0.5" /></span>
               </div>
             </Link>
           ))}

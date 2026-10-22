@@ -8,7 +8,8 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test:e2e": "node supabase/tests/e2e_tahap1.mjs && node supabase/tests/e2e_tahap2.mjs && node supabase/tests/e2e_tahap3.mjs && node supabase/tests/e2e_tahap4.mjs && node supabase/tests/e2e_tahap5.mjs && node supabase/tests/e2e_tahap6.mjs && node supabase/tests/e2e_tahap7.mjs",
+    "test:e2e": "node supabase/tests/e2e_tahap1.mjs && node supabase/tests/e2e_tahap2.mjs && node supabase/tests/e2e_tahap3.mjs && node supabase/tests/e2e_tahap4.mjs && node supabase/tests/e2e_tahap5.mjs && node supabase/tests/e2e_tahap6.mjs && node supabase/tests/e2e_tahap7.mjs && node supabase/tests/e2e_tahap8.mjs",
+    "test:load": "node supabase/tests/load_cbt.mjs",
     "db:push": "supabase db push",
     "functions:deploy": "supabase functions deploy admin-users --no-verify-jwt --use-api"
   },
@@ -22,7 +23,9 @@
     "globals": "^17.13.0",
     "supabase": "^2.121.0",
     "tailwindcss": "^4.3.3",
-    "vite": "^8.3.5"
+    "vite": "^8.3.5",
+    "vite-plugin-pwa": "^2.0.0",
+    "workbox-window": "^7.4.1"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.9.2",

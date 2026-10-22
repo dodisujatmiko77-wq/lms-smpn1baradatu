@@ -72,7 +72,7 @@ export function ClassReport({ classId, className, studentLink = true }) {
               <tr key={s.id} className="hover:bg-slate-50/60">
                 <td className="sticky left-0 z-10 bg-white px-4 py-2.5">
                   {studentLink ? <Link to={`/laporan/siswa/${s.id}`} className="font-medium text-slate-900 hover:text-primary-700">{s.full_name}</Link> : <span className="font-medium text-slate-900">{s.full_name}</span>}
-                  <span className="block text-xs text-slate-400">{s.nisn}</span>
+                  <span className="block text-xs text-slate-500">{s.nisn}</span>
                 </td>
                 {subjects.map((sub) => (
                   <td key={sub.id} className="px-3 py-2.5 text-center">
@@ -80,7 +80,7 @@ export function ClassReport({ classId, className, studentLink = true }) {
                   </td>
                 ))}
                 <td className="px-3 py-2.5 text-center">{mode === 'nilai' ? <ScoreCell value={s.avg} kkm={kkm} /> : <PercentBar value={s.progress} />}</td>
-                <td className={cn('px-3 py-2.5 text-center tabular-nums', s.missing ? 'font-semibold text-red-600' : 'text-slate-400')}>{s.missing}</td>
+                <td className={cn('px-3 py-2.5 text-center tabular-nums', s.missing ? 'font-semibold text-red-600' : 'text-slate-500')}>{s.missing}</td>
               </tr>
             ))}
           </tbody>

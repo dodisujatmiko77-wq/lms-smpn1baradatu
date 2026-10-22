@@ -32,7 +32,7 @@ function ClassCard({ cls, onEdit, onDelete }) {
       <div className="mt-4">
         <div className="flex items-center justify-between text-xs">
           <span className="flex items-center gap-1.5 text-slate-600"><Users className="h-3.5 w-3.5" /> {cls.student_count} / {cls.capacity} siswa</span>
-          <span className="text-slate-400">{pct}%</span>
+          <span className="text-slate-500">{pct}%</span>
         </div>
         <div className="mt-1.5 h-1.5 overflow-hidden rounded-full bg-slate-100">
           <div className={cn('h-full rounded-full', pct > 100 ? 'bg-red-500' : pct >= 90 ? 'bg-accent-500' : 'bg-primary-500')} style={{ width: `${pct}%` }} />

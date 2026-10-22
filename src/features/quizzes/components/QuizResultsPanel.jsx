@@ -132,7 +132,7 @@ export function QuizResultsPanel({ quiz, canManage }) {
             header: 'Keluar halaman',
             render: (r) => (r.focus_lost > 0 ? <span className="inline-flex items-center gap-1 text-accent-700"><AlertTriangle className="h-3.5 w-3.5" /> {r.focus_lost}×</span> : r.attempts ? '0' : '—'),
           },
-          { key: 'at', header: 'Dikumpulkan', render: (r) => (r.last_submitted_at ? <span className="text-xs">{formatDate(r.last_submitted_at, 'd MMM HH:mm')}{r.auto_submitted && <span className="block text-slate-400">otomatis (waktu habis)</span>}</span> : '—') },
+          { key: 'at', header: 'Dikumpulkan', render: (r) => (r.last_submitted_at ? <span className="text-xs">{formatDate(r.last_submitted_at, 'd MMM HH:mm')}{r.auto_submitted && <span className="block text-slate-500">otomatis (waktu habis)</span>}</span> : '—') },
           { key: 'act', header: '', render: (r) => r.last_attempt_id && <Button variant="ghost" size="sm" icon={Eye}>Lihat</Button> },
         ]}
       />

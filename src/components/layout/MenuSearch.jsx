@@ -64,7 +64,7 @@ export function MenuSearch({ groups, className, autoFocus, onDone }) {
         aria-label="Cari menu"
         className="h-10 w-full rounded-[10px] border border-slate-200 bg-slate-50 pl-9 pr-14 text-sm placeholder:text-slate-400 focus:border-primary-500 focus:bg-white focus:outline-none focus:ring-4 focus:ring-primary-500/10"
       />
-      <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-400 sm:block">
+      <kbd className="pointer-events-none absolute right-2.5 top-1/2 hidden -translate-y-1/2 rounded-md border border-slate-200 bg-white px-1.5 py-0.5 text-[10px] font-medium text-slate-500 sm:block">
         Ctrl K
       </kbd>
       {open && q.trim() && (
@@ -85,8 +85,8 @@ export function MenuSearch({ groups, className, autoFocus, onDone }) {
               >
                 <item.icon className="h-4 w-4 shrink-0 opacity-70" />
                 <span className="flex-1 truncate">{item.label}</span>
-                {item.group && <span className="text-xs text-slate-400">{item.group}</span>}
-                {item.stage > CURRENT_STAGE && <span className="text-[10px] text-slate-400">T{item.stage}</span>}
+                {item.group && <span className="text-xs text-slate-500">{item.group}</span>}
+                {item.stage > CURRENT_STAGE && <span className="text-[10px] text-slate-500">T{item.stage}</span>}
                 {i === active && <CornerDownLeft className="h-3.5 w-3.5 text-primary-400" />}
               </button>
             ))

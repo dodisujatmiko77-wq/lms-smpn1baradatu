@@ -79,7 +79,7 @@ export function DataTable({ columns, rows, rowKey = (r) => r.id, onRowClick, act
                 <dl className="grid grid-cols-2 gap-x-3 gap-y-1 text-xs">
                   {rest.map((c) => (
                     <div key={c.key} className="min-w-0">
-                      <dt className="text-slate-400">{c.mobileLabel ?? c.header}</dt>
+                      <dt className="text-slate-500">{c.mobileLabel ?? c.header}</dt>
                       <dd className="truncate text-slate-700">{cell(c, row)}</dd>
                     </div>
                   ))}

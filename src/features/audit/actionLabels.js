@@ -29,6 +29,7 @@ const LABELS = {
   'quiz_answers.grade': 'Menilai esai kuis',
   'quiz_attempts.reset': 'Mereset percobaan kuis',
   'announcements.delete': 'Menghapus pengumuman',
+  'storage.purge_submissions': 'Membersihkan berkas jawaban semester lalu',
   'discussion_topics.hide': 'Menyembunyikan topik diskusi',
   'discussion_topics.unhide': 'Menampilkan topik diskusi',
   'discussion_topics.delete': 'Menghapus topik diskusi',

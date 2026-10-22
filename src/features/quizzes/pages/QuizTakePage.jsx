@@ -127,7 +127,7 @@ function QuestionInput({ question, answer, onChoose, onText }) {
         aria-label="Jawaban"
         className="w-full rounded-xl border-2 border-slate-200 p-4 text-[15px] focus:border-primary-500 focus:outline-none"
       />
-      <p className="text-right text-xs text-slate-400">{(answer?.text ?? '').length} karakter</p>
+      <p className="text-right text-xs text-slate-500">{(answer?.text ?? '').length} karakter</p>
     </div>
   )
 }

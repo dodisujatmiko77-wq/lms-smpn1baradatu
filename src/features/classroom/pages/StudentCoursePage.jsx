@@ -129,7 +129,7 @@ export default function StudentCoursePage() {
                       {l.summary && <p className="mt-0.5 line-clamp-1 text-xs text-slate-500">{l.summary}</p>}
                       <div className="mt-2 flex flex-wrap items-center gap-2">
                         <StudentStatusBadge status={status} />
-                        {l.material_count > 0 && <span className="flex items-center gap-1 text-xs text-slate-400"><Paperclip className="h-3 w-3" /> {l.material_count}</span>}
+                        {l.material_count > 0 && <span className="flex items-center gap-1 text-xs text-slate-500"><Paperclip className="h-3 w-3" /> {l.material_count}</span>}
                       </div>
                     </div>
                     <ChevronRight className="h-5 w-5 text-slate-300 transition group-hover:translate-x-0.5" />

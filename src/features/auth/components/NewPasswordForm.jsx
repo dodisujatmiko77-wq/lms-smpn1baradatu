@@ -29,7 +29,7 @@ export function NewPasswordForm({ onSubmit, submitLabel = 'Simpan password', chi
         {RULES.map((r) => {
           const ok = r.test(pw)
           return (
-            <li key={r.label} className={cn('flex items-center gap-1.5 text-xs', ok ? 'text-success-600' : 'text-slate-400')}>
+            <li key={r.label} className={cn('flex items-center gap-1.5 text-xs', ok ? 'text-success-600' : 'text-slate-500')}>
               <span className={cn('grid h-4 w-4 place-items-center rounded-full', ok ? 'bg-success-100' : 'bg-slate-100')}>
                 <Check className="h-3 w-3" />
               </span>

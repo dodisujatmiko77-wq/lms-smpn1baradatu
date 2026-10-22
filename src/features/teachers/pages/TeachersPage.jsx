@@ -101,7 +101,7 @@ export default function TeachersPage() {
                 {
                   key: 'load',
                   header: 'Mengajar',
-                  render: (t) => (t.assignment_count ? `${t.assignment_count} kelas-mapel${t.hours_per_week ? ` · ${t.hours_per_week} JP` : ''}` : <span className="text-slate-400">Belum ada</span>),
+                  render: (t) => (t.assignment_count ? `${t.assignment_count} kelas-mapel${t.hours_per_week ? ` · ${t.hours_per_week} JP` : ''}` : <span className="text-slate-500">Belum ada</span>),
                 },
                 { key: 'guardian', header: 'Wali kelas', render: (t) => (t.guardian_class_name ? <Badge tone="violet"><ShieldCheck className="h-3 w-3" /> {t.guardian_class_name}</Badge> : '—') },
                 {

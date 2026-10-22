@@ -192,7 +192,7 @@ export function GradingPanel({ task, canManage }) {
                 <>
                   {selected.text_answer && (
                     <div>
-                      <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-400">Jawaban</p>
+                      <p className="mb-1 text-xs font-medium uppercase tracking-wide text-slate-500">Jawaban</p>
                       <div className="whitespace-pre-wrap break-words rounded-xl bg-slate-50 p-4 text-sm leading-relaxed text-slate-800">{selected.text_answer}</div>
                     </div>
                   )}
