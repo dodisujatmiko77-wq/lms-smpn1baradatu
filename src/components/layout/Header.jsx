@@ -1,0 +1,108 @@
+import { useState } from 'react'
+import { Link } from 'react-router-dom'
+import { Bell, BellOff, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
+import { useAuth } from '@/app/providers/AuthProvider'
+import { Avatar, Dropdown, DropdownItem, EmptyState } from '@/components/ui'
+import { ROLE_AREAS, ROLE_LABELS } from '@/lib/auth'
+import { MenuSearch } from './MenuSearch'
+
+export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
+  const { profile, roles } = useAuth()
+  const [mobileSearch, setMobileSearch] = useState(false)
+  const otherRoles = roles.filter((r) => r !== area)
+
+  return (
+    <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
+      <div className="flex h-16 items-center gap-3 px-4 sm:px-6">
+        <button onClick={onOpenMenu} className="-ml-1 rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden" aria-label="Buka menu">
+          <Menu className="h-5 w-5" />
+        </button>
+
+        <div className="min-w-0 flex-1">
+          <h1 className="truncate text-lg font-semibold leading-tight sm:text-xl">{title}</h1>
+          {crumbs?.length > 0 && (
+            <nav aria-label="Breadcrumb" className="hidden items-center gap-1 text-xs text-slate-500 sm:flex">
+              {crumbs.map((c, i) => (
+                <span key={`${c.label}-${i}`} className="flex items-center gap-1">
+                  {i > 0 && <ChevronRight className="h-3 w-3 text-slate-300" />}
+                  {c.to && i < crumbs.length - 1 ? (
+                    <Link to={c.to} className="hover:text-primary-600">
+                      {c.label}
+                    </Link>
+                  ) : (
+                    <span className={i === crumbs.length - 1 ? 'font-medium text-slate-700' : ''}>{c.label}</span>
+                  )}
+                </span>
+              ))}
+            </nav>
+          )}
+        </div>
+
+        <MenuSearch groups={groups} className="hidden w-64 md:block lg:w-80" />
+
+        <button
+          onClick={() => setMobileSearch((s) => !s)}
+          className="rounded-lg p-2 text-slate-600 hover:bg-slate-100 md:hidden"
+          aria-label="Cari"
+        >
+          {mobileSearch ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
+        </button>
+
+        <Dropdown
+          trigger={({ toggle }) => (
+            <button onClick={toggle} className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100" aria-label="Notifikasi">
+              <Bell className="h-5 w-5" />
+            </button>
+          )}
+          panelClassName="w-80"
+        >
+          <div className="px-2.5 pb-1 pt-1.5">
+            <p className="text-sm font-semibold text-slate-900">Notifikasi</p>
+          </div>
+          <EmptyState
+            icon={BellOff}
+            title="Belum ada notifikasi"
+            description="Notifikasi materi, tugas, nilai, dan pengumuman akan muncul di sini (aktif pada Tahap 6)."
+            className="py-6"
+          />
+        </Dropdown>
+
+        <Dropdown
+          trigger={({ toggle, open }) => (
+            <button onClick={toggle} className="flex items-center gap-2 rounded-xl p-1 pr-1.5 hover:bg-slate-100" aria-label="Menu akun" aria-expanded={open}>
+              <Avatar name={profile?.full_name} size="sm" />
+              <span className="hidden text-left lg:block">
+                <span className="block max-w-36 truncate text-sm font-medium leading-tight text-slate-800">{profile?.full_name}</span>
+                <span className="block text-xs text-slate-500">{ROLE_LABELS[area]}</span>
+              </span>
+              <ChevronDown className="hidden h-4 w-4 text-slate-400 lg:block" />
+            </button>
+          )}
+        >
+          <div className="mb-1 border-b border-slate-100 px-2.5 pb-2.5 pt-1.5">
+            <p className="truncate text-sm font-semibold text-slate-900">{profile?.full_name}</p>
+            <p className="truncate text-xs text-slate-500">@{profile?.username}</p>
+          </div>
+          <DropdownItem as={Link} to="/profil" icon={UserRound}>
+            Profil Saya
+          </DropdownItem>
+          {otherRoles.map((r) => (
+            <DropdownItem key={r} as={Link} to={ROLE_AREAS[r]} icon={Repeat}>
+              Beralih ke {ROLE_LABELS[r]}
+            </DropdownItem>
+          ))}
+          <div className="my-1 border-t border-slate-100" />
+          <DropdownItem icon={LogOut} danger onClick={onLogout}>
+            Keluar
+          </DropdownItem>
+        </Dropdown>
+      </div>
+
+      {mobileSearch && (
+        <div className="border-t border-slate-100 px-4 py-2.5 md:hidden">
+          <MenuSearch groups={groups} autoFocus onDone={() => setMobileSearch(false)} />
+        </div>
+      )}
+    </header>
+  )
+}

@@ -1,0 +1,53 @@
+# LMS Digital — UPT SMP Negeri 1 Baradatu
+
+Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan, Lampung.
+
+**Stack:** React 19 + Vite · Tailwind CSS 4 · React Router 7 · TanStack Query · Recharts · Lucide · Supabase (PostgreSQL, Auth, Storage, Edge Functions, RLS)
+
+**Status:** Tahap 1 — Fondasi ✅ · Rancangan: [`docs/01-rancangan-sistem.md`](docs/01-rancangan-sistem.md) · Panduan tahap ini: [`docs/02-tahap1-fondasi.md`](docs/02-tahap1-fondasi.md)
+
+## Menjalankan secara lokal (VS Code)
+
+```bash
+npm install
+cp .env.example .env.local    # isi URL & anon key proyek Supabase
+npm run dev                   # http://localhost:5173
+```
+
+Langkah lengkap menyiapkan proyek Supabase (migrasi, Edge Function, admin pertama) ada di [`docs/02-tahap1-fondasi.md`](docs/02-tahap1-fondasi.md).
+
+## Struktur folder
+
+```
+docs/                     rancangan & panduan per tahap
+supabase/
+  migrations/             migrasi SQL bernomor (jangan diedit setelah dijalankan di produksi)
+  functions/admin-users/  Edge Function manajemen akun, satu file (service_role hanya di sini)
+  scripts/                skrip sekali jalan (admin pertama)
+  tests/                  uji RLS (SQL) & uji ujung-ke-ujung (Node)
+src/
+  app/                    router, providers (auth, pengaturan), guard rute
+  components/ui/          komponen reusable (Button, Input, Card, Modal, ...)
+  components/layout/      sidebar, header, navigasi HP
+  config/                 menu per role & nilai cadangan sekolah
+  features/<modul>/       halaman, komponen, dan API per modul
+  lib/                    klien Supabase, util, validasi, pesan error
+```
+
+## Keamanan singkat
+
+- Frontend hanya memakai **anon key**. `service_role` hanya ada di secrets Edge Function.
+- Semua tabel memakai **RLS**. Pemeriksaan role di frontend hanya untuk tampilan.
+- Password tidak pernah disimpan di tabel aplikasi; akun dikelola Supabase Auth.
+- Tindakan sensitif tercatat di `audit_logs` (hanya-baca, tidak bisa dihapus).
+
+## Skrip
+
+| Perintah | Fungsi |
+|---|---|
+| `npm run dev` | Server pengembangan |
+| `npm run build` | Build produksi ke `dist/` |
+| `npm run lint` | ESLint |
+| `npm run db:push` | Menjalankan migrasi ke proyek Supabase yang di-link |
+| `npm run functions:deploy` | Deploy Edge Function `admin-users` |
+| `npm run test:e2e` | Uji ujung-ke-ujung (lihat panduan; jangan ke produksi) |
