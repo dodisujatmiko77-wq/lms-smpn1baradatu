@@ -9,7 +9,7 @@ import {
  * tersebut mulai berfungsi; menu dengan stage > CURRENT_STAGE ditampilkan
  * sebagai "Segera hadir" (halaman informasi, bukan data palsu).
  */
-export const CURRENT_STAGE = 6
+export const CURRENT_STAGE = 7
 
 export const NAVIGATION = {
   admin: [

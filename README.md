@@ -4,7 +4,7 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 
 **Stack:** React 19 + Vite · Tailwind CSS 4 · React Router 7 · TanStack Query · Recharts · Lucide · Supabase (PostgreSQL, Auth, Storage, Edge Functions, RLS)
 
-**Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅ · Tahap 3 — Pembelajaran ✅ · Tahap 4 — Tugas ✅ · Tahap 5 — Kuis & CBT ✅ · Tahap 6 — Interaksi ✅
+**Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅ · Tahap 3 — Pembelajaran ✅ · Tahap 4 — Tugas ✅ · Tahap 5 — Kuis & CBT ✅ · Tahap 6 — Interaksi ✅ · Tahap 7 — Monitoring & Laporan ✅
 
 | Dokumen | Isi |
 |---|---|
@@ -15,6 +15,7 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 | [`docs/05-tahap4-tugas.md`](docs/05-tahap4-tugas.md) | Migrasi 0007 (tugas, pengumpulan, nilai), alur pemeriksaan |
 | [`docs/06-tahap5-kuis.md`](docs/06-tahap5-kuis.md) | Migrasi 0008 (bank soal, kuis, ujian online/CBT), aturan keamanan ujian |
 | [`docs/07-tahap6-interaksi.md`](docs/07-tahap6-interaksi.md) | Migrasi 0009–0010 (notifikasi, pengumuman, forum, kalender, badge) |
+| [`docs/08-tahap7-monitoring-laporan.md`](docs/08-tahap7-monitoring-laporan.md) | Migrasi 0011 (log aktivitas, monitoring, laporan, wali kelas, ekspor Excel/PDF) |
 
 ## Menjalankan secara lokal (VS Code)
 

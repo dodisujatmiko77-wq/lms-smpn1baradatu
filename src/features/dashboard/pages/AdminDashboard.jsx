@@ -12,14 +12,9 @@ import { formatDate, formatRelative } from '@/lib/utils'
 import { fetchSchoolStats, keys } from '@/features/master/api'
 import { useActiveSemester } from '@/features/master/hooks'
 import { fetchAdminStats, fetchRecentAudit } from '../api'
-import { UpcomingModules } from '../components/UpcomingModules'
+import { ActivityChart } from '@/features/reports/components/ActivityChart'
 import { AnnouncementsWidget } from '@/features/announcements/components/AnnouncementsWidget'
 import { WelcomeBanner } from '../components/WelcomeBanner'
-
-const UPCOMING = [
-  { icon: ClipboardList, title: 'Rekap tugas & persentase pengumpulan', description: 'Rekap pengumpulan seluruh kelas', stage: 7 },
-  { icon: MonitorCheck, title: 'Grafik aktivitas pembelajaran', description: 'Aktivitas guru & siswa dari database', stage: 7 },
-]
 
 export default function AdminDashboard() {
   const settings = useSchoolSettings()
@@ -140,6 +135,8 @@ export default function AdminDashboard() {
         </Card>
       </div>
 
+      <ActivityChart title="Aktivitas pembelajaran" />
+
       <div className="grid gap-6 xl:grid-cols-2">
         <Card>
           <CardHeader
@@ -178,10 +175,7 @@ export default function AdminDashboard() {
           )}
         </Card>
 
-        <div className="space-y-6">
-          <AnnouncementsWidget linkTo="/admin/pengumuman" limit={2} />
-          <UpcomingModules items={UPCOMING} />
-        </div>
+        <AnnouncementsWidget linkTo="/admin/pengumuman" limit={3} />
       </div>
     </div>
   )

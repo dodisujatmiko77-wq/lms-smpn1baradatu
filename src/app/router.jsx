@@ -55,6 +55,14 @@ const AnnouncementPage = lazy(() => import('@/features/announcements/pages/Annou
 const TopicPage = lazy(() => import('@/features/forum/pages/TopicPage'))
 const CalendarPage = lazy(() => import('@/features/calendar/pages/CalendarPage'))
 const AchievementsPage = lazy(() => import('@/features/achievements/pages/AchievementsPage'))
+const LearningMonitorPage = lazy(() => import('@/features/reports/pages/LearningMonitorPage'))
+const AssignmentMonitorPage = lazy(() => import('@/features/reports/pages/AssignmentMonitorPage'))
+const AdminReportsPage = lazy(() => import('@/features/reports/pages/AdminReportsPage'))
+const TeacherReportsPage = lazy(() => import('@/features/reports/pages/TeacherReportsPage'))
+const GuardianClassPage = lazy(() => import('@/features/reports/pages/GuardianClassPage'))
+const GuardianAssignmentsPage = lazy(() => import('@/features/reports/pages/GuardianAssignmentsPage'))
+const FollowUpPage = lazy(() => import('@/features/reports/pages/FollowUpPage'))
+const StudentReportPage = lazy(() => import('@/features/reports/pages/StudentReportPage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -93,6 +101,7 @@ export const router = createBrowserRouter([
           { path: '/notifikasi', element: <NotificationsPage />, handle: { title: 'Notifikasi' } },
           { path: '/pengumuman/:id', element: <AnnouncementPage />, handle: { title: 'Pengumuman' } },
           { path: '/diskusi/:topicId', element: <TopicPage />, handle: { title: 'Diskusi' } },
+          { path: '/laporan/siswa/:studentId', element: <StudentReportPage />, handle: { title: 'Laporan Siswa' } },
           {
             path: '/admin',
             element: <RequireRole role="admin" />,
@@ -113,6 +122,9 @@ export const router = createBrowserRouter([
               { path: 'file', element: <FileManagementPage />, handle: { title: 'Manajemen File', crumbs: [{ label: 'Pembelajaran' }] } },
               { path: 'pengumuman', element: <AnnouncementsPage />, handle: { title: 'Pengumuman Sekolah', crumbs: [{ label: 'Pembelajaran' }] } },
               { path: 'kalender', element: <CalendarPage />, handle: { title: 'Kalender Sekolah', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'monitoring', element: <LearningMonitorPage />, handle: { title: 'Monitoring Pembelajaran', crumbs: [{ label: 'Pembelajaran' }] } },
+              { path: 'monitoring-tugas', element: <AssignmentMonitorPage />, handle: { title: 'Monitoring Tugas', crumbs: [{ label: 'Pembelajaran' }] } },
+              { path: 'laporan', element: <AdminReportsPage />, handle: { title: 'Laporan', crumbs: [{ label: 'Pembelajaran' }] } },
               ...comingSoonRoutes('admin'),
             ],
           },
@@ -130,6 +142,10 @@ export const router = createBrowserRouter([
               { path: 'kelas/:taId/kuis/:quizId', element: <QuizEditorPage />, handle: { title: 'Kuis', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               { path: 'pengumuman', element: <AnnouncementsPage />, handle: { title: 'Pengumuman' } },
               { path: 'kalender', element: <CalendarPage />, handle: { title: 'Kalender' } },
+              { path: 'laporan', element: <TeacherReportsPage />, handle: { title: 'Laporan Pembelajaran' } },
+              { path: 'wali-kelas', element: <GuardianClassPage />, handle: { title: 'Kelas Binaan', crumbs: [{ label: 'Wali Kelas' }] } },
+              { path: 'wali-kelas/tugas', element: <GuardianAssignmentsPage />, handle: { title: 'Monitoring Tugas', crumbs: [{ label: 'Wali Kelas' }, { label: 'Kelas Binaan', to: '/guru/wali-kelas' }] } },
+              { path: 'wali-kelas/tindak-lanjut', element: <FollowUpPage />, handle: { title: 'Perlu Tindak Lanjut', crumbs: [{ label: 'Wali Kelas' }, { label: 'Kelas Binaan', to: '/guru/wali-kelas' }] } },
               { path: 'bank-soal', element: <QuestionBanksPage />, handle: { title: 'Bank Soal' } },
               { path: 'bank-soal/:bankId', element: <QuestionBankPage />, handle: { title: 'Detail Bank Soal', crumbs: [{ label: 'Bank Soal', to: '/guru/bank-soal' }] } },
               ...comingSoonRoutes('teacher'),
