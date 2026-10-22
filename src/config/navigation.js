@@ -9,7 +9,7 @@ import {
  * tersebut mulai berfungsi; menu dengan stage > CURRENT_STAGE ditampilkan
  * sebagai "Segera hadir" (halaman informasi, bukan data palsu).
  */
-export const CURRENT_STAGE = 5
+export const CURRENT_STAGE = 6
 
 export const NAVIGATION = {
   admin: [
@@ -23,6 +23,7 @@ export const NAVIGATION = {
         { label: 'Penugasan Mengajar', to: '/admin/penugasan', icon: ClipboardList, stage: 2 },
         { label: 'Wali Kelas', to: '/admin/wali-kelas', icon: UsersRound, stage: 2 },
         { label: 'Jadwal Pelajaran', to: '/admin/jadwal', icon: Clock, stage: 2 },
+        { label: 'Kalender Sekolah', to: '/admin/kalender', icon: CalendarDays, stage: 6 },
       ],
     },
     {
@@ -61,6 +62,7 @@ export const NAVIGATION = {
         { label: 'Jadwal Mengajar', to: '/guru/jadwal', icon: Clock, stage: 2 },
         { label: 'Bank Soal', to: '/guru/bank-soal', icon: FileQuestion, stage: 5 },
         { label: 'Pemeriksaan', to: '/guru/pemeriksaan', icon: ClipboardCheck, stage: 4 },
+        { label: 'Pengumuman', to: '/guru/pengumuman', icon: Megaphone, stage: 6 },
       ],
     },
     {
@@ -92,6 +94,7 @@ export const NAVIGATION = {
         { label: 'Mata Pelajaran', to: '/siswa/mapel', icon: BookOpen, stage: 3 },
         { label: 'Tugas', to: '/siswa/tugas', icon: ClipboardList, stage: 4 },
         { label: 'Kuis & Ujian', to: '/siswa/kuis', icon: BookOpenCheck, stage: 5 },
+        { label: 'Pengumuman', to: '/siswa/pengumuman', icon: Megaphone, stage: 6 },
         { label: 'Jadwal', to: '/siswa/jadwal', icon: Clock, stage: 2 },
         { label: 'Kalender', to: '/siswa/kalender', icon: CalendarDays, stage: 6 },
       ],

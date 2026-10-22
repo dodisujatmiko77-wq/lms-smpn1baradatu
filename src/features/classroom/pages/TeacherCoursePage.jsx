@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ArrowDown, ArrowUp, BarChart3, BookOpen, ChevronRight, ClipboardList, FileQuestion, FolderPlus, MessagesSquare, MoreVertical, Paperclip, Pencil, Plus, Trash2, Users } from 'lucide-react'
+import { ArrowDown, ArrowUp, BarChart3, BookOpen, ChevronRight, ClipboardList, FileQuestion, FolderPlus, Megaphone, MessagesSquare, MoreVertical, Paperclip, Pencil, Plus, Trash2, Users } from 'lucide-react'
 import { toast } from 'sonner'
 import { Avatar, Badge, Button, Card, ConfirmDialog, DataTable, Dropdown, DropdownItem, EmptyState, ErrorState, Skeleton, SkeletonRows, Tabs } from '@/components/ui'
 import { unwrap } from '@/lib/db'
@@ -16,6 +16,8 @@ import { ProgressBar, PublishBadge } from '../components/status'
 import { groupLessons, useCourse, useInvalidateClassroom } from '../hooks'
 import { CourseTasksTab } from '@/features/tasks/components/CourseTasksTab'
 import { CourseQuizzesTab } from '@/features/quizzes/components/CourseQuizzesTab'
+import { CourseForumTab } from '@/features/forum/components/CourseForumTab'
+import { AnnouncementList } from '@/features/announcements/components/AnnouncementList'
 
 function LessonsTab({ course, sections, lessons, basePath }) {
   const invalidate = useInvalidateClassroom()
@@ -231,16 +233,13 @@ function ProgressTab({ course }) {
   )
 }
 
-const FUTURE_TABS = [
-  { label: 'Diskusi', icon: MessagesSquare, stage: 6 },
-]
 
 /** Ruang kelas digital — sisi guru (juga dipakai admin). */
 export default function TeacherCoursePage() {
   const { taId } = useParams()
   const { course, sections, lessons } = useCourse(taId)
   const [params, setParams] = useSearchParams()
-  const tab = ['tugas', 'kuis', 'progress'].includes(params.get('tab')) ? params.get('tab') : 'lessons'
+  const tab = ['tugas', 'kuis', 'diskusi', 'pengumuman', 'progress'].includes(params.get('tab')) ? params.get('tab') : 'lessons'
   const setTab = (v) => setParams(v === 'lessons' ? {} : { tab: v }, { replace: true })
   const basePath = `/guru/kelas/${taId}`
 
@@ -260,19 +259,20 @@ export default function TeacherCoursePage() {
             { value: 'lessons', label: 'Pertemuan & Materi', icon: BookOpen },
             { value: 'tugas', label: 'Tugas', icon: ClipboardList },
             { value: 'kuis', label: 'Kuis', icon: FileQuestion },
+            { value: 'diskusi', label: 'Diskusi', icon: MessagesSquare },
+            { value: 'pengumuman', label: 'Pengumuman', icon: Megaphone },
             { value: 'progress', label: 'Progress Siswa', icon: BarChart3 },
           ]}
         />
-        {FUTURE_TABS.map((t) => (
-          <span key={t.label} className="flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm text-slate-400" title={`Tersedia pada Tahap ${t.stage}`}>
-            <t.icon className="h-4 w-4" /> {t.label} <span className="rounded bg-slate-100 px-1 text-[10px]">T{t.stage}</span>
-          </span>
-        ))}
       </div>
       {tab === 'tugas' ? (
         <CourseTasksTab course={c} />
       ) : tab === 'kuis' ? (
         <CourseQuizzesTab course={c} />
+      ) : tab === 'diskusi' ? (
+        <CourseForumTab taId={c.id} />
+      ) : tab === 'pengumuman' ? (
+        <AnnouncementList taId={c.id} defaultTarget={`course:${c.id}`} emptyText="Pengumuman untuk kelas-mapel ini akan muncul di sini." />
       ) : tab === 'lessons' ? (
         sections.isLoading || lessons.isLoading ? (
           <Skeleton className="h-64 rounded-xl" />
