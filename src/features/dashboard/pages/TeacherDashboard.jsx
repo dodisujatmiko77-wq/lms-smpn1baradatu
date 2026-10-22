@@ -1,17 +1,17 @@
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ClipboardCheck, FileQuestion, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
+import { ClipboardCheck, FileQuestion, Inbox, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Badge, Button, Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
 import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
 import { useActiveSemester } from '@/features/master/hooks'
+import { fetchGradingQueue, tkeys } from '@/features/tasks/api'
 import { unwrap } from '@/lib/db'
 import { supabase } from '@/lib/supabase'
 import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: ClipboardCheck, title: 'Tugas & pemeriksaan', description: 'Penilaian dan umpan balik per siswa', stage: 4 },
   { icon: FileQuestion, title: 'Bank soal, kuis & ujian online', description: 'Penilaian otomatis soal objektif', stage: 5 },
   { icon: MessagesSquare, title: 'Forum diskusi & pengumuman kelas', description: 'Interaksi dengan siswa', stage: 6 },
 ]
@@ -26,6 +26,8 @@ export default function TeacherDashboard() {
   const active = useActiveSemester()
   const teaching = useQuery({ queryKey: ['my-teaching'], queryFn: async () => unwrap(await supabase.rpc('get_my_teaching')) })
   const guardian = useQuery({ queryKey: ['my-guardian', profile.guardian_class_ids], queryFn: () => fetchGuardianClasses(profile.guardian_class_ids) })
+  const queue = useQuery({ queryKey: tkeys.queue, queryFn: fetchGradingQueue })
+  const waiting = (queue.data ?? []).reduce((n, q) => n + q.waiting, 0)
   const rows = teaching.data ?? []
   const classCount = new Set(rows.map((r) => r.class_id)).size
   const studentCount = [...new Map(rows.map((r) => [r.class_id, r.student_count])).values()].reduce((a, b) => a + b, 0)
@@ -42,7 +44,10 @@ export default function TeacherDashboard() {
         </div>
       </WelcomeBanner>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <Link to="/guru/pemeriksaan" className="block">
+          <StatCard label="Perlu dinilai" value={waiting} icon={Inbox} tone="violet" loading={queue.isLoading} hint={waiting ? 'Buka antrean pemeriksaan →' : 'Semua jawaban sudah dinilai'} />
+        </Link>
         <StatCard label="Kelas diajar" value={classCount} icon={School} tone="blue" loading={teaching.isLoading} hint={`${rows.length} kelas-mapel`} />
         <StatCard label="Jumlah siswa" value={studentCount} icon={Users} tone="orange" loading={teaching.isLoading} hint="Di seluruh kelas yang diajar" />
         <StatCard label="Jam per minggu" value={hours} icon={ClipboardCheck} tone="green" loading={teaching.isLoading} hint="Sesuai penugasan" />

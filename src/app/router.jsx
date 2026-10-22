@@ -37,6 +37,11 @@ const MyCoursesPage = lazy(() => import('@/features/classroom/pages/MyCoursesPag
 const StudentCoursePage = lazy(() => import('@/features/classroom/pages/StudentCoursePage'))
 const LessonReaderPage = lazy(() => import('@/features/classroom/pages/LessonReaderPage'))
 const FileManagementPage = lazy(() => import('@/features/files/pages/FileManagementPage'))
+const TaskEditorPage = lazy(() => import('@/features/tasks/pages/TaskEditorPage'))
+const GradingQueuePage = lazy(() => import('@/features/tasks/pages/GradingQueuePage'))
+const MyTasksPage = lazy(() => import('@/features/tasks/pages/MyTasksPage'))
+const TaskSubmitPage = lazy(() => import('@/features/tasks/pages/TaskSubmitPage'))
+const GradesPage = lazy(() => import('@/features/tasks/pages/GradesPage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -96,6 +101,8 @@ export const router = createBrowserRouter([
               { path: 'kelas', element: <MyClassesPage />, handle: { title: 'Kelas Saya' } },
               { path: 'kelas/:taId', element: <TeacherCoursePage />, handle: { title: 'Ruang Kelas', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               { path: 'kelas/:taId/pertemuan/:lessonId', element: <LessonEditorPage />, handle: { title: 'Edit Pertemuan', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
+              { path: 'kelas/:taId/tugas/:taskId', element: <TaskEditorPage />, handle: { title: 'Tugas', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
+              { path: 'pemeriksaan', element: <GradingQueuePage />, handle: { title: 'Pemeriksaan' } },
               ...comingSoonRoutes('teacher'),
             ],
           },
@@ -108,6 +115,9 @@ export const router = createBrowserRouter([
               { path: 'mapel', element: <MyCoursesPage />, handle: { title: 'Mata Pelajaran' } },
               { path: 'mapel/:taId', element: <StudentCoursePage />, handle: { title: 'Ruang Belajar', crumbs: [{ label: 'Mata Pelajaran', to: '/siswa/mapel' }] } },
               { path: 'mapel/:taId/pertemuan/:lessonId', element: <LessonReaderPage />, handle: { title: 'Materi', crumbs: [{ label: 'Mata Pelajaran', to: '/siswa/mapel' }] } },
+              { path: 'tugas', element: <MyTasksPage />, handle: { title: 'Tugas' } },
+              { path: 'tugas/:taskId', element: <TaskSubmitPage />, handle: { title: 'Kerjakan Tugas', crumbs: [{ label: 'Tugas', to: '/siswa/tugas' }] } },
+              { path: 'nilai', element: <GradesPage />, handle: { title: 'Nilai & Umpan Balik' } },
               ...comingSoonRoutes('student'),
             ],
           },

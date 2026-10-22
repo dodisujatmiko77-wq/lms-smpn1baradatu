@@ -5,14 +5,15 @@ import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { Button, Input, Modal, Tabs } from '@/components/ui'
 import { toMessage } from '@/lib/errors'
 import { compressImage, fileExt, fileInfo, formatBytes } from '@/lib/files'
-import { supabase } from '@/lib/supabase'
-import { unwrap } from '@/lib/db'
 import { youtubeId } from '@/lib/youtube'
 import { cn } from '@/lib/utils'
-import { uploadMaterial } from '../api'
 
-/** Tambah materi ke pertemuan: unggah berkas (bisa banyak), video YouTube, atau tautan. */
-export function AddMaterialModal({ open, taId, lessonId, nextPosition, onClose, onAdded }) {
+/**
+ * Tambah materi/lampiran: unggah berkas (bisa banyak), video YouTube, atau tautan.
+ * uploadFile(file, title, index) dan addLink({ type, url, title }) disediakan pemanggil
+ * (pertemuan → lesson_materials; tugas → lampiran tugas).
+ */
+export function AddMaterialModal({ open, uploadFile, addLink: saveLink, onClose, onAdded, title: modalTitle = 'Tambah materi' }) {
   const settings = useSchoolSettings()
   const [tab, setTab] = useState('file')
   const [items, setItems] = useState([])
@@ -51,7 +52,7 @@ export function AddMaterialModal({ open, taId, lessonId, nextPosition, onClose, 
         if (isImage) file = await compressImage(file)
         const limitMb = isImage ? settings.max_image_upload_mb : settings.max_upload_mb
         if (file.size > limitMb * 1024 * 1024) throw new Error(`Ukuran ${formatBytes(file.size)} melebihi batas ${limitMb} MB.`)
-        await uploadMaterial({ taId, lessonId, file, title: list[i].name.replace(/\.[^.]+$/, ''), position: nextPosition + i })
+        await uploadFile(file, list[i].name.replace(/\.[^.]+$/, ''), i)
         update({ status: 'done', size: file.size })
         ok++
       } catch (e) {
@@ -75,7 +76,7 @@ export function AddMaterialModal({ open, taId, lessonId, nextPosition, onClose, 
     if (title.trim().length < 2) return setError('Judul materi wajib diisi.')
     setBusy(true)
     try {
-      unwrap(await supabase.from('lesson_materials').insert({ lesson_id: lessonId, type: isVideo ? 'video' : 'link', title: title.trim(), url: u, position: nextPosition }))
+      await saveLink({ type: isVideo ? 'video' : 'link', url: u, title: title.trim() })
       toast.success(isVideo ? 'Video ditambahkan.' : 'Tautan ditambahkan.')
       reset()
       onAdded()
@@ -93,7 +94,7 @@ export function AddMaterialModal({ open, taId, lessonId, nextPosition, onClose, 
       onClose={close}
       size="lg"
       dismissible={!busy}
-      title="Tambah materi"
+      title={modalTitle}
       description="Video sebaiknya melalui YouTube agar tidak memakai kuota penyimpanan sekolah."
       footer={
         tab === 'file' ? (

@@ -9,7 +9,7 @@ import { unwrap } from '@/lib/db'
 import { toMessage } from '@/lib/errors'
 import { supabase } from '@/lib/supabase'
 import { formatRelative } from '@/lib/utils'
-import { ckeys, deleteLesson, deleteMaterial, fetchLesson } from '../api'
+import { ckeys, deleteLesson, deleteMaterial, fetchLesson, uploadMaterial } from '../api'
 import { AddMaterialModal } from '../components/AddMaterialModal'
 import { MaterialList } from '../components/materials'
 import { RichContent } from '../components/RichContent'
@@ -196,7 +196,18 @@ export default function LessonEditorPage() {
         </div>
       </div>
 
-      <AddMaterialModal open={addOpen} taId={taId} lessonId={lessonId} nextPosition={materials.length} onClose={() => setAddOpen(false)} onAdded={() => { lesson.refetch(); invalidate() }} />
+      <AddMaterialModal
+        open={addOpen}
+        uploadFile={(file, title, i) => uploadMaterial({ taId, lessonId, file, title, position: materials.length + i })}
+        addLink={async ({ type, url, title }) =>
+          unwrap(await supabase.from('lesson_materials').insert({ lesson_id: lessonId, type, title, url, position: materials.length }))
+        }
+        onClose={() => setAddOpen(false)}
+        onAdded={() => {
+          lesson.refetch()
+          invalidate()
+        }}
+      />
 
       <Modal open={preview} onClose={() => setPreview(false)} size="lg" title={`Pratinjau: ${values.title}`} description="Tampilan yang dilihat siswa (perubahan belum disimpan ikut ditampilkan).">
         <div className="space-y-5">

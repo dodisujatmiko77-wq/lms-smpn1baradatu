@@ -7,7 +7,7 @@ import { toMessage } from '@/lib/errors'
 import { formatBytes } from '@/lib/files'
 import { cn } from '@/lib/utils'
 import { youtubeEmbed, youtubeId, youtubeThumb } from '@/lib/youtube'
-import { ckeys, signedUrl } from '../api'
+import { MATERIALS_BUCKET, ckeys, signedUrl } from '../api'
 
 export const MATERIAL_META = {
   pdf: { label: 'PDF', icon: FileText, tone: 'bg-red-50 text-red-600' },
@@ -20,19 +20,34 @@ export const MATERIAL_META = {
 }
 
 /** Signed URL (1 jam) di-cache 50 menit agar tidak meminta ulang tiap render. */
-export function useSignedUrl(path, enabled = true) {
-  return useQuery({ queryKey: ckeys.signed(path), queryFn: () => signedUrl(path), enabled: Boolean(path) && enabled, staleTime: 50 * 60_000, gcTime: 55 * 60_000 })
+export function useSignedUrl(path, enabled = true, bucket = MATERIALS_BUCKET) {
+  return useQuery({
+    queryKey: ckeys.signed(path, bucket),
+    queryFn: () => signedUrl(path, undefined, bucket),
+    enabled: Boolean(path) && enabled,
+    staleTime: 50 * 60_000,
+    gcTime: 55 * 60_000,
+  })
 }
 
+/** Item materi/lampiran boleh membawa `bucket` sendiri (default: bucket materi). */
 async function openSigned(material, download) {
   const win = download ? null : window.open('', '_blank')
   try {
-    const url = await signedUrl(material.storage_path, download ? material.file_name ?? true : undefined)
+    const url = await signedUrl(material.storage_path, download ? material.file_name ?? true : undefined, material.bucket ?? MATERIALS_BUCKET)
     if (win) win.location.href = url
     else window.location.href = url
   } catch (e) {
     win?.close()
     toast.error(toMessage(e))
+  }
+}
+
+const hostOf = (url) => {
+  try {
+    return new URL(url).hostname
+  } catch {
+    return url
   }
 }
 
@@ -82,7 +97,7 @@ function YouTubeEmbed({ material }) {
 }
 
 function InlineImage({ material }) {
-  const { data: url, isLoading } = useSignedUrl(material.storage_path)
+  const { data: url, isLoading } = useSignedUrl(material.storage_path, true, material.bucket)
   if (isLoading) return <div className="aspect-video animate-pulse rounded-xl bg-slate-100" />
   if (!url) return null
   return (
@@ -93,7 +108,7 @@ function InlineImage({ material }) {
 }
 
 function PdfViewerModal({ material, onClose }) {
-  const { data: url, isLoading } = useSignedUrl(material?.storage_path, Boolean(material))
+  const { data: url, isLoading } = useSignedUrl(material?.storage_path, Boolean(material), material?.bucket)
   return (
     <Modal open={Boolean(material)} onClose={onClose} size="lg" title={material?.title ?? ''}>
       {isLoading || !url ? (
@@ -119,11 +134,11 @@ export function MaterialList({ materials, mode = 'read', onDelete }) {
   return (
     <>
       <ul className="space-y-3">
-        {materials.map((m) => {
+        {materials.map((m, i) => {
           const meta = MATERIAL_META[m.type] ?? MATERIAL_META.file
           const inline = mode === 'read' && (m.type === 'video' || m.type === 'image')
           return (
-            <li key={m.id} className="rounded-xl border border-slate-200/70 bg-white p-3">
+            <li key={m.id ?? m.storage_path ?? i} className="rounded-xl border border-slate-200/70 bg-white p-3">
               <div className="flex items-center gap-3">
                 <MaterialIcon type={m.type} />
                 <div className="min-w-0 flex-1">
@@ -131,7 +146,7 @@ export function MaterialList({ materials, mode = 'read', onDelete }) {
                   <p className="truncate text-xs text-slate-500">
                     {meta.label}
                     {m.size_bytes ? ` · ${formatBytes(m.size_bytes)}` : ''}
-                    {m.type === 'link' ? ` · ${new URL(m.url).hostname}` : ''}
+                    {m.type === 'link' ? ` · ${hostOf(m.url)}` : ''}
                   </p>
                 </div>
                 {m.type === 'link' && (

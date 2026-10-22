@@ -7,12 +7,14 @@ import { ckeys, fetchMyCourses } from '@/features/classroom/api'
 import { ProgressBar } from '@/features/classroom/components/status'
 import { useActiveSemester } from '@/features/master/hooks'
 import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
+import { fetchMyTasks, tkeys } from '@/features/tasks/api'
+import { TaskCard } from '@/features/tasks/components/TaskCard'
+import { studentTaskStatus } from '@/features/tasks/status'
 import { formatRelative } from '@/lib/utils'
 import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: ClipboardList, title: 'Tugas & nilai', description: 'Kumpulkan tugas dan baca umpan balik guru', stage: 4 },
   { icon: TrendingUp, title: 'Kuis & ujian online', description: 'Kerjakan kuis langsung dari HP', stage: 5 },
   { icon: Award, title: 'Badge pencapaian', description: 'Rajin Belajar, Tepat Waktu, Materi Tuntas', stage: 6 },
 ]
@@ -21,6 +23,10 @@ export default function StudentDashboard() {
   const { profile } = useAuth()
   const active = useActiveSemester()
   const courses = useQuery({ queryKey: ckeys.myCourses, queryFn: fetchMyCourses })
+  const tasks = useQuery({ queryKey: tkeys.mine, queryFn: fetchMyTasks })
+  const upcoming = (tasks.data ?? [])
+    .filter((t) => ['todo', 'draft', 'missing'].includes(studentTaskStatus(t)))
+    .sort((a, b) => a.due_at.localeCompare(b.due_at))
   const cls = profile.student_class
   const list = courses.data ?? []
   const totalLessons = list.reduce((n, c) => n + c.lesson_count, 0)
@@ -37,7 +43,7 @@ export default function StudentDashboard() {
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard label="Progress belajar" value={`${pct}%`} icon={TrendingUp} tone="blue" loading={courses.isLoading} hint="Dari seluruh pertemuan yang terbit" />
         <StatCard label="Pertemuan selesai" value={totalDone} icon={CheckCircle2} tone="green" loading={courses.isLoading} hint={`dari ${totalLessons} pertemuan`} />
-        <StatCard label="Mata pelajaran" value={list.length} icon={Library} tone="orange" loading={courses.isLoading} hint={cls ? `Kelas ${cls.name}` : undefined} />
+        <StatCard label="Tugas belum selesai" value={upcoming.length} icon={ClipboardList} tone="orange" loading={tasks.isLoading} hint={upcoming[0] ? `Terdekat: ${upcoming[0].title}` : 'Tidak ada tugas tertunda'} />
       </div>
 
       <div className="grid gap-6 lg:grid-cols-3">
@@ -45,25 +51,13 @@ export default function StudentDashboard() {
           <TodaySchedule linkTo="/siswa/jadwal" />
         </div>
         <Card>
-          <CardHeader icon={Sparkles} title="Materi terbaru" />
-          {courses.isLoading ? (
+          <CardHeader icon={ClipboardList} title="Tugas mendatang" action={<Link to="/siswa/tugas" className="text-sm font-medium text-primary-600 hover:text-primary-700">Semua</Link>} />
+          {tasks.isLoading ? (
             <SkeletonRows rows={3} />
-          ) : latest.length === 0 ? (
-            <EmptyState icon={BookOpen} title="Belum ada materi" description="Materi dari gurumu akan muncul di sini." />
+          ) : upcoming.length === 0 ? (
+            <EmptyState icon={CheckCircle2} title="Tidak ada tugas tertunda" description="Kerja bagus! Tugas baru akan muncul di sini." />
           ) : (
-            <ul className="divide-y divide-slate-100">
-              {latest.map((c) => (
-                <li key={c.teaching_assignment_id}>
-                  <Link to={`/siswa/mapel/${c.teaching_assignment_id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50">
-                    <span className="h-9 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: c.subject_color }} />
-                    <div className="min-w-0">
-                      <p className="truncate text-sm font-semibold text-slate-900">{c.latest_lesson_title}</p>
-                      <p className="truncate text-xs text-slate-500">{c.subject_name} · {formatRelative(c.latest_published_at)}</p>
-                    </div>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+            <div className="space-y-2 p-3">{upcoming.slice(0, 3).map((t) => <TaskCard key={t.id} task={t} />)}</div>
           )}
         </Card>
       </div>
@@ -102,10 +96,34 @@ export default function StudentDashboard() {
         )}
       </Card>
 
-      <Card>
-        <CardHeader icon={Megaphone} title="Pengumuman" />
-        <EmptyState icon={Megaphone} title="Belum ada pengumuman" description="Pengumuman sekolah dan kelas akan muncul di sini (Tahap 6)." />
-      </Card>
+      <div className="grid gap-6 lg:grid-cols-2">
+        <Card>
+          <CardHeader icon={Sparkles} title="Materi terbaru" />
+          {courses.isLoading ? (
+            <SkeletonRows rows={3} />
+          ) : latest.length === 0 ? (
+            <EmptyState icon={BookOpen} title="Belum ada materi" description="Materi dari gurumu akan muncul di sini." />
+          ) : (
+            <ul className="divide-y divide-slate-100">
+              {latest.map((c) => (
+                <li key={c.teaching_assignment_id}>
+                  <Link to={`/siswa/mapel/${c.teaching_assignment_id}`} className="flex items-center gap-3 px-5 py-3 hover:bg-slate-50">
+                    <span className="h-9 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: c.subject_color }} />
+                    <div className="min-w-0">
+                      <p className="truncate text-sm font-semibold text-slate-900">{c.latest_lesson_title}</p>
+                      <p className="truncate text-xs text-slate-500">{c.subject_name} · {formatRelative(c.latest_published_at)}</p>
+                    </div>
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          )}
+        </Card>
+        <Card>
+          <CardHeader icon={Megaphone} title="Pengumuman" />
+          <EmptyState icon={Megaphone} title="Belum ada pengumuman" description="Pengumuman sekolah dan kelas akan muncul di sini (Tahap 6)." />
+        </Card>
+      </div>
 
       <UpcomingModules items={UPCOMING} />
     </div>

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { ArrowDown, ArrowUp, BarChart3, BookOpen, ChevronRight, ClipboardList, FileQuestion, FolderPlus, MessagesSquare, MoreVertical, Paperclip, Pencil, Plus, Trash2, Users } from 'lucide-react'
 import { toast } from 'sonner'
@@ -14,6 +14,7 @@ import { NewLessonModal } from '../components/NewLessonModal'
 import { SectionFormModal } from '../components/SectionFormModal'
 import { ProgressBar, PublishBadge } from '../components/status'
 import { groupLessons, useCourse, useInvalidateClassroom } from '../hooks'
+import { CourseTasksTab } from '@/features/tasks/components/CourseTasksTab'
 
 function LessonsTab({ course, sections, lessons, basePath }) {
   const invalidate = useInvalidateClassroom()
@@ -230,7 +231,6 @@ function ProgressTab({ course }) {
 }
 
 const FUTURE_TABS = [
-  { label: 'Tugas', icon: ClipboardList, stage: 4 },
   { label: 'Kuis', icon: FileQuestion, stage: 5 },
   { label: 'Diskusi', icon: MessagesSquare, stage: 6 },
 ]
@@ -239,7 +239,9 @@ const FUTURE_TABS = [
 export default function TeacherCoursePage() {
   const { taId } = useParams()
   const { course, sections, lessons } = useCourse(taId)
-  const [tab, setTab] = useState('lessons')
+  const [params, setParams] = useSearchParams()
+  const tab = ['tugas', 'progress'].includes(params.get('tab')) ? params.get('tab') : 'lessons'
+  const setTab = (v) => setParams(v === 'lessons' ? {} : { tab: v }, { replace: true })
   const basePath = `/guru/kelas/${taId}`
 
   if (course.isLoading) return <Skeleton className="h-56 rounded-2xl" />
@@ -256,6 +258,7 @@ export default function TeacherCoursePage() {
           onChange={setTab}
           tabs={[
             { value: 'lessons', label: 'Pertemuan & Materi', icon: BookOpen },
+            { value: 'tugas', label: 'Tugas', icon: ClipboardList },
             { value: 'progress', label: 'Progress Siswa', icon: BarChart3 },
           ]}
         />
@@ -265,7 +268,9 @@ export default function TeacherCoursePage() {
           </span>
         ))}
       </div>
-      {tab === 'lessons' ? (
+      {tab === 'tugas' ? (
+        <CourseTasksTab course={c} />
+      ) : tab === 'lessons' ? (
         sections.isLoading || lessons.isLoading ? (
           <Skeleton className="h-64 rounded-xl" />
         ) : sections.isError || lessons.isError ? (

@@ -1,7 +1,10 @@
+import { useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { BookOpen, ChevronRight, Paperclip } from 'lucide-react'
-import { Card, EmptyState, ErrorState, Skeleton } from '@/components/ui'
+import { BookOpen, ChevronRight, ClipboardList, Paperclip } from 'lucide-react'
+import { Card, EmptyState, ErrorState, Skeleton, Tabs } from '@/components/ui'
+import { fetchMyTasks, tkeys } from '@/features/tasks/api'
+import { TaskCard } from '@/features/tasks/components/TaskCard'
 import { cn } from '@/lib/utils'
 import { ckeys, fetchMyProgress } from '../api'
 import { CourseHeader } from '../components/CourseHeader'
@@ -13,6 +16,8 @@ export default function StudentCoursePage() {
   const { taId } = useParams()
   const { course, sections, lessons } = useCourse(taId)
   const progress = useQuery({ queryKey: ckeys.myProgress(taId), queryFn: () => fetchMyProgress(taId) })
+  const tasks = useQuery({ queryKey: tkeys.mine, queryFn: fetchMyTasks })
+  const [tab, setTab] = useState('materi')
 
   if (course.isLoading) return <Skeleton className="h-56 rounded-2xl" />
   if (course.isError) return <Card><ErrorState error={course.error} onRetry={course.refetch} /></Card>
@@ -37,6 +42,30 @@ export default function StudentCoursePage() {
         </div>
       </CourseHeader>
 
+      {(() => {
+        const courseTasks = (tasks.data ?? []).filter((t) => t.teaching_assignment_id === taId)
+        return (
+          <Tabs
+            value={tab}
+            onChange={setTab}
+            tabs={[
+              { value: 'materi', label: 'Materi', icon: BookOpen, count: list.length },
+              { value: 'tugas', label: 'Tugas', icon: ClipboardList, count: courseTasks.length },
+            ]}
+          />
+        )
+      })()}
+
+      {tab === 'tugas' ? (
+        (tasks.data ?? []).filter((t) => t.teaching_assignment_id === taId).length === 0 ? (
+          <Card><EmptyState icon={ClipboardList} title="Belum ada tugas" description="Tugas dari guru mapel ini akan muncul di sini." /></Card>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {(tasks.data ?? []).filter((t) => t.teaching_assignment_id === taId).map((t) => <TaskCard key={t.id} task={t} showSubject={false} />)}
+          </div>
+        )
+      ) : (
+      <>
       {next && (
         <Link to={`/siswa/mapel/${taId}/pertemuan/${next.id}`} className="flex items-center gap-3 rounded-xl border border-primary-200 bg-primary-50 p-4 text-sm transition hover:bg-primary-100">
           <StudentStatusIcon status={lessonStudentStatus(prog.get(next.id))} />
@@ -91,6 +120,8 @@ export default function StudentCoursePage() {
             </div>
           </section>
         ))
+      )}
+      </>
       )}
     </div>
   )

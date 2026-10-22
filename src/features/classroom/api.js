@@ -14,7 +14,7 @@ export const ckeys = {
   myProgress: (taId) => ['classroom', 'my-progress', taId],
   progress: (taId) => ['classroom', 'progress', taId],
   lessonStats: (taId) => ['classroom', 'lesson-stats', taId],
-  signed: (path) => ['classroom', 'signed', path],
+  signed: (path, bucket) => ['classroom', 'signed', bucket, path],
 }
 
 export const fetchCourse = async (taId) => unwrap(await supabase.rpc('get_course', { p_ta_id: taId }))
@@ -102,8 +102,8 @@ export async function deleteLesson(lessonId) {
 }
 
 /** Signed URL berlaku 1 jam (bucket materi bersifat privat). */
-export async function signedUrl(path, download) {
-  const { data, error } = await supabase.storage.from(MATERIALS_BUCKET).createSignedUrl(path, 3600, download ? { download } : undefined)
+export async function signedUrl(path, download, bucket = MATERIALS_BUCKET) {
+  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 3600, download ? { download } : undefined)
   if (error) throw error
   return data.signedUrl
 }
