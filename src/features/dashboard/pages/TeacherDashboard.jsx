@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { ClipboardCheck, Inbox, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
+import { ClipboardCheck, Inbox, School, ShieldCheck, UserRound, Users } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Badge, Button, Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
 import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
@@ -9,12 +9,8 @@ import { fetchGradingQueue, tkeys } from '@/features/tasks/api'
 import { fetchQuizGradingQueue, qkeys } from '@/features/quizzes/api'
 import { unwrap } from '@/lib/db'
 import { supabase } from '@/lib/supabase'
-import { UpcomingModules } from '../components/UpcomingModules'
+import { AnnouncementsWidget } from '@/features/announcements/components/AnnouncementsWidget'
 import { WelcomeBanner } from '../components/WelcomeBanner'
-
-const UPCOMING = [
-  { icon: MessagesSquare, title: 'Forum diskusi & pengumuman kelas', description: 'Interaksi dengan siswa', stage: 6 },
-]
 
 async function fetchGuardianClasses(ids) {
   if (!ids.length) return []
@@ -81,7 +77,7 @@ export default function TeacherDashboard() {
         </Card>
       </div>
 
-      <UpcomingModules items={UPCOMING} />
+      <AnnouncementsWidget linkTo="/guru/pengumuman" />
     </div>
   )
 }

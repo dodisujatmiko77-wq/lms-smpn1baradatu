@@ -38,9 +38,11 @@ const schema = z.object({
 const NOTIF_OPTIONS = [
   ['new_material', 'Materi baru diunggah', 'Siswa diberi tahu saat guru mempublikasikan materi.'],
   ['new_assignment', 'Tugas baru', 'Siswa diberi tahu saat tugas baru diterbitkan.'],
-  ['deadline_reminder', 'Pengingat tenggat', 'Pengingat H-1 sebelum tenggat tugas.'],
+  ['new_quiz', 'Kuis & ujian baru', 'Siswa diberi tahu saat kuis/ujian diterbitkan.'],
+  ['deadline_reminder', 'Pengingat tenggat', 'Pengingat H-1 sebelum tenggat tugas dan sebelum kuis ditutup.'],
   ['grade_published', 'Nilai diterbitkan', 'Siswa diberi tahu saat nilai dipublikasikan.'],
   ['announcement', 'Pengumuman', 'Pengguna diberi tahu saat ada pengumuman baru.'],
+  ['forum', 'Forum diskusi', 'Pemberitahuan topik baru dan balasan di forum diskusi kelas.'],
 ]
 
 const toForm = (s) => ({

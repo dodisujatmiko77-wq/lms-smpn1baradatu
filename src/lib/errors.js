@@ -22,6 +22,12 @@ const CONSTRAINT_MESSAGES = {
   quiz_questions_tf_key: 'Pilih kunci jawaban Benar atau Salah.',
   quiz_questions_short_key: 'Soal isian wajib memiliki kunci jawaban.',
   quiz_questions_points: 'Skor soal harus lebih dari 0 dan maksimal 100.',
+  announcements_expiry: 'Batas tayang harus setelah waktu tayang.',
+  announcements_title_len: 'Judul pengumuman 1–200 karakter.',
+  discussion_topics_title_len: 'Judul topik 1–200 karakter.',
+  discussion_topics_body_len: 'Isi topik 1–5000 karakter.',
+  discussion_replies_body_len: 'Balasan 1–3000 karakter.',
+  calendar_events_dates: 'Tanggal selesai tidak boleh sebelum tanggal mulai (maksimal 1 tahun).',
 }
 
 const MESSAGES = [

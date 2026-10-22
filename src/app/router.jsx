@@ -49,6 +49,12 @@ const MyQuizzesPage = lazy(() => import('@/features/quizzes/pages/MyQuizzesPage'
 const QuizStartPage = lazy(() => import('@/features/quizzes/pages/QuizStartPage'))
 const QuizTakePage = lazy(() => import('@/features/quizzes/pages/QuizTakePage'))
 const QuizResultPage = lazy(() => import('@/features/quizzes/pages/QuizResultPage'))
+const NotificationsPage = lazy(() => import('@/features/notifications/pages/NotificationsPage'))
+const AnnouncementsPage = lazy(() => import('@/features/announcements/pages/AnnouncementsPage'))
+const AnnouncementPage = lazy(() => import('@/features/announcements/pages/AnnouncementPage'))
+const TopicPage = lazy(() => import('@/features/forum/pages/TopicPage'))
+const CalendarPage = lazy(() => import('@/features/calendar/pages/CalendarPage'))
+const AchievementsPage = lazy(() => import('@/features/achievements/pages/AchievementsPage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -84,6 +90,9 @@ export const router = createBrowserRouter([
         element: <DashboardLayout />,
         children: [
           { path: '/profil', element: <ProfilePage />, handle: { title: 'Profil Saya' } },
+          { path: '/notifikasi', element: <NotificationsPage />, handle: { title: 'Notifikasi' } },
+          { path: '/pengumuman/:id', element: <AnnouncementPage />, handle: { title: 'Pengumuman' } },
+          { path: '/diskusi/:topicId', element: <TopicPage />, handle: { title: 'Diskusi' } },
           {
             path: '/admin',
             element: <RequireRole role="admin" />,
@@ -102,6 +111,8 @@ export const router = createBrowserRouter([
               { path: 'guru', element: <TeachersPage />, handle: { title: 'Data Guru', crumbs: [{ label: 'Pengguna' }] } },
               { path: 'siswa', element: <StudentsPage />, handle: { title: 'Data Siswa', crumbs: [{ label: 'Pengguna' }] } },
               { path: 'file', element: <FileManagementPage />, handle: { title: 'Manajemen File', crumbs: [{ label: 'Pembelajaran' }] } },
+              { path: 'pengumuman', element: <AnnouncementsPage />, handle: { title: 'Pengumuman Sekolah', crumbs: [{ label: 'Pembelajaran' }] } },
+              { path: 'kalender', element: <CalendarPage />, handle: { title: 'Kalender Sekolah', crumbs: [{ label: 'Akademik' }] } },
               ...comingSoonRoutes('admin'),
             ],
           },
@@ -117,6 +128,8 @@ export const router = createBrowserRouter([
               { path: 'kelas/:taId/tugas/:taskId', element: <TaskEditorPage />, handle: { title: 'Tugas', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               { path: 'pemeriksaan', element: <GradingQueuePage />, handle: { title: 'Pemeriksaan' } },
               { path: 'kelas/:taId/kuis/:quizId', element: <QuizEditorPage />, handle: { title: 'Kuis', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
+              { path: 'pengumuman', element: <AnnouncementsPage />, handle: { title: 'Pengumuman' } },
+              { path: 'kalender', element: <CalendarPage />, handle: { title: 'Kalender' } },
               { path: 'bank-soal', element: <QuestionBanksPage />, handle: { title: 'Bank Soal' } },
               { path: 'bank-soal/:bankId', element: <QuestionBankPage />, handle: { title: 'Detail Bank Soal', crumbs: [{ label: 'Bank Soal', to: '/guru/bank-soal' }] } },
               ...comingSoonRoutes('teacher'),
@@ -134,6 +147,9 @@ export const router = createBrowserRouter([
               { path: 'tugas', element: <MyTasksPage />, handle: { title: 'Tugas' } },
               { path: 'tugas/:taskId', element: <TaskSubmitPage />, handle: { title: 'Kerjakan Tugas', crumbs: [{ label: 'Tugas', to: '/siswa/tugas' }] } },
               { path: 'nilai', element: <GradesPage />, handle: { title: 'Nilai & Umpan Balik' } },
+              { path: 'pengumuman', element: <AnnouncementsPage />, handle: { title: 'Pengumuman' } },
+              { path: 'kalender', element: <CalendarPage />, handle: { title: 'Kalender' } },
+              { path: 'pencapaian', element: <AchievementsPage />, handle: { title: 'Badge Saya' } },
               { path: 'kuis', element: <MyQuizzesPage />, handle: { title: 'Kuis & Ujian' } },
               { path: 'kuis/:quizId', element: <QuizStartPage />, handle: { title: 'Kuis', crumbs: [{ label: 'Kuis & Ujian', to: '/siswa/kuis' }] } },
               { path: 'kuis/:quizId/hasil/:attemptId', element: <QuizResultPage />, handle: { title: 'Hasil Kuis', crumbs: [{ label: 'Kuis & Ujian', to: '/siswa/kuis' }] } },

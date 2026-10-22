@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Bell, BellOff, CalendarCheck2, CalendarX2, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
+import { CalendarCheck2, CalendarX2, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { Avatar, Dropdown, DropdownItem, EmptyState } from '@/components/ui'
+import { Avatar, Dropdown, DropdownItem } from '@/components/ui'
+import { NotificationBell } from '@/features/notifications/components/NotificationBell'
 import { useActiveSemester } from '@/features/master/hooks'
 import { ROLE_AREAS, ROLE_LABELS } from '@/lib/auth'
 import { MenuSearch } from './MenuSearch'
@@ -62,24 +63,7 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
           {mobileSearch ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
         </button>
 
-        <Dropdown
-          trigger={({ toggle }) => (
-            <button onClick={toggle} className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100" aria-label="Notifikasi">
-              <Bell className="h-5 w-5" />
-            </button>
-          )}
-          panelClassName="w-80"
-        >
-          <div className="px-2.5 pb-1 pt-1.5">
-            <p className="text-sm font-semibold text-slate-900">Notifikasi</p>
-          </div>
-          <EmptyState
-            icon={BellOff}
-            title="Belum ada notifikasi"
-            description="Notifikasi materi, tugas, nilai, dan pengumuman akan muncul di sini (aktif pada Tahap 6)."
-            className="py-6"
-          />
-        </Dropdown>
+        <NotificationBell />
 
         <Dropdown
           trigger={({ toggle, open }) => (

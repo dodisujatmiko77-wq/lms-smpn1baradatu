@@ -1,12 +1,13 @@
-import { useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useSearchParams } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { BookOpen, BookOpenCheck, ChevronRight, ClipboardList, Paperclip } from 'lucide-react'
+import { BookOpen, BookOpenCheck, ChevronRight, ClipboardList, MessagesSquare, Paperclip } from 'lucide-react'
 import { Card, EmptyState, ErrorState, Skeleton, Tabs } from '@/components/ui'
 import { fetchMyTasks, tkeys } from '@/features/tasks/api'
 import { TaskCard } from '@/features/tasks/components/TaskCard'
 import { fetchMyQuizzes, qkeys } from '@/features/quizzes/api'
 import { QuizCard } from '@/features/quizzes/components/QuizCard'
+import { CourseForumTab } from '@/features/forum/components/CourseForumTab'
+import { AnnouncementsWidget } from '@/features/announcements/components/AnnouncementsWidget'
 import { cn } from '@/lib/utils'
 import { ckeys, fetchMyProgress } from '../api'
 import { CourseHeader } from '../components/CourseHeader'
@@ -20,7 +21,9 @@ export default function StudentCoursePage() {
   const progress = useQuery({ queryKey: ckeys.myProgress(taId), queryFn: () => fetchMyProgress(taId) })
   const tasks = useQuery({ queryKey: tkeys.mine, queryFn: fetchMyTasks })
   const quizzes = useQuery({ queryKey: qkeys.mine, queryFn: fetchMyQuizzes })
-  const [tab, setTab] = useState('materi')
+  const [params, setParams] = useSearchParams()
+  const tab = ['tugas', 'kuis', 'diskusi'].includes(params.get('tab')) ? params.get('tab') : 'materi'
+  const setTab = (v) => setParams(v === 'materi' ? {} : { tab: v }, { replace: true })
 
   if (course.isLoading) return <Skeleton className="h-56 rounded-2xl" />
   if (course.isError) return <Card><ErrorState error={course.error} onRetry={course.refetch} /></Card>
@@ -47,6 +50,8 @@ export default function StudentCoursePage() {
         </div>
       </CourseHeader>
 
+      <AnnouncementsWidget taId={taId} limit={2} hideWhenEmpty title="Pengumuman kelas" />
+
       <Tabs
         value={tab}
         onChange={setTab}
@@ -54,10 +59,13 @@ export default function StudentCoursePage() {
           { value: 'materi', label: 'Materi', icon: BookOpen, count: list.length },
           { value: 'tugas', label: 'Tugas', icon: ClipboardList, count: courseTasks.length },
           { value: 'kuis', label: 'Kuis', icon: BookOpenCheck, count: courseQuizzes.length },
+          { value: 'diskusi', label: 'Diskusi', icon: MessagesSquare },
         ]}
       />
 
-      {tab === 'tugas' ? (
+      {tab === 'diskusi' ? (
+        <CourseForumTab taId={taId} />
+      ) : tab === 'tugas' ? (
         courseTasks.length === 0 ? (
           <Card><EmptyState icon={ClipboardList} title="Belum ada tugas" description="Tugas dari guru mapel ini akan muncul di sini." /></Card>
         ) : (

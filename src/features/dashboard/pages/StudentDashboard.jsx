@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Award, BookOpen, BookOpenCheck, CheckCircle2, ClipboardList, Library, Megaphone, Sparkles, TrendingUp } from 'lucide-react'
+import { BookOpen, BookOpenCheck, CheckCircle2, ClipboardList, Library, Sparkles, TrendingUp } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
 import { ckeys, fetchMyCourses } from '@/features/classroom/api'
@@ -14,12 +14,9 @@ import { fetchMyQuizzes, qkeys } from '@/features/quizzes/api'
 import { QuizCard } from '@/features/quizzes/components/QuizCard'
 import { studentQuizStatus } from '@/features/quizzes/status'
 import { formatRelative } from '@/lib/utils'
-import { UpcomingModules } from '../components/UpcomingModules'
+import { AnnouncementsWidget } from '@/features/announcements/components/AnnouncementsWidget'
+import { BadgesCard } from '@/features/achievements/components/BadgesCard'
 import { WelcomeBanner } from '../components/WelcomeBanner'
-
-const UPCOMING = [
-  { icon: Award, title: 'Badge pencapaian', description: 'Rajin Belajar, Tepat Waktu, Materi Tuntas', stage: 6 },
-]
 
 export default function StudentDashboard() {
   const { profile } = useAuth()
@@ -130,13 +127,10 @@ export default function StudentDashboard() {
             </ul>
           )}
         </Card>
-        <Card>
-          <CardHeader icon={Megaphone} title="Pengumuman" />
-          <EmptyState icon={Megaphone} title="Belum ada pengumuman" description="Pengumuman sekolah dan kelas akan muncul di sini (Tahap 6)." />
-        </Card>
+        <AnnouncementsWidget linkTo="/siswa/pengumuman" />
       </div>
 
-      <UpcomingModules items={UPCOMING} />
+      <BadgesCard />
     </div>
   )
 }

@@ -13,10 +13,11 @@ import { fetchSchoolStats, keys } from '@/features/master/api'
 import { useActiveSemester } from '@/features/master/hooks'
 import { fetchAdminStats, fetchRecentAudit } from '../api'
 import { UpcomingModules } from '../components/UpcomingModules'
+import { AnnouncementsWidget } from '@/features/announcements/components/AnnouncementsWidget'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: ClipboardList, title: 'Tugas & persentase pengumpulan', description: 'Rekap pengumpulan seluruh kelas', stage: 4 },
+  { icon: ClipboardList, title: 'Rekap tugas & persentase pengumpulan', description: 'Rekap pengumpulan seluruh kelas', stage: 7 },
   { icon: MonitorCheck, title: 'Grafik aktivitas pembelajaran', description: 'Aktivitas guru & siswa dari database', stage: 7 },
 ]
 
@@ -177,7 +178,10 @@ export default function AdminDashboard() {
           )}
         </Card>
 
-        <UpcomingModules items={UPCOMING} />
+        <div className="space-y-6">
+          <AnnouncementsWidget linkTo="/admin/pengumuman" limit={2} />
+          <UpcomingModules items={UPCOMING} />
+        </div>
       </div>
     </div>
   )

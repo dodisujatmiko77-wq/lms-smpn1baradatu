@@ -60,7 +60,7 @@ update school_settings set tagline = 'Uji';
 select pg_temp.check((select tagline from school_settings) = 'Uji', 'admin bisa mengubah pengaturan');
 select admin_update_profile('00000000-0000-0000-0000-00000000000d', 'Andi Pratama');
 select pg_temp.check((select full_name from profiles where id='00000000-0000-0000-0000-00000000000d') = 'Andi Pratama', 'admin bisa mengubah nama siswa');
-select pg_temp.check((select count(*) from audit_logs where action in ('school_settings.update','user.update_profile')) = 2, 'perubahan tercatat di audit log');
+select pg_temp.check((select count(*) from audit_logs where actor_id is not null and action in ('school_settings.update','user.update_profile')) = 2, 'perubahan tercatat di audit log');
 
 -- Akun nonaktif kehilangan hak admin
 reset role;
