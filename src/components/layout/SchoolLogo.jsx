@@ -1,13 +1,21 @@
-import { GraduationCap } from 'lucide-react'
+import { useState } from 'react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { cn } from '@/lib/utils'
 
-export function SchoolLogo({ className, iconClassName }) {
+/** Logo bawaan aplikasi; dipakai bila admin belum mengunggah logo di Pengaturan Sekolah. */
+export const DEFAULT_LOGO = '/brand/logo-256.webp'
+
+export function SchoolLogo({ className }) {
   const { logo_url, short_name } = useSchoolSettings()
-  if (logo_url) return <img src={logo_url} alt={`Logo ${short_name}`} className={cn('rounded-xl bg-white object-contain', className)} />
+  const [failed, setFailed] = useState(false)
+  const src = !logo_url || failed ? DEFAULT_LOGO : logo_url
   return (
-    <span className={cn('grid place-items-center rounded-xl bg-gradient-to-br from-primary-600 to-primary-500 text-white', className)}>
-      <GraduationCap className={cn('h-5 w-5', iconClassName)} />
-    </span>
+    <img
+      src={src}
+      alt={`Logo ${short_name}`}
+      onError={() => setFailed(true)}
+      className={cn('shrink-0 rounded-xl object-contain', className)}
+      draggable={false}
+    />
   )
 }

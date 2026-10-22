@@ -30,6 +30,13 @@ const TeachingAssignmentsPage = lazy(() => import('@/features/assignments/pages/
 const GuardiansPage = lazy(() => import('@/features/guardians/pages/GuardiansPage'))
 const SchedulesPage = lazy(() => import('@/features/schedules/pages/SchedulesPage'))
 const MySchedulePage = lazy(() => import('@/features/schedules/pages/MySchedulePage'))
+const MyClassesPage = lazy(() => import('@/features/classroom/pages/MyClassesPage'))
+const TeacherCoursePage = lazy(() => import('@/features/classroom/pages/TeacherCoursePage'))
+const LessonEditorPage = lazy(() => import('@/features/classroom/pages/LessonEditorPage'))
+const MyCoursesPage = lazy(() => import('@/features/classroom/pages/MyCoursesPage'))
+const StudentCoursePage = lazy(() => import('@/features/classroom/pages/StudentCoursePage'))
+const LessonReaderPage = lazy(() => import('@/features/classroom/pages/LessonReaderPage'))
+const FileManagementPage = lazy(() => import('@/features/files/pages/FileManagementPage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -76,6 +83,7 @@ export const router = createBrowserRouter([
               { path: 'jadwal', element: <SchedulesPage />, handle: { title: 'Jadwal Pelajaran', crumbs: [{ label: 'Akademik' }] } },
               { path: 'guru', element: <TeachersPage />, handle: { title: 'Data Guru', crumbs: [{ label: 'Pengguna' }] } },
               { path: 'siswa', element: <StudentsPage />, handle: { title: 'Data Siswa', crumbs: [{ label: 'Pengguna' }] } },
+              { path: 'file', element: <FileManagementPage />, handle: { title: 'Manajemen File', crumbs: [{ label: 'Pembelajaran' }] } },
               ...comingSoonRoutes('admin'),
             ],
           },
@@ -85,6 +93,9 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <TeacherDashboard />, handle: { title: 'Dashboard', isHome: true } },
               { path: 'jadwal', element: <MySchedulePage />, handle: { title: 'Jadwal Mengajar' } },
+              { path: 'kelas', element: <MyClassesPage />, handle: { title: 'Kelas Saya' } },
+              { path: 'kelas/:taId', element: <TeacherCoursePage />, handle: { title: 'Ruang Kelas', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
+              { path: 'kelas/:taId/pertemuan/:lessonId', element: <LessonEditorPage />, handle: { title: 'Edit Pertemuan', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               ...comingSoonRoutes('teacher'),
             ],
           },
@@ -94,6 +105,9 @@ export const router = createBrowserRouter([
             children: [
               { index: true, element: <StudentDashboard />, handle: { title: 'Beranda', isHome: true } },
               { path: 'jadwal', element: <MySchedulePage />, handle: { title: 'Jadwal Pelajaran' } },
+              { path: 'mapel', element: <MyCoursesPage />, handle: { title: 'Mata Pelajaran' } },
+              { path: 'mapel/:taId', element: <StudentCoursePage />, handle: { title: 'Ruang Belajar', crumbs: [{ label: 'Mata Pelajaran', to: '/siswa/mapel' }] } },
+              { path: 'mapel/:taId/pertemuan/:lessonId', element: <LessonReaderPage />, handle: { title: 'Materi', crumbs: [{ label: 'Mata Pelajaran', to: '/siswa/mapel' }] } },
               ...comingSoonRoutes('student'),
             ],
           },

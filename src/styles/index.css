@@ -79,3 +79,53 @@
     padding-bottom: env(safe-area-inset-bottom);
   }
 }
+
+/* Konten materi (rich text) yang nyaman dibaca di HP */
+@layer components {
+  .prose-lms {
+    @apply text-[15px] leading-7 text-slate-700;
+  }
+  .prose-lms > * + * {
+    @apply mt-4;
+  }
+  .prose-lms h2 {
+    @apply mt-8 text-xl font-semibold text-slate-900;
+  }
+  .prose-lms h3 {
+    @apply mt-6 text-lg font-semibold text-slate-900;
+  }
+  .prose-lms a {
+    @apply font-medium text-primary-600 underline underline-offset-2 hover:text-primary-700;
+  }
+  .prose-lms ul {
+    @apply list-disc pl-6;
+  }
+  .prose-lms ol {
+    @apply list-decimal pl-6;
+  }
+  .prose-lms li + li {
+    @apply mt-1;
+  }
+  .prose-lms blockquote {
+    @apply border-l-4 border-primary-200 bg-primary-50/50 py-2 pl-4 italic text-slate-600;
+  }
+  .prose-lms code {
+    @apply rounded bg-slate-100 px-1.5 py-0.5 font-mono text-[13px] text-slate-800;
+  }
+  .prose-lms pre {
+    @apply overflow-x-auto rounded-xl bg-slate-900 p-4 text-[13px] text-slate-100;
+  }
+  .prose-lms pre code {
+    @apply bg-transparent p-0 text-slate-100;
+  }
+  .prose-lms hr {
+    @apply my-8 border-slate-200;
+  }
+  .prose-lms strong {
+    @apply font-semibold text-slate-900;
+  }
+  .prose-lms p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none float-left h-0 text-slate-400;
+  }
+}

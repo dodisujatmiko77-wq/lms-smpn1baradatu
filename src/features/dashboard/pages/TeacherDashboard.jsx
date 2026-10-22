@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { BookOpen, ClipboardCheck, FileQuestion, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
+import { ClipboardCheck, FileQuestion, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Badge, Button, Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
 import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
@@ -11,7 +11,6 @@ import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: BookOpen, title: 'Ruang kelas digital & materi', description: 'Bab, pertemuan, materi, dan progress siswa', stage: 3 },
   { icon: ClipboardCheck, title: 'Tugas & pemeriksaan', description: 'Penilaian dan umpan balik per siswa', stage: 4 },
   { icon: FileQuestion, title: 'Bank soal, kuis & ujian online', description: 'Penilaian otomatis soal objektif', stage: 5 },
   { icon: MessagesSquare, title: 'Forum diskusi & pengumuman kelas', description: 'Interaksi dengan siswa', stage: 6 },
@@ -62,11 +61,13 @@ export default function TeacherDashboard() {
           ) : (
             <ul className="grid gap-2 p-3 sm:grid-cols-2">
               {rows.map((r) => (
-                <li key={r.teaching_assignment_id} className="relative overflow-hidden rounded-xl border border-slate-100 p-3 pl-4">
-                  <span className="absolute inset-y-0 left-0 w-1.5" style={{ backgroundColor: r.subject_color }} />
-                  <p className="font-display text-base font-semibold text-slate-900">{r.class_name}</p>
-                  <p className="truncate text-sm text-slate-600">{r.subject_name}</p>
-                  <p className="mt-1 text-xs text-slate-400">{r.student_count} siswa · {r.schedule_count} sesi/minggu</p>
+                <li key={r.teaching_assignment_id}>
+                  <Link to={`/guru/kelas/${r.teaching_assignment_id}`} className="relative block overflow-hidden rounded-xl border border-slate-100 p-3 pl-4 transition hover:border-primary-200 hover:bg-primary-50/40">
+                    <span className="absolute inset-y-0 left-0 w-1.5" style={{ backgroundColor: r.subject_color }} />
+                    <p className="font-display text-base font-semibold text-slate-900">{r.class_name}</p>
+                    <p className="truncate text-sm text-slate-600">{r.subject_name}</p>
+                    <p className="mt-1 text-xs text-slate-400">{r.student_count} siswa · {r.schedule_count} sesi/minggu</p>
+                  </Link>
                 </li>
               ))}
             </ul>

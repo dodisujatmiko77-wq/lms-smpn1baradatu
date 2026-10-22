@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
-  BookOpen, CheckCircle2, Circle, ClipboardList, GraduationCap, History, Library, LineChart, ListChecks,
+  CheckCircle2, Circle, ClipboardList, GraduationCap, History, Library, LineChart, ListChecks,
   MonitorCheck, School, UserCog, UserRound, Users,
 } from 'lucide-react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
@@ -16,7 +16,6 @@ import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: BookOpen, title: 'Materi & ruang kelas digital', description: 'Jumlah materi aktif per mapel', stage: 3 },
   { icon: ClipboardList, title: 'Tugas & persentase pengumpulan', description: 'Rekap pengumpulan seluruh kelas', stage: 4 },
   { icon: MonitorCheck, title: 'Grafik aktivitas pembelajaran', description: 'Aktivitas guru & siswa dari database', stage: 7 },
 ]

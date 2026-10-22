@@ -3,12 +3,12 @@ import { Controller, useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { Bell, FileUp, ImageIcon, School, Save } from 'lucide-react'
+import { Bell, FileUp, School, Save } from 'lucide-react'
 import { toast } from 'sonner'
 import { SCHOOL_SETTINGS_KEY, fetchSchoolSettings } from '@/app/providers/SettingsProvider'
 import { Button, Card, CardBody, CardHeader, ErrorState, Input, Skeleton, Textarea } from '@/components/ui'
 import { Switch } from '@/components/ui/Input'
-import { SchoolLogo } from '@/components/layout/SchoolLogo'
+import { LogoUploader } from '../components/LogoUploader'
 import { supabase } from '@/lib/supabase'
 import { toMessage } from '@/lib/errors'
 
@@ -129,14 +129,8 @@ export default function SchoolSettingsPage() {
           <Input label="Telepon" inputMode="tel" error={errors.phone?.message} {...register('phone')} />
           <Input label="Email sekolah" type="email" error={errors.email?.message} {...register('email')} />
           <Input label="Website" placeholder="https://" className="md:col-span-2" error={errors.website?.message} {...register('website')} />
-          <div className="flex items-center gap-4 rounded-xl border border-dashed border-slate-200 p-4 md:col-span-2">
-            <SchoolLogo className="h-14 w-14" iconClassName="h-7 w-7" />
-            <div className="text-sm">
-              <p className="flex items-center gap-1.5 font-medium text-slate-800">
-                <ImageIcon className="h-4 w-4 text-slate-400" /> Logo sekolah
-              </p>
-              <p className="text-slate-500">Unggah logo tersedia bersama modul penyimpanan file (Tahap 3). Saat ini memakai ikon bawaan.</p>
-            </div>
+          <div className="md:col-span-2">
+            <LogoUploader />
           </div>
         </CardBody>
       </Card>

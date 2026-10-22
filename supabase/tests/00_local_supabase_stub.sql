@@ -19,3 +19,16 @@ create or replace function auth.uid() returns uuid language sql stable as $$
   select nullif(current_setting('request.jwt.claim.sub', true), '')::uuid
 $$;
 grant execute on function auth.uid() to anon, authenticated, service_role;
+-- Stub minimal Supabase Storage (cukup untuk membuat bucket & policy).
+create schema if not exists storage;
+grant usage on schema storage to anon, authenticated, service_role;
+create table if not exists storage.buckets (
+  id text primary key, name text, public boolean default false,
+  file_size_limit bigint, allowed_mime_types text[]
+);
+create table if not exists storage.objects (
+  id uuid primary key default gen_random_uuid(), bucket_id text references storage.buckets (id),
+  name text, owner uuid default auth.uid()
+);
+alter table storage.objects enable row level security;
+grant select, insert, update, delete on storage.objects to authenticated;

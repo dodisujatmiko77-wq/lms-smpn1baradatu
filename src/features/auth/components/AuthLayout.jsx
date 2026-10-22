@@ -25,7 +25,6 @@ export function AuthLayout({ children }) {
         />
 
         <div className="relative flex items-center gap-3">
-          <SchoolLogo className="h-12 w-12 bg-white/15 from-white/20 to-white/10 ring-1 ring-white/30" iconClassName="h-6 w-6" />
           <div>
             <p className="font-display text-lg font-semibold">{app_name}</p>
             <p className="text-sm text-primary-100">{school_name}</p>
@@ -33,6 +32,7 @@ export function AuthLayout({ children }) {
         </div>
 
         <div className="relative my-auto max-w-lg py-12">
+          <SchoolLogo className="mb-8 h-28 w-28 rounded-3xl shadow-2xl shadow-primary-950/40" />
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-primary-50 ring-1 ring-white/20">
             <span className="h-1.5 w-1.5 rounded-full bg-accent-400" /> Transformasi Digital Sekolah
           </span>
@@ -62,7 +62,7 @@ export function AuthLayout({ children }) {
       <section className="flex flex-col justify-center bg-white px-5 py-10 sm:px-12">
         <div className="mx-auto w-full max-w-md">
           <div className="mb-8 flex items-center gap-3 lg:hidden">
-            <SchoolLogo className="h-11 w-11 shadow-md shadow-primary-600/30" />
+            <SchoolLogo className="h-14 w-14 shadow-md shadow-primary-600/30" />
             <div>
               <p className="font-display text-base font-semibold text-slate-900">{app_name}</p>
               <p className="text-xs text-slate-500">{school_name}</p>
