@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test:e2e": "node supabase/tests/e2e_tahap1.mjs && node supabase/tests/e2e_tahap2.mjs && node supabase/tests/e2e_tahap3.mjs && node supabase/tests/e2e_tahap4.mjs && node supabase/tests/e2e_tahap5.mjs && node supabase/tests/e2e_tahap6.mjs",
+    "test:e2e": "node supabase/tests/e2e_tahap1.mjs && node supabase/tests/e2e_tahap2.mjs && node supabase/tests/e2e_tahap3.mjs && node supabase/tests/e2e_tahap4.mjs && node supabase/tests/e2e_tahap5.mjs && node supabase/tests/e2e_tahap6.mjs && node supabase/tests/e2e_tahap7.mjs",
     "db:push": "supabase db push",
     "functions:deploy": "supabase functions deploy admin-users --no-verify-jwt --use-api"
   },
@@ -36,6 +36,8 @@
     "date-fns": "^4.4.0",
     "dompurify": "^3.4.17",
     "exceljs": "^4.4.0",
+    "jspdf": "^4.2.1",
+    "jspdf-autotable": "^5.0.9",
     "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",

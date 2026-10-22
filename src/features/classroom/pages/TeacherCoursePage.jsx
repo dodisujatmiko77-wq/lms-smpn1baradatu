@@ -204,7 +204,7 @@ function ProgressTab({ course }) {
               <div className="flex items-center gap-3">
                 <Avatar name={r.full_name} size="sm" />
                 <div className="min-w-0">
-                  <p className="truncate font-medium text-slate-900">{r.full_name}</p>
+                  <Link to={`/laporan/siswa/${r.student_id}`} className="block truncate font-medium text-slate-900 hover:text-primary-700">{r.full_name}</Link>
                   <p className="text-xs text-slate-500">NISN {r.nisn}</p>
                 </div>
               </div>

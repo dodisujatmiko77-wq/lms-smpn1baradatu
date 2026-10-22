@@ -26,6 +26,7 @@ const schema = z.object({
   website: optional(z.string().trim().url('Gunakan format https://…')),
   max_upload_mb: z.coerce.number().int().min(1, 'Minimal 1 MB.').max(50, 'Maksimal 50 MB.'),
   max_image_upload_mb: z.coerce.number().int().min(1, 'Minimal 1 MB.').max(20, 'Maksimal 20 MB.'),
+  kkm: z.coerce.number().int().min(0, 'KKM 0–100.').max(100, 'KKM 0–100.'),
   allowed_file_types: z
     .string()
     .trim()
@@ -57,6 +58,7 @@ const toForm = (s) => ({
   website: s.website ?? '',
   max_upload_mb: s.max_upload_mb,
   max_image_upload_mb: s.max_image_upload_mb,
+  kkm: s.kkm ?? 75,
   allowed_file_types: (s.allowed_file_types ?? []).join(', '),
   notification_prefs: s.notification_prefs ?? {},
   material_requires_publish: s.material_requires_publish,
@@ -130,7 +132,8 @@ export default function SchoolSettingsPage() {
           <Textarea label="Alamat" className="md:col-span-2" error={errors.address?.message} {...register('address')} />
           <Input label="Telepon" inputMode="tel" error={errors.phone?.message} {...register('phone')} />
           <Input label="Email sekolah" type="email" error={errors.email?.message} {...register('email')} />
-          <Input label="Website" placeholder="https://" className="md:col-span-2" error={errors.website?.message} {...register('website')} />
+          <Input label="Website" placeholder="https://" error={errors.website?.message} {...register('website')} />
+          <Input label="KKM (kriteria ketuntasan minimal)" type="number" min={0} max={100} hint="Nilai di bawah KKM ditandai merah di laporan & daftar tindak lanjut wali kelas." error={errors.kkm?.message} {...register('kkm')} />
           <div className="md:col-span-2">
             <LogoUploader />
           </div>
@@ -162,7 +165,7 @@ export default function SchoolSettingsPage() {
         </Card>
 
         <Card>
-          <CardHeader icon={Bell} title="Notifikasi" description="Jenis notifikasi yang dikirim ke pengguna (aktif pada Tahap 6)" />
+          <CardHeader icon={Bell} title="Notifikasi" description="Jenis notifikasi yang dikirim ke pengguna" />
           <CardBody className="space-y-4">
             {NOTIF_OPTIONS.map(([key, label, desc]) => (
               <Controller
