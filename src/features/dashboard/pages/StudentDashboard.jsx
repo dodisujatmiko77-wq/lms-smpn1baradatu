@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
-import { Award, BookOpen, CheckCircle2, ClipboardList, Library, Megaphone, Sparkles, TrendingUp } from 'lucide-react'
+import { Award, BookOpen, BookOpenCheck, CheckCircle2, ClipboardList, Library, Megaphone, Sparkles, TrendingUp } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
 import { ckeys, fetchMyCourses } from '@/features/classroom/api'
@@ -10,12 +10,14 @@ import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
 import { fetchMyTasks, tkeys } from '@/features/tasks/api'
 import { TaskCard } from '@/features/tasks/components/TaskCard'
 import { studentTaskStatus } from '@/features/tasks/status'
+import { fetchMyQuizzes, qkeys } from '@/features/quizzes/api'
+import { QuizCard } from '@/features/quizzes/components/QuizCard'
+import { studentQuizStatus } from '@/features/quizzes/status'
 import { formatRelative } from '@/lib/utils'
 import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: TrendingUp, title: 'Kuis & ujian online', description: 'Kerjakan kuis langsung dari HP', stage: 5 },
   { icon: Award, title: 'Badge pencapaian', description: 'Rajin Belajar, Tepat Waktu, Materi Tuntas', stage: 6 },
 ]
 
@@ -24,6 +26,8 @@ export default function StudentDashboard() {
   const active = useActiveSemester()
   const courses = useQuery({ queryKey: ckeys.myCourses, queryFn: fetchMyCourses })
   const tasks = useQuery({ queryKey: tkeys.mine, queryFn: fetchMyTasks })
+  const quizzes = useQuery({ queryKey: qkeys.mine, queryFn: fetchMyQuizzes })
+  const activeQuizzes = (quizzes.data ?? []).filter((q) => ['in_progress', 'open', 'upcoming'].includes(studentQuizStatus(q)))
   const upcoming = (tasks.data ?? [])
     .filter((t) => ['todo', 'draft', 'missing'].includes(studentTaskStatus(t)))
     .sort((a, b) => a.due_at.localeCompare(b.due_at))
@@ -39,6 +43,13 @@ export default function StudentDashboard() {
       <WelcomeBanner
         subtitle={cls ? `Kelas ${cls.name} · ${active.label}. Semangat belajar hari ini!` : 'Kamu belum ditempatkan di kelas. Hubungi wali kelas atau operator sekolah.'}
       />
+
+      {activeQuizzes.length > 0 && (
+        <Card>
+          <CardHeader icon={BookOpenCheck} title="Kuis & ujian aktif" action={<Link to="/siswa/kuis" className="text-sm font-medium text-primary-600 hover:text-primary-700">Semua</Link>} />
+          <div className="grid gap-2 p-3 lg:grid-cols-2">{activeQuizzes.slice(0, 4).map((q) => <QuizCard key={q.id} quiz={q} />)}</div>
+        </Card>
+      )}
 
       <div className="grid gap-4 sm:grid-cols-3">
         <StatCard label="Progress belajar" value={`${pct}%`} icon={TrendingUp} tone="blue" loading={courses.isLoading} hint="Dari seluruh pertemuan yang terbit" />

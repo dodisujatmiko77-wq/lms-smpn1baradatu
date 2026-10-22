@@ -9,7 +9,7 @@ import {
  * tersebut mulai berfungsi; menu dengan stage > CURRENT_STAGE ditampilkan
  * sebagai "Segera hadir" (halaman informasi, bukan data palsu).
  */
-export const CURRENT_STAGE = 4
+export const CURRENT_STAGE = 5
 
 export const NAVIGATION = {
   admin: [
@@ -111,7 +111,7 @@ export const STUDENT_BOTTOM_NAV = [
   { label: 'Beranda', to: '/siswa', icon: Home, end: true },
   { label: 'Mapel', to: '/siswa/mapel', icon: BookOpen },
   { label: 'Tugas', to: '/siswa/tugas', icon: ClipboardList },
-  { label: 'Kalender', to: '/siswa/kalender', icon: CalendarDays },
+  { label: 'Kuis', to: '/siswa/kuis', icon: BookOpenCheck },
   { label: 'Profil', to: '/profil', icon: UserCog },
 ]
 

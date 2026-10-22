@@ -42,6 +42,13 @@ const GradingQueuePage = lazy(() => import('@/features/tasks/pages/GradingQueueP
 const MyTasksPage = lazy(() => import('@/features/tasks/pages/MyTasksPage'))
 const TaskSubmitPage = lazy(() => import('@/features/tasks/pages/TaskSubmitPage'))
 const GradesPage = lazy(() => import('@/features/tasks/pages/GradesPage'))
+const QuestionBanksPage = lazy(() => import('@/features/quizzes/pages/QuestionBanksPage'))
+const QuestionBankPage = lazy(() => import('@/features/quizzes/pages/QuestionBankPage'))
+const QuizEditorPage = lazy(() => import('@/features/quizzes/pages/QuizEditorPage'))
+const MyQuizzesPage = lazy(() => import('@/features/quizzes/pages/MyQuizzesPage'))
+const QuizStartPage = lazy(() => import('@/features/quizzes/pages/QuizStartPage'))
+const QuizTakePage = lazy(() => import('@/features/quizzes/pages/QuizTakePage'))
+const QuizResultPage = lazy(() => import('@/features/quizzes/pages/QuizResultPage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -67,6 +74,12 @@ export const router = createBrowserRouter([
     children: [
       { path: '/', element: <HomeRedirect /> },
       { path: '/ganti-password', element: <ChangePasswordPage /> },
+      // Mode fokus ujian: tanpa menu samping/bawah.
+      {
+        path: '/siswa/kuis/:quizId/kerjakan/:attemptId',
+        element: <RequireRole role="student" />,
+        children: [{ index: true, element: <QuizTakePage /> }],
+      },
       {
         element: <DashboardLayout />,
         children: [
@@ -103,6 +116,9 @@ export const router = createBrowserRouter([
               { path: 'kelas/:taId/pertemuan/:lessonId', element: <LessonEditorPage />, handle: { title: 'Edit Pertemuan', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               { path: 'kelas/:taId/tugas/:taskId', element: <TaskEditorPage />, handle: { title: 'Tugas', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
               { path: 'pemeriksaan', element: <GradingQueuePage />, handle: { title: 'Pemeriksaan' } },
+              { path: 'kelas/:taId/kuis/:quizId', element: <QuizEditorPage />, handle: { title: 'Kuis', crumbs: [{ label: 'Kelas Saya', to: '/guru/kelas' }] } },
+              { path: 'bank-soal', element: <QuestionBanksPage />, handle: { title: 'Bank Soal' } },
+              { path: 'bank-soal/:bankId', element: <QuestionBankPage />, handle: { title: 'Detail Bank Soal', crumbs: [{ label: 'Bank Soal', to: '/guru/bank-soal' }] } },
               ...comingSoonRoutes('teacher'),
             ],
           },
@@ -118,6 +134,9 @@ export const router = createBrowserRouter([
               { path: 'tugas', element: <MyTasksPage />, handle: { title: 'Tugas' } },
               { path: 'tugas/:taskId', element: <TaskSubmitPage />, handle: { title: 'Kerjakan Tugas', crumbs: [{ label: 'Tugas', to: '/siswa/tugas' }] } },
               { path: 'nilai', element: <GradesPage />, handle: { title: 'Nilai & Umpan Balik' } },
+              { path: 'kuis', element: <MyQuizzesPage />, handle: { title: 'Kuis & Ujian' } },
+              { path: 'kuis/:quizId', element: <QuizStartPage />, handle: { title: 'Kuis', crumbs: [{ label: 'Kuis & Ujian', to: '/siswa/kuis' }] } },
+              { path: 'kuis/:quizId/hasil/:attemptId', element: <QuizResultPage />, handle: { title: 'Hasil Kuis', crumbs: [{ label: 'Kuis & Ujian', to: '/siswa/kuis' }] } },
               ...comingSoonRoutes('student'),
             ],
           },
