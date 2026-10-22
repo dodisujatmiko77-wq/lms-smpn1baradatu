@@ -8,7 +8,7 @@
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
-    "test:e2e": "node supabase/tests/e2e_tahap1.mjs",
+    "test:e2e": "node supabase/tests/e2e_tahap1.mjs && node supabase/tests/e2e_tahap2.mjs",
     "db:push": "supabase db push",
     "functions:deploy": "supabase functions deploy admin-users --no-verify-jwt --use-api"
   },
@@ -30,6 +30,7 @@
     "@tanstack/react-query": "^5.104.5",
     "clsx": "^2.1.1",
     "date-fns": "^4.4.0",
+    "exceljs": "^4.4.0",
     "lucide-react": "^1.61.0",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
@@ -38,5 +39,8 @@
     "recharts": "^3.10.1",
     "sonner": "^2.0.8",
     "zod": "^4.6.7"
+  },
+  "overrides": {
+    "uuid": "^11.1.1"
   }
 }

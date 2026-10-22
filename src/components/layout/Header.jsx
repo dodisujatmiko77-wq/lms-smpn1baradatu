@@ -1,8 +1,9 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { Bell, BellOff, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
+import { Bell, BellOff, CalendarCheck2, CalendarX2, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
 import { useAuth } from '@/app/providers/AuthProvider'
 import { Avatar, Dropdown, DropdownItem, EmptyState } from '@/components/ui'
+import { useActiveSemester } from '@/features/master/hooks'
 import { ROLE_AREAS, ROLE_LABELS } from '@/lib/auth'
 import { MenuSearch } from './MenuSearch'
 
@@ -10,6 +11,7 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
   const { profile, roles } = useAuth()
   const [mobileSearch, setMobileSearch] = useState(false)
   const otherRoles = roles.filter((r) => r !== area)
+  const semester = useActiveSemester()
 
   return (
     <header className="sticky top-0 z-30 border-b border-slate-200/80 bg-white/85 backdrop-blur-md">
@@ -37,6 +39,18 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
             </nav>
           )}
         </div>
+
+        {semester.label ? (
+          <span className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-primary-50 px-3 py-1 text-xs font-medium text-primary-700 xl:flex">
+            <CalendarCheck2 className="h-3.5 w-3.5" /> TP {semester.label}
+          </span>
+        ) : (
+          area === 'admin' && (
+            <Link to="/admin/tahun-pelajaran" className="hidden items-center gap-1.5 whitespace-nowrap rounded-full bg-accent-50 px-3 py-1 text-xs font-medium text-accent-700 hover:bg-accent-100 xl:flex">
+              <CalendarX2 className="h-3.5 w-3.5" /> Semester belum aktif
+            </Link>
+          )
+        )}
 
         <MenuSearch groups={groups} className="hidden w-64 md:block lg:w-80" />
 

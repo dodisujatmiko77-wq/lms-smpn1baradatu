@@ -42,6 +42,12 @@ export async function adminUsers(body) {
     }
     throw new Error(message)
   }
+  // Pengaman: Edge Function versi lama mengabaikan data guru/siswa tanpa error.
+  if (body.action === 'create' && (body.teacher || body.student) && !data?.details_saved) {
+    throw new Error(
+      `Akun "${data?.username}" terbuat, tetapi data ${body.student ? 'siswa' : 'guru'} TIDAK tersimpan karena Edge Function admin-users belum diperbarui ke versi Tahap 2. Perbarui function, lalu nonaktifkan akun tersebut di menu Akun Pengguna.`,
+    )
+  }
   return data
 }
 

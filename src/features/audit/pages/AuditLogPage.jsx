@@ -13,6 +13,13 @@ const FILTERS = [
   { value: 'user.', label: 'Manajemen akun' },
   { value: 'user_roles.', label: 'Perubahan role' },
   { value: 'school_settings.', label: 'Pengaturan sekolah' },
+  { value: 'teaching_assignments.', label: 'Penugasan mengajar' },
+  { value: 'class_guardians.', label: 'Wali kelas' },
+  { value: 'class_enrollments.', label: 'Penempatan siswa' },
+  { value: 'students.', label: 'Data siswa' },
+  { value: 'teachers.', label: 'Data guru' },
+  { value: 'classes.', label: 'Kelas' },
+  { value: 'semesters.', label: 'Semester' },
 ]
 
 async function fetchAudit({ page, filter }) {

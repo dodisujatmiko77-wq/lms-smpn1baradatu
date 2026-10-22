@@ -1,44 +1,76 @@
 import { Link } from 'react-router-dom'
-import { BookOpen, CalendarClock, ClipboardCheck, FileQuestion, MessagesSquare, School, UserRound } from 'lucide-react'
-import { Button, Card, CardHeader, EmptyState } from '@/components/ui'
+import { useQuery } from '@tanstack/react-query'
+import { BookOpen, ClipboardCheck, FileQuestion, MessagesSquare, School, ShieldCheck, UserRound, Users } from 'lucide-react'
+import { useAuth } from '@/app/providers/AuthProvider'
+import { Badge, Button, Card, CardHeader, EmptyState, ErrorState, SkeletonRows, StatCard } from '@/components/ui'
+import { TodaySchedule } from '@/features/schedules/components/TodaySchedule'
+import { useActiveSemester } from '@/features/master/hooks'
+import { unwrap } from '@/lib/db'
+import { supabase } from '@/lib/supabase'
 import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: School, title: 'Kelas yang diajar & jadwal mengajar', description: 'Berdasarkan penugasan dari administrator', stage: 2 },
   { icon: BookOpen, title: 'Ruang kelas digital & materi', description: 'Bab, pertemuan, materi, dan progress siswa', stage: 3 },
   { icon: ClipboardCheck, title: 'Tugas & pemeriksaan', description: 'Penilaian dan umpan balik per siswa', stage: 4 },
   { icon: FileQuestion, title: 'Bank soal, kuis & ujian online', description: 'Penilaian otomatis soal objektif', stage: 5 },
   { icon: MessagesSquare, title: 'Forum diskusi & pengumuman kelas', description: 'Interaksi dengan siswa', stage: 6 },
 ]
 
+async function fetchGuardianClasses(ids) {
+  if (!ids.length) return []
+  return unwrap(await supabase.from('classes').select('id, name').in('id', ids))
+}
+
 export default function TeacherDashboard() {
+  const { profile } = useAuth()
+  const active = useActiveSemester()
+  const teaching = useQuery({ queryKey: ['my-teaching'], queryFn: async () => unwrap(await supabase.rpc('get_my_teaching')) })
+  const guardian = useQuery({ queryKey: ['my-guardian', profile.guardian_class_ids], queryFn: () => fetchGuardianClasses(profile.guardian_class_ids) })
+  const rows = teaching.data ?? []
+  const classCount = new Set(rows.map((r) => r.class_id)).size
+  const studentCount = [...new Map(rows.map((r) => [r.class_id, r.student_count])).values()].reduce((a, b) => a + b, 0)
+  const hours = rows.reduce((n, r) => n + (r.hours_per_week ?? 0), 0)
+
   return (
     <div className="space-y-6">
-      <WelcomeBanner subtitle="Siapkan pembelajaran digital untuk kelas-kelas Anda.">
-        <Link to="/profil">
-          <Button variant="accent" icon={UserRound}>
-            Profil saya
-          </Button>
-        </Link>
+      <WelcomeBanner subtitle={active.label ? `Semester ${active.label}. Siapkan pembelajaran untuk kelas-kelas Anda.` : 'Semester aktif belum diatur oleh administrator.'}>
+        <div className="flex flex-wrap gap-2">
+          {(guardian.data ?? []).map((c) => (
+            <Badge key={c.id} className="bg-white/20 text-white ring-white/30"><ShieldCheck className="h-3 w-3" /> Wali kelas {c.name}</Badge>
+          ))}
+          <Link to="/profil"><Button variant="accent" icon={UserRound}>Profil saya</Button></Link>
+        </div>
       </WelcomeBanner>
 
+      <div className="grid gap-4 sm:grid-cols-3">
+        <StatCard label="Kelas diajar" value={classCount} icon={School} tone="blue" loading={teaching.isLoading} hint={`${rows.length} kelas-mapel`} />
+        <StatCard label="Jumlah siswa" value={studentCount} icon={Users} tone="orange" loading={teaching.isLoading} hint="Di seluruh kelas yang diajar" />
+        <StatCard label="Jam per minggu" value={hours} icon={ClipboardCheck} tone="green" loading={teaching.isLoading} hint="Sesuai penugasan" />
+      </div>
+
       <div className="grid gap-6 lg:grid-cols-2">
+        <TodaySchedule isTeacher linkTo="/guru/jadwal" />
         <Card>
-          <CardHeader icon={CalendarClock} title="Jadwal mengajar hari ini" />
-          <EmptyState
-            icon={CalendarClock}
-            title="Jadwal belum tersedia"
-            description="Jadwal mengajar akan tampil setelah administrator mengatur penugasan dan jadwal pelajaran (Tahap 2)."
-          />
-        </Card>
-        <Card>
-          <CardHeader icon={School} title="Kelas yang saya ajar" />
-          <EmptyState
-            icon={School}
-            title="Belum ada penugasan mengajar"
-            description="Kelas dan mata pelajaran Anda akan muncul di sini setelah ditetapkan oleh administrator."
-          />
+          <CardHeader icon={School} title="Kelas yang saya ajar" description={active.label ?? undefined} />
+          {teaching.isLoading ? (
+            <SkeletonRows rows={4} />
+          ) : teaching.isError ? (
+            <ErrorState error={teaching.error} onRetry={teaching.refetch} />
+          ) : rows.length === 0 ? (
+            <EmptyState icon={School} title="Belum ada penugasan mengajar" description="Kelas dan mapel Anda akan muncul setelah ditetapkan oleh administrator." />
+          ) : (
+            <ul className="grid gap-2 p-3 sm:grid-cols-2">
+              {rows.map((r) => (
+                <li key={r.teaching_assignment_id} className="relative overflow-hidden rounded-xl border border-slate-100 p-3 pl-4">
+                  <span className="absolute inset-y-0 left-0 w-1.5" style={{ backgroundColor: r.subject_color }} />
+                  <p className="font-display text-base font-semibold text-slate-900">{r.class_name}</p>
+                  <p className="truncate text-sm text-slate-600">{r.subject_name}</p>
+                  <p className="mt-1 text-xs text-slate-400">{r.student_count} siswa · {r.schedule_count} sesi/minggu</p>
+                </li>
+              ))}
+            </ul>
+          )}
         </Card>
       </div>
 

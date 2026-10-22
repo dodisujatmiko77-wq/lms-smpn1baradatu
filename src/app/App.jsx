@@ -8,6 +8,10 @@ import { AuthProvider } from './providers/AuthProvider'
 import { SettingsProvider } from './providers/SettingsProvider'
 import { router } from './router'
 
+// Desktop: kanan bawah (tidak menutupi tombol aksi di kanan atas halaman).
+// HP: atas tengah (tidak menutupi tombol modal & navigasi bawah).
+const TOAST_POSITION = window.matchMedia('(min-width: 768px)').matches ? 'bottom-right' : 'top-center'
+
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -18,7 +22,7 @@ export default function App() {
           </Suspense>
         </AuthProvider>
       </SettingsProvider>
-      <Toaster position="top-right" richColors closeButton toastOptions={{ style: { fontFamily: 'Inter, sans-serif' } }} />
+      <Toaster position={TOAST_POSITION} richColors closeButton toastOptions={{ style: { fontFamily: 'Inter, sans-serif' } }} />
     </QueryClientProvider>
   )
 }

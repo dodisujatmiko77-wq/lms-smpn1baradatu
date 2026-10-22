@@ -19,6 +19,16 @@ const AdminUsersPage = lazy(() => import('@/features/users/pages/AdminUsersPage'
 const SchoolSettingsPage = lazy(() => import('@/features/settings/pages/SchoolSettingsPage'))
 const AuditLogPage = lazy(() => import('@/features/audit/pages/AuditLogPage'))
 const ProfilePage = lazy(() => import('@/features/profile/pages/ProfilePage'))
+const AcademicYearsPage = lazy(() => import('@/features/academic/pages/AcademicYearsPage'))
+const ClassesPage = lazy(() => import('@/features/classes/pages/ClassesPage'))
+const ClassDetailPage = lazy(() => import('@/features/classes/pages/ClassDetailPage'))
+const SubjectsPage = lazy(() => import('@/features/subjects/pages/SubjectsPage'))
+const TeachersPage = lazy(() => import('@/features/teachers/pages/TeachersPage'))
+const StudentsPage = lazy(() => import('@/features/students/pages/StudentsPage'))
+const TeachingAssignmentsPage = lazy(() => import('@/features/assignments/pages/TeachingAssignmentsPage'))
+const GuardiansPage = lazy(() => import('@/features/guardians/pages/GuardiansPage'))
+const SchedulesPage = lazy(() => import('@/features/schedules/pages/SchedulesPage'))
+const MySchedulePage = lazy(() => import('@/features/schedules/pages/MySchedulePage'))
 const ComingSoonPage = lazy(() => import('@/features/system/pages/ComingSoonPage'))
 const NotFoundPage = lazy(() => import('@/features/system/pages/NotFoundPage'))
 
@@ -55,6 +65,15 @@ export const router = createBrowserRouter([
               { path: 'akun', element: <AdminUsersPage />, handle: { title: 'Akun Pengguna', crumbs: [{ label: 'Pengguna' }] } },
               { path: 'pengaturan', element: <SchoolSettingsPage />, handle: { title: 'Pengaturan Sekolah', crumbs: [{ label: 'Sistem' }] } },
               { path: 'audit-log', element: <AuditLogPage />, handle: { title: 'Audit Log', crumbs: [{ label: 'Sistem' }] } },
+              { path: 'tahun-pelajaran', element: <AcademicYearsPage />, handle: { title: 'Tahun Pelajaran', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'kelas', element: <ClassesPage />, handle: { title: 'Kelas', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'kelas/:id', element: <ClassDetailPage />, handle: { title: 'Detail Kelas', crumbs: [{ label: 'Akademik' }, { label: 'Kelas', to: '/admin/kelas' }] } },
+              { path: 'mapel', element: <SubjectsPage />, handle: { title: 'Mata Pelajaran', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'penugasan', element: <TeachingAssignmentsPage />, handle: { title: 'Penugasan Mengajar', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'wali-kelas', element: <GuardiansPage />, handle: { title: 'Wali Kelas', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'jadwal', element: <SchedulesPage />, handle: { title: 'Jadwal Pelajaran', crumbs: [{ label: 'Akademik' }] } },
+              { path: 'guru', element: <TeachersPage />, handle: { title: 'Data Guru', crumbs: [{ label: 'Pengguna' }] } },
+              { path: 'siswa', element: <StudentsPage />, handle: { title: 'Data Siswa', crumbs: [{ label: 'Pengguna' }] } },
               ...comingSoonRoutes('admin'),
             ],
           },
@@ -63,6 +82,7 @@ export const router = createBrowserRouter([
             element: <RequireRole role="teacher" />,
             children: [
               { index: true, element: <TeacherDashboard />, handle: { title: 'Dashboard', isHome: true } },
+              { path: 'jadwal', element: <MySchedulePage />, handle: { title: 'Jadwal Mengajar' } },
               ...comingSoonRoutes('teacher'),
             ],
           },
@@ -71,6 +91,7 @@ export const router = createBrowserRouter([
             element: <RequireRole role="student" />,
             children: [
               { index: true, element: <StudentDashboard />, handle: { title: 'Beranda', isHome: true } },
+              { path: 'jadwal', element: <MySchedulePage />, handle: { title: 'Jadwal Pelajaran' } },
               ...comingSoonRoutes('student'),
             ],
           },

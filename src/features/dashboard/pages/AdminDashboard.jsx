@@ -2,19 +2,20 @@ import { Link } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { Area, AreaChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis } from 'recharts'
 import {
-  Activity, BookOpen, CheckCircle2, Circle, ClipboardList, GraduationCap, History, LineChart, ListChecks,
-  MonitorCheck, School, ShieldCheck, UserCog, UserRound, Users,
+  BookOpen, CheckCircle2, Circle, ClipboardList, GraduationCap, History, Library, LineChart, ListChecks,
+  MonitorCheck, School, UserCog, UserRound, Users,
 } from 'lucide-react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { Badge, Button, Card, CardBody, CardHeader, EmptyState, ErrorState, Skeleton, SkeletonRows, StatCard } from '@/components/ui'
 import { actionLabel, actionTone } from '@/features/audit/actionLabels'
 import { formatDate, formatRelative } from '@/lib/utils'
+import { fetchSchoolStats, keys } from '@/features/master/api'
+import { useActiveSemester } from '@/features/master/hooks'
 import { fetchAdminStats, fetchRecentAudit } from '../api'
 import { UpcomingModules } from '../components/UpcomingModules'
 import { WelcomeBanner } from '../components/WelcomeBanner'
 
 const UPCOMING = [
-  { icon: School, title: 'Data kelas, mapel & tahun pelajaran', description: 'Data master dan penugasan mengajar', stage: 2 },
   { icon: BookOpen, title: 'Materi & ruang kelas digital', description: 'Jumlah materi aktif per mapel', stage: 3 },
   { icon: ClipboardList, title: 'Tugas & persentase pengumpulan', description: 'Rekap pengumpulan seluruh kelas', stage: 4 },
   { icon: MonitorCheck, title: 'Grafik aktivitas pembelajaran', description: 'Aktivitas guru & siswa dari database', stage: 7 },
@@ -22,7 +23,10 @@ const UPCOMING = [
 
 export default function AdminDashboard() {
   const settings = useSchoolSettings()
+  const active = useActiveSemester()
   const stats = useQuery({ queryKey: ['admin', 'stats'], queryFn: fetchAdminStats })
+  const school = useQuery({ queryKey: keys.stats, queryFn: fetchSchoolStats })
+  const sc = school.data
   const audit = useQuery({ queryKey: ['admin', 'audit', 'recent'], queryFn: () => fetchRecentAudit(6) })
   const s = stats.data
 
@@ -34,14 +38,26 @@ export default function AdminDashboard() {
 
   const checklist = [
     { label: 'Identitas sekolah diatur', done: Boolean(settings.npsn || settings.phone || settings.email), to: '/admin/pengaturan' },
-    { label: 'Akun guru dibuat', done: (s?.teachers ?? 0) > 0, to: '/admin/akun' },
-    { label: 'Akun siswa dibuat', done: (s?.students ?? 0) > 0, to: '/admin/akun' },
-    { label: 'Data kelas & mapel (Tahap 2)', done: false },
+    { label: 'Tahun pelajaran & semester aktif', done: Boolean(sc?.has_active_semester), to: '/admin/tahun-pelajaran' },
+    { label: 'Mata pelajaran', done: (sc?.subjects ?? 0) > 0, to: '/admin/mapel' },
+    { label: 'Kelas tahun pelajaran aktif', done: (sc?.classes ?? 0) > 0, to: '/admin/kelas' },
+    { label: 'Data guru', done: (sc?.teachers ?? 0) > 0, to: '/admin/guru' },
+    { label: 'Data siswa', done: (sc?.students_active ?? 0) > 0, to: '/admin/siswa' },
+    { label: sc?.unplaced_students ? `Penempatan siswa (${sc.unplaced_students} belum punya kelas)` : 'Semua siswa punya kelas', done: (sc?.students_active ?? 0) > 0 && sc?.unplaced_students === 0, to: '/admin/siswa' },
+    { label: sc?.classes_without_guardian ? `Wali kelas (${sc.classes_without_guardian} kelas belum)` : 'Wali kelas setiap kelas', done: (sc?.classes ?? 0) > 0 && sc?.classes_without_guardian === 0, to: '/admin/wali-kelas' },
+    { label: 'Penugasan mengajar', done: (sc?.assignments ?? 0) > 0, to: '/admin/penugasan' },
+    { label: 'Jadwal pelajaran', done: (sc?.schedules ?? 0) > 0, to: '/admin/jadwal' },
   ]
 
   return (
     <div className="space-y-6">
-      <WelcomeBanner subtitle={`Panel administrator ${settings.school_name}. Pantau dan kelola seluruh sistem LMS dari sini.`}>
+      <WelcomeBanner
+        subtitle={
+          active.label
+            ? `Panel administrator ${settings.school_name} · Semester aktif ${active.label}.`
+            : `Panel administrator ${settings.school_name}. Mulailah dengan mengatur tahun pelajaran & semester aktif.`
+        }
+      >
         <Link to="/admin/akun">
           <Button variant="accent" icon={UserCog}>
             Kelola akun
@@ -49,16 +65,16 @@ export default function AdminDashboard() {
         </Link>
       </WelcomeBanner>
 
-      {stats.isError ? (
+      {school.isError ? (
         <Card>
-          <ErrorState error={stats.error} onRetry={stats.refetch} />
+          <ErrorState error={school.error} onRetry={school.refetch} />
         </Card>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          <StatCard label="Total siswa" value={s?.students} icon={Users} tone="blue" loading={stats.isLoading} hint="Akun dengan role siswa" />
-          <StatCard label="Total guru" value={s?.teachers} icon={GraduationCap} tone="orange" loading={stats.isLoading} hint="Akun dengan role guru" />
-          <StatCard label="Akun aktif" value={s?.active} icon={ShieldCheck} tone="green" loading={stats.isLoading} hint={s ? `${s.inactive} akun nonaktif` : undefined} />
-          <StatCard label="Login 7 hari terakhir" value={s?.logged_in_7d} icon={Activity} tone="violet" loading={stats.isLoading} hint="Pengguna yang aktif minggu ini" />
+          <StatCard label="Siswa aktif" value={sc?.students_active} icon={Users} tone="blue" loading={school.isLoading} hint={sc ? `${sc.enrolled} sudah ditempatkan di kelas` : undefined} />
+          <StatCard label="Guru" value={sc?.teachers} icon={GraduationCap} tone="orange" loading={school.isLoading} hint={sc ? `${sc.assignments} penugasan mengajar` : undefined} />
+          <StatCard label="Kelas" value={sc?.classes} icon={School} tone="green" loading={school.isLoading} hint="Tahun pelajaran aktif" />
+          <StatCard label="Mata pelajaran" value={sc?.subjects} icon={Library} tone="violet" loading={school.isLoading} hint={s ? `${s.logged_in_7d} pengguna login 7 hari terakhir` : undefined} />
         </div>
       )}
 
@@ -100,7 +116,7 @@ export default function AdminDashboard() {
 
         <Card>
           <CardHeader icon={ListChecks} title="Kesiapan sistem" description="Langkah awal agar LMS siap dipakai" />
-          <ul className="space-y-1 p-3">
+          <ul className="space-y-0.5 p-3">
             {checklist.map((c) => {
               const content = (
                 <>

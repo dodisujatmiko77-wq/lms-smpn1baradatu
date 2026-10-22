@@ -1,5 +1,5 @@
 // Edge Function: manajemen akun oleh administrator.
-// Aksi: create | reset_password | set_status | set_roles
+// Aksi: create | bulk_create | reset_password | set_status | set_roles
 // Semua aksi tercatat di audit_logs. Password tidak pernah disimpan di tabel aplikasi.
 // Satu file mandiri agar bisa ditempel langsung di editor Dashboard Supabase.
 import { createClient, type SupabaseClient } from 'npm:@supabase/supabase-js@2'
@@ -113,6 +113,149 @@ function validatePassword(pw: unknown): string | null {
   return pw
 }
 
+const BULK_LIMIT = 50
+const NISN_RE = /^[0-9]{10}$/
+const NIP_RE = /^[0-9]{18}$/
+const NUPTK_RE = /^[0-9]{16}$/
+const DATE_RE = /^[0-9]{4}-[0-9]{2}-[0-9]{2}$/
+
+const UNIQUE_MESSAGES: Record<string, string> = {
+  students_nisn_key: 'NISN sudah terdaftar.',
+  students_nis_key: 'NIS sudah terdaftar.',
+  teachers_nip_key: 'NIP sudah terdaftar.',
+  teachers_nuptk_key: 'NUPTK sudah terdaftar.',
+  profiles_username_key: 'Username sudah digunakan.',
+}
+
+function dbMessage(error: { message: string; code?: string }): string {
+  const key = Object.keys(UNIQUE_MESSAGES).find((k) => error.message.includes(k))
+  if (key) return UNIQUE_MESSAGES[key]
+  if (error.code === '23503') return 'Data rujukan (misalnya kelas) tidak ditemukan.'
+  if (error.code === '23514') return 'Format data tidak valid.'
+  return error.message
+}
+
+const text = (v: unknown) => (v == null || String(v).trim() === '' ? null : String(v).trim())
+
+function optionalDate(v: unknown, label: string): string | null {
+  const d = text(v)
+  if (d && !DATE_RE.test(d)) throw new HttpError(400, `${label} harus berformat TTTT-BB-HH.`)
+  return d
+}
+
+function gender(v: unknown, required: boolean): string | null {
+  const g = text(v)?.toUpperCase() ?? null
+  if (g == null && !required) return null
+  if (g !== 'L' && g !== 'P') throw new HttpError(400, 'Jenis kelamin harus L atau P.')
+  return g
+}
+
+type AccountResult = { user_id: string; username: string; password: string; details_saved: boolean }
+
+/**
+ * Membuat akun Auth + role + (opsional) data guru/siswa + penempatan kelas.
+ * Bila salah satu langkah gagal, akun Auth dihapus kembali (kompensasi) agar
+ * tidak ada akun "setengah jadi".
+ */
+async function createAccount(admin: SupabaseClient, input: Record<string, any>): Promise<AccountResult> {
+  const username = String(input?.username ?? '').trim().toLowerCase()
+  const fullName = String(input?.full_name ?? '').trim()
+  const roles = parseRoles(input?.roles)
+  const contactEmail = text(input?.contact_email)
+  if (!USERNAME_RE.test(username)) {
+    throw new HttpError(400, 'Username 3–40 karakter: huruf kecil, angka, titik, garis bawah, atau strip.')
+  }
+  if (fullName.length < 2) throw new HttpError(400, 'Nama lengkap wajib diisi.')
+
+  // Validasi data rinci sebelum akun dibuat.
+  let teacherRow: Record<string, unknown> | null = null
+  let studentRow: Record<string, unknown> | null = null
+  let classId: string | null = null
+  if (input.teacher) {
+    const t = input.teacher
+    const nip = text(t.nip)
+    const nuptk = text(t.nuptk)
+    if (nip && !NIP_RE.test(nip)) throw new HttpError(400, 'NIP harus 18 digit angka.')
+    if (nuptk && !NUPTK_RE.test(nuptk)) throw new HttpError(400, 'NUPTK harus 16 digit angka.')
+    teacherRow = {
+      nip,
+      nuptk,
+      gender: gender(t.gender, false),
+      birth_place: text(t.birth_place),
+      birth_date: optionalDate(t.birth_date, 'Tanggal lahir'),
+      employment_status: text(t.employment_status),
+    }
+  }
+  if (input.student) {
+    const st = input.student
+    const nisn = text(st.nisn)
+    if (!nisn || !NISN_RE.test(nisn)) throw new HttpError(400, 'NISN wajib 10 digit angka.')
+    studentRow = {
+      nisn,
+      nis: text(st.nis),
+      gender: gender(st.gender, true),
+      birth_place: text(st.birth_place),
+      birth_date: optionalDate(st.birth_date, 'Tanggal lahir'),
+      religion: text(st.religion),
+      address: text(st.address),
+      parent_name: text(st.parent_name),
+      parent_phone: text(st.parent_phone),
+      entry_year: st.entry_year ? Number(st.entry_year) : null,
+    }
+    classId = text(st.class_id)
+  }
+
+  const { data: existing } = await admin.from('profiles').select('id').eq('username', username).maybeSingle()
+  if (existing) throw new HttpError(409, `Username "${username}" sudah digunakan.`)
+
+  const password = validatePassword(input.password) ?? generatePassword()
+  const { data, error } = await admin.auth.admin.createUser({
+    email: `${username}@${LOGIN_DOMAIN}`,
+    password,
+    email_confirm: true,
+    user_metadata: { username, full_name: fullName, contact_email: contactEmail },
+    app_metadata: { roles, must_change_password: true },
+  })
+  if (error) throw new HttpError(400, `Gagal membuat akun: ${error.message}`)
+
+  // GoTrue mengisi app_metadata SETELAH baris auth.users dibuat, sehingga trigger
+  // profil tidak selalu melihat role. Role, flag, dan data rinci ditulis eksplisit.
+  const userId = data.user.id
+  try {
+    const { error: roleErr } = await admin
+      .from('user_roles')
+      .upsert(roles.map((role) => ({ user_id: userId, role })), { onConflict: 'user_id,role', ignoreDuplicates: true })
+    if (roleErr) throw new HttpError(500, `Gagal menyimpan role: ${roleErr.message}`)
+
+    const profileUpdate: Record<string, unknown> = { must_change_password: true }
+    if (input.phone) profileUpdate.phone = text(input.phone)
+    const { error: flagErr } = await admin.from('profiles').update(profileUpdate).eq('id', userId)
+    if (flagErr) throw new HttpError(500, flagErr.message)
+
+    if (teacherRow) {
+      const { error: tErr } = await admin.from('teachers').insert({ profile_id: userId, ...teacherRow })
+      if (tErr) throw new HttpError(409, dbMessage(tErr))
+    }
+    if (studentRow) {
+      const { data: st, error: sErr } = await admin.from('students').insert({ profile_id: userId, ...studentRow }).select('id').single()
+      if (sErr) throw new HttpError(409, dbMessage(sErr))
+      if (classId) {
+        const { data: cls } = await admin.from('classes').select('academic_year_id').eq('id', classId).maybeSingle()
+        if (!cls) throw new HttpError(400, 'Kelas tidak ditemukan.')
+        const { error: eErr } = await admin
+          .from('class_enrollments')
+          .insert({ class_id: classId, student_id: st.id, academic_year_id: cls.academic_year_id })
+        if (eErr) throw new HttpError(400, dbMessage(eErr))
+      }
+    }
+  } catch (e) {
+    await admin.auth.admin.deleteUser(userId)
+    throw e
+  }
+
+  return { user_id: userId, username, password, details_saved: Boolean(teacherRow || studentRow) }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders(req) })
   if (req.method !== 'POST') return json(req, { error: 'Metode tidak didukung.' }, 405)
@@ -124,43 +267,37 @@ Deno.serve(async (req) => {
 
     switch (action) {
       case 'create': {
-        const username = String(body.username ?? '').trim().toLowerCase()
-        const fullName = String(body.full_name ?? '').trim()
-        const roles = parseRoles(body.roles)
-        const contactEmail = body.contact_email ? String(body.contact_email).trim() : null
-        if (!USERNAME_RE.test(username)) {
-          throw new HttpError(400, 'Username 3–40 karakter: huruf kecil, angka, titik, garis bawah, atau strip.')
-        }
-        if (fullName.length < 2) throw new HttpError(400, 'Nama lengkap wajib diisi.')
-
-        const { data: existing } = await admin.from('profiles').select('id').eq('username', username).maybeSingle()
-        if (existing) throw new HttpError(409, `Username "${username}" sudah digunakan.`)
-
-        const password = validatePassword(body.password) ?? generatePassword()
-        const { data, error } = await admin.auth.admin.createUser({
-          email: `${username}@${LOGIN_DOMAIN}`,
-          password,
-          email_confirm: true,
-          user_metadata: { username, full_name: fullName, contact_email: contactEmail },
-          app_metadata: { roles, must_change_password: true },
+        const result = await createAccount(admin, body)
+        await audit(admin, actorId, 'user.create', result.user_id, {
+          username: result.username,
+          full_name: body.full_name,
+          roles: body.roles,
         })
-        if (error) throw new HttpError(400, `Gagal membuat akun: ${error.message}`)
+        return json(req, result, 201)
+      }
 
-        // GoTrue mengisi app_metadata SETELAH baris auth.users dibuat, sehingga trigger
-        // profil tidak selalu melihat role. Role & flag ditulis eksplisit di sini;
-        // bila gagal, akun Auth dihapus lagi agar data tetap konsisten.
-        const userId = data.user.id
-        const { error: roleErr } = await admin
-          .from('user_roles')
-          .upsert(roles.map((role) => ({ user_id: userId, role })), { onConflict: 'user_id,role', ignoreDuplicates: true })
-        const { error: flagErr } = await admin.from('profiles').update({ must_change_password: true }).eq('id', userId)
-        if (roleErr || flagErr) {
-          await admin.auth.admin.deleteUser(userId)
-          throw new HttpError(500, `Gagal menyimpan role akun: ${(roleErr ?? flagErr)!.message}`)
+      case 'bulk_create': {
+        // Impor massal (Excel). Diproses berurutan; tiap baris berhasil/gagal sendiri-sendiri.
+        const rows = Array.isArray(body.rows) ? body.rows : []
+        if (rows.length === 0) throw new HttpError(400, 'Tidak ada data untuk diimpor.')
+        if (rows.length > BULK_LIMIT) throw new HttpError(400, `Maksimal ${BULK_LIMIT} baris per permintaan.`)
+
+        const results = []
+        for (const [index, row] of rows.entries()) {
+          try {
+            results.push({ index, ok: true, ...(await createAccount(admin, row)) })
+          } catch (e) {
+            results.push({ index, ok: false, username: row?.username ?? null, error: e instanceof HttpError ? e.message : 'Kesalahan server.' })
+          }
         }
-
-        await audit(admin, actorId, 'user.create', userId, { username, full_name: fullName, roles })
-        return json(req, { user_id: userId, username, password }, 201)
+        const created = results.filter((r) => r.ok)
+        await audit(admin, actorId, 'user.bulk_create', null, {
+          total: rows.length,
+          created: created.length,
+          failed: rows.length - created.length,
+          usernames: created.map((r) => r.username),
+        })
+        return json(req, { results })
       }
 
       case 'reset_password': {

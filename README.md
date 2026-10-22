@@ -4,7 +4,13 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 
 **Stack:** React 19 + Vite · Tailwind CSS 4 · React Router 7 · TanStack Query · Recharts · Lucide · Supabase (PostgreSQL, Auth, Storage, Edge Functions, RLS)
 
-**Status:** Tahap 1 — Fondasi ✅ · Rancangan: [`docs/01-rancangan-sistem.md`](docs/01-rancangan-sistem.md) · Panduan tahap ini: [`docs/02-tahap1-fondasi.md`](docs/02-tahap1-fondasi.md)
+**Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅
+
+| Dokumen | Isi |
+|---|---|
+| [`docs/01-rancangan-sistem.md`](docs/01-rancangan-sistem.md) | Rancangan sistem yang disetujui |
+| [`docs/02-tahap1-fondasi.md`](docs/02-tahap1-fondasi.md) | Setup Supabase, Edge Function, admin pertama |
+| [`docs/03-tahap2-data-master.md`](docs/03-tahap2-data-master.md) | Migrasi 0003–0004, urutan menyiapkan data sekolah, impor Excel |
 
 ## Menjalankan secara lokal (VS Code)
 
@@ -50,4 +56,4 @@ src/
 | `npm run lint` | ESLint |
 | `npm run db:push` | Menjalankan migrasi ke proyek Supabase yang di-link |
 | `npm run functions:deploy` | Deploy Edge Function `admin-users` |
-| `npm run test:e2e` | Uji ujung-ke-ujung (lihat panduan; jangan ke produksi) |
+| `npm run test:e2e` | Uji ujung-ke-ujung Tahap 1 & 2 (lihat panduan; jangan ke produksi) |
