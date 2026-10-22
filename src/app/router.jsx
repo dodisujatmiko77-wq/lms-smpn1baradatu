@@ -3,6 +3,7 @@ import { createBrowserRouter } from 'react-router-dom'
 import { CURRENT_STAGE, allNavItems } from '@/config/navigation'
 import { ROLE_AREAS } from '@/lib/auth'
 import { DashboardLayout } from '@/components/layout/DashboardLayout'
+import RouteErrorPage from '@/features/system/pages/RouteErrorPage'
 import { HomeRedirect } from './guards/HomeRedirect'
 import { RequireAuth } from './guards/RequireAuth'
 import { RequireRole } from './guards/RequireRole'
@@ -45,11 +46,12 @@ function comingSoonRoutes(role) {
 }
 
 export const router = createBrowserRouter([
-  { path: '/login', element: <LoginPage /> },
-  { path: '/lupa-password', element: <ForgotPasswordPage /> },
-  { path: '/reset-password', element: <ResetPasswordPage /> },
+  { path: '/login', element: <LoginPage />, errorElement: <RouteErrorPage /> },
+  { path: '/lupa-password', element: <ForgotPasswordPage />, errorElement: <RouteErrorPage /> },
+  { path: '/reset-password', element: <ResetPasswordPage />, errorElement: <RouteErrorPage /> },
   {
     element: <RequireAuth />,
+    errorElement: <RouteErrorPage />,
     children: [
       { path: '/', element: <HomeRedirect /> },
       { path: '/ganti-password', element: <ChangePasswordPage /> },

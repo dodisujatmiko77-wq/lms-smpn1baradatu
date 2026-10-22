@@ -9,4 +9,6 @@ export default defineConfig({
     alias: { '@': fileURLToPath(new URL('./src', import.meta.url)) },
   },
   server: { port: 5173 },
+  // exceljs dimuat dinamis; dioptimasi sejak awal agar dev server tidak memuat ulang di tengah jalan.
+  optimizeDeps: { include: ['exceljs'] },
 })

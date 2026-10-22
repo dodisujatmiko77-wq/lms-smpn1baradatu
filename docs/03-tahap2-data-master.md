@@ -52,9 +52,12 @@ Bila function belum diperbarui, aplikasi akan menampilkan peringatan *"data sisw
 
 ```bash
 git pull               # atau unduh ZIP terbaru dari GitHub
-npm install            # ada library baru: exceljs
+npm install            # WAJIB: ada library baru (exceljs)
 npm run dev
 ```
+
+> **Gejala bila `npm install` terlewat:** menu **Data Guru** dan **Data Siswa** menampilkan *"Failed to fetch dynamically imported module"* atau *"Halaman gagal dimuat"*, sementara menu lain normal. Terminal menampilkan *"Failed to resolve import "exceljs""*.
+> **Solusi:** hentikan server (Ctrl+C) → `npm install` → `npm run dev` → tekan Ctrl+Shift+R di browser.
 
 ---
 
