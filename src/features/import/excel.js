@@ -1,4 +1,4 @@
-import { normalizeClassName } from '@/lib/academic'
+import { EMPLOYMENT_STATUS, normalizeClassName } from '@/lib/academic'
 
 // ExcelJS cukup besar, jadi hanya dimuat saat fitur impor/ekspor dipakai.
 async function loadExcel() {
@@ -26,7 +26,7 @@ export const COLUMNS = {
     { key: 'full_name', header: 'Nama Lengkap', required: true, width: 32, note: 'Termasuk gelar, contoh: Siti Aminah, S.Pd.' },
     { key: 'gender', header: 'L/P', width: 6, note: 'L atau P' },
     { key: 'username', header: 'Username', width: 18, note: 'Wajib bila NIP & NUPTK kosong' },
-    { key: 'employment_status', header: 'Status Kepegawaian', width: 18, note: 'PNS / PPPK / Honorer / GTT / GTY' },
+    { key: 'employment_status', header: 'Status Kepegawaian', width: 18, note: EMPLOYMENT_STATUS.join(' / ') },
     { key: 'phone', header: 'No. HP', width: 16 },
     { key: 'birth_place', header: 'Tempat Lahir', width: 16 },
     { key: 'birth_date', header: 'Tanggal Lahir', width: 14, note: 'TTTT-BB-HH' },
@@ -197,6 +197,9 @@ export function buildPayloads(rows, type, { classes = [] } = {}) {
       else if (!/^[a-z0-9._-]{3,40}$/.test(username)) errors.push('Username hanya huruf kecil, angka, titik, garis bawah, atau strip (3–40).')
       if (username && seen.has(username)) errors.push(`Username/NIP ganda dengan baris ${seen.get(username)}.`)
       else if (username) seen.set(username, rowNumber)
+      // Samakan penulisan dengan pilihan baku, mis. "pppk  paruh waktu" → "PPPK Paruh Waktu".
+      const statusRaw = (v.employment_status ?? '').trim().replace(/\s+/g, ' ')
+      const status = EMPLOYMENT_STATUS.find((s) => s.toLowerCase() === statusRaw.toLowerCase()) ?? statusRaw
       payload = {
         username,
         full_name: fullName,
@@ -208,10 +211,10 @@ export function buildPayloads(rows, type, { classes = [] } = {}) {
           gender,
           birth_place: v.birth_place || null,
           birth_date: birthDate === 'INVALID' ? null : birthDate,
-          employment_status: v.employment_status || null,
+          employment_status: status || null,
         },
       }
-      display = { id: username, name: fullName, extra: v.employment_status ?? '' }
+      display = { id: username, name: fullName, extra: status }
     }
     return { rowNumber, errors, payload, ...display }
   })

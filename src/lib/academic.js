@@ -20,7 +20,7 @@ export const STUDENT_STATUS = {
   dropped: { label: 'Keluar', tone: 'red' },
 }
 
-export const EMPLOYMENT_STATUS = ['PNS', 'PPPK', 'Honorer', 'GTT', 'GTY']
+export const EMPLOYMENT_STATUS = ['PNS', 'PPPK', 'PPPK Paruh Waktu', 'Honorer', 'GTT', 'GTY']
 
 export const RELIGIONS = ['Islam', 'Kristen', 'Katolik', 'Hindu', 'Buddha', 'Konghucu']
 
