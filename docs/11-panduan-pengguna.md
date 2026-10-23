@@ -22,7 +22,6 @@ Panduan singkat untuk **Admin/Operator**, **Guru**, **Wali Kelas**, dan **Siswa*
 - **Foto profil**: tekan ikon kamera pada foto → pilih foto (JPG/PNG/WebP). Foto otomatis dipotong persegi dan diperkecil. **Hapus foto** untuk kembali ke inisial nama. Foto hanya terlihat oleh Anda dan admin.
 - **Tampilan**: pilih **Terang**, **Gelap**, atau **Ikuti perangkat**. Bisa juga lewat ikon bulan/matahari di kanan atas (di HP: menu akun → Mode gelap/terang). Pilihan tersimpan di perangkat masing-masing.
 - **Ganti password** dan nomor HP.
-- **Tentang aplikasi**: versi LMS dan pengembang (Dodi Sujatmiko).
 
 ---
 
@@ -44,6 +43,7 @@ Panduan singkat untuk **Admin/Operator**, **Guru**, **Wali Kelas**, dan **Siswa*
 - **Laporan**: grafik aktivitas, keaktifan guru, rekap kelas, dan rekap per mapel. Tombol **Unduh** → Excel/PDF.
 - **Manajemen File**: pantau kuota penyimpanan. Di akhir semester, gunakan **Bersihkan berkas jawaban semester lalu** (setelah rekap nilai diunduh).
 - **Audit Log**: riwayat tindakan penting (akun, nilai, penghapusan).
+- **Tentang Aplikasi**: versi LMS, pengembang (Dodi Sujatmiko), dan ringkasan fitur.
 
 ---
 

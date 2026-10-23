@@ -19,6 +19,7 @@ const StudentDashboard = lazy(() => import('@/features/dashboard/pages/StudentDa
 const AdminUsersPage = lazy(() => import('@/features/users/pages/AdminUsersPage'))
 const SchoolSettingsPage = lazy(() => import('@/features/settings/pages/SchoolSettingsPage'))
 const AuditLogPage = lazy(() => import('@/features/audit/pages/AuditLogPage'))
+const AboutPage = lazy(() => import('@/features/system/pages/AboutPage'))
 const ProfilePage = lazy(() => import('@/features/profile/pages/ProfilePage'))
 const AcademicYearsPage = lazy(() => import('@/features/academic/pages/AcademicYearsPage'))
 const ClassesPage = lazy(() => import('@/features/classes/pages/ClassesPage'))
@@ -110,6 +111,7 @@ export const router = createBrowserRouter([
               { path: 'akun', element: <AdminUsersPage />, handle: { title: 'Akun Pengguna', crumbs: [{ label: 'Pengguna' }] } },
               { path: 'pengaturan', element: <SchoolSettingsPage />, handle: { title: 'Pengaturan Sekolah', crumbs: [{ label: 'Sistem' }] } },
               { path: 'audit-log', element: <AuditLogPage />, handle: { title: 'Audit Log', crumbs: [{ label: 'Sistem' }] } },
+              { path: 'tentang', element: <AboutPage />, handle: { title: 'Tentang Aplikasi', crumbs: [{ label: 'Sistem' }] } },
               { path: 'tahun-pelajaran', element: <AcademicYearsPage />, handle: { title: 'Tahun Pelajaran', crumbs: [{ label: 'Akademik' }] } },
               { path: 'kelas', element: <ClassesPage />, handle: { title: 'Kelas', crumbs: [{ label: 'Akademik' }] } },
               { path: 'kelas/:id', element: <ClassDetailPage />, handle: { title: 'Detail Kelas', crumbs: [{ label: 'Akademik' }, { label: 'Kelas', to: '/admin/kelas' }] } },

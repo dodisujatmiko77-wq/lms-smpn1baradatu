@@ -1,6 +1,6 @@
 import {
   Award, BarChart3, BookOpen, BookOpenCheck, CalendarDays, CalendarRange, ClipboardCheck, ClipboardList,
-  Clock, FileQuestion, FolderOpen, GraduationCap, History, Home, LayoutDashboard, Library, Megaphone,
+  Clock, FileQuestion, FolderOpen, GraduationCap, History, Home, Info, LayoutDashboard, Library, Megaphone,
   MonitorCheck, School, Settings, ShieldCheck, Star, UserCog, Users, UsersRound,
 } from 'lucide-react'
 
@@ -49,6 +49,7 @@ export const NAVIGATION = {
       items: [
         { label: 'Pengaturan Sekolah', to: '/admin/pengaturan', icon: Settings, stage: 1 },
         { label: 'Audit Log', to: '/admin/audit-log', icon: History, stage: 1 },
+        { label: 'Tentang Aplikasi', to: '/admin/tentang', icon: Info, stage: 1 },
       ],
     },
   ],

@@ -8,7 +8,7 @@ Versi aplikasi: **1.0.0** · Pengembang: **Dodi Sujatmiko**
 |---|---|
 | **Foto profil** | Profil Saya → ikon kamera pada foto. Foto dipotong persegi dan diperkecil ke 320 px WebP (±20–40 KB) di HP pengguna sebelum diunggah. Tampil di header dan halaman profil. |
 | **Mode gelap/terang** | Ikon bulan/matahari di header (di HP: menu akun), tombol di halaman login, dan pilihan **Terang / Gelap / Ikuti perangkat** di Profil Saya. Pilihan disimpan per perangkat. |
-| **Informasi pengembang** | "Dikembangkan oleh Dodi Sujatmiko" di halaman login, bagian bawah menu samping, dan kartu **Tentang aplikasi** di Profil Saya. |
+| **Informasi pengembang** | "Dikembangkan oleh Dodi Sujatmiko" di halaman login dan bagian bawah menu samping. Admin juga punya menu **Sistem → Tentang Aplikasi** (di bawah Audit Log) berisi versi, pengembang, dan fitur utama. |
 
 ## Migrasi database
 
@@ -41,3 +41,4 @@ Migrasi ini:
 2. Masuk → Profil Saya → ikon kamera → pilih foto → muncul "Foto profil diperbarui." dan foto tampil di kanan atas.
 3. Profil Saya → Tampilan → **Ikuti perangkat** → ubah mode gelap di pengaturan HP → LMS ikut berubah.
 4. Bagian bawah menu samping menampilkan "Dikembangkan oleh Dodi Sujatmiko".
+5. Admin: menu **Sistem → Tentang Aplikasi** menampilkan versi 1.0.0 dan pengembang.

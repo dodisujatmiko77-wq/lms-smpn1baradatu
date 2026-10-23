@@ -2,13 +2,11 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { AtSign, CalendarClock, Code2, Info, KeyRound, Mail, Monitor, Moon, Palette, Phone, Save, ShieldCheck, Sun } from 'lucide-react'
+import { AtSign, CalendarClock, KeyRound, Mail, Monitor, Moon, Palette, Phone, Save, ShieldCheck, Sun } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { useTheme } from '@/app/providers/ThemeProvider'
 import { Badge, Button, Card, CardBody, CardHeader, Input } from '@/components/ui'
-import { APP_INFO } from '@/config/app'
 import { NewPasswordForm } from '@/features/auth/components/NewPasswordForm'
 import { ROLE_LABELS } from '@/lib/auth'
 import { toMessage } from '@/lib/errors'
@@ -62,7 +60,6 @@ function ThemeChooser() {
 
 export default function ProfilePage() {
   const { profile, user, refreshProfile } = useAuth()
-  const { app_name, school_name } = useSchoolSettings()
   const [currentPassword, setCurrentPassword] = useState('')
   const [pwError, setPwError] = useState(null)
   const [pwFormKey, setPwFormKey] = useState(0)
@@ -159,14 +156,6 @@ export default function ProfilePage() {
           </CardBody>
         </Card>
 
-        <Card>
-          <CardHeader icon={Info} title="Tentang aplikasi" />
-          <CardBody className="divide-y divide-slate-100 py-1">
-            <InfoRow icon={Info} label="Aplikasi" value={`${app_name} · ${school_name}`} />
-            <InfoRow icon={Code2} label="Pengembang" value={APP_INFO.developer} />
-            <InfoRow icon={CalendarClock} label="Versi" value={APP_INFO.version} />
-          </CardBody>
-        </Card>
       </div>
     </div>
   )
