@@ -108,12 +108,12 @@ export default function LessonReaderPage() {
         {prev ? (
           <Link to={`/siswa/mapel/${taId}/pertemuan/${prev.id}`} className="flex items-center gap-2 rounded-xl border border-slate-200 bg-white p-3 text-sm hover:bg-slate-50">
             <ChevronLeft className="h-4 w-4 shrink-0 text-slate-400" />
-            <span className="min-w-0"><span className="block text-xs text-slate-400">Sebelumnya</span><span className="block truncate font-medium">{prev.title}</span></span>
+            <span className="min-w-0"><span className="block text-xs text-slate-500">Sebelumnya</span><span className="block truncate font-medium">{prev.title}</span></span>
           </Link>
         ) : <span />}
         {next && (
           <Link to={`/siswa/mapel/${taId}/pertemuan/${next.id}`} className="flex items-center justify-end gap-2 rounded-xl border border-slate-200 bg-white p-3 text-right text-sm hover:bg-slate-50">
-            <span className="min-w-0"><span className="block text-xs text-slate-400">Berikutnya</span><span className="block truncate font-medium">{next.title}</span></span>
+            <span className="min-w-0"><span className="block text-xs text-slate-500">Berikutnya</span><span className="block truncate font-medium">{next.title}</span></span>
             <ChevronRight className="h-4 w-4 shrink-0 text-slate-400" />
           </Link>
         )}

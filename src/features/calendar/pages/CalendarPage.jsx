@@ -116,7 +116,7 @@ export default function CalendarPage() {
                     aria-pressed={selected === key}
                     className={cn(
                       'min-h-14 border-b border-r border-slate-100 p-1 text-left align-top transition sm:min-h-24 sm:p-1.5',
-                      !isSameMonth(d, month) && 'bg-slate-50/70 text-slate-400',
+                      !isSameMonth(d, month) && 'bg-slate-50/70 text-slate-500',
                       selected === key ? 'bg-primary-50/70' : 'hover:bg-slate-50',
                     )}
                   >

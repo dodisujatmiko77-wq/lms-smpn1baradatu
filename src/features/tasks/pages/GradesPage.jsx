@@ -46,7 +46,7 @@ export default function GradesPage() {
                       )}
                     </div>
                     <p className="font-display text-2xl font-semibold text-slate-900">
-                      {Number(t.score)}<span className="text-sm font-normal text-slate-400">/{Number(t.max_score)}</span>
+                      {Number(t.score)}<span className="text-sm font-normal text-slate-500">/{Number(t.max_score)}</span>
                     </p>
                   </Link>
                 </li>

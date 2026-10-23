@@ -67,7 +67,8 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
 
         <Dropdown
           trigger={({ toggle, open }) => (
-            <button onClick={toggle} className="flex items-center gap-2 rounded-xl p-1 pr-1.5 hover:bg-slate-100" aria-label="Menu akun" aria-expanded={open}>
+            <button onClick={toggle} className="flex items-center gap-2 rounded-xl p-1 pr-1.5 hover:bg-slate-100" aria-expanded={open}>
+              <span className="sr-only">Menu akun</span>
               <Avatar name={profile?.full_name} size="sm" />
               <span className="hidden text-left lg:block">
                 <span className="block max-w-36 truncate text-sm font-medium leading-tight text-slate-800">{profile?.full_name}</span>

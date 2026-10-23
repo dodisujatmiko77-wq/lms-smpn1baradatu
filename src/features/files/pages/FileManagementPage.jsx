@@ -2,6 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { Database, FileText, HardDrive, Link2 } from 'lucide-react'
 import { Badge, Card, CardHeader, DataTable, EmptyState, ErrorState, PageHeader, Skeleton, SkeletonRows, StatCard } from '@/components/ui'
 import { MATERIAL_META } from '@/features/classroom/components/materials'
+import { SubmissionCleanup } from '../components/SubmissionCleanup'
 import { unwrap } from '@/lib/db'
 import { formatBytes } from '@/lib/files'
 import { supabase } from '@/lib/supabase'
@@ -71,6 +72,7 @@ export default function FileManagementPage() {
           </Card>
         </>
       )}
+      <SubmissionCleanup />
       <Card>
         <CardHeader icon={FileText} title="Berkas terbesar" description="20 berkas yang paling banyak memakai kuota" />
         {largest.isLoading ? (

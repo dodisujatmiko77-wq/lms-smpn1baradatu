@@ -107,7 +107,7 @@ function LessonsTab({ course, sections, lessons, basePath }) {
                 </div>
               </div>
               {list.length === 0 ? (
-                <p className="px-5 py-6 text-center text-sm text-slate-400">Belum ada pertemuan di bab ini.</p>
+                <p className="px-5 py-6 text-center text-sm text-slate-500">Belum ada pertemuan di bab ini.</p>
               ) : (
                 <ul className="divide-y divide-slate-100">
                   {list.map((l) => {

@@ -25,7 +25,7 @@ export function NotificationItem({ item, onOpen, compact = false }) {
       <span className="min-w-0 flex-1">
         <span className={cn('block text-sm leading-snug', unread ? 'font-semibold text-slate-900' : 'text-slate-700', compact && 'line-clamp-2')}>{item.title}</span>
         {item.body && <span className={cn('mt-0.5 block text-xs text-slate-500', compact && 'line-clamp-1')}>{item.body}</span>}
-        <span className="mt-0.5 block text-[11px] text-slate-400">{formatRelative(item.notify_at)}</span>
+        <span className="mt-0.5 block text-[11px] text-slate-500">{formatRelative(item.notify_at)}</span>
       </span>
       {unread && <span className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-primary-600" aria-label="Belum dibaca" />}
     </>

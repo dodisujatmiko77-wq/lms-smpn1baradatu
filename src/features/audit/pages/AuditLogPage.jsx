@@ -88,7 +88,7 @@ export default function AuditLogPage() {
                     <span className="w-40 shrink-0 text-xs text-slate-500">{formatDate(row.created_at, 'd MMM yyyy, HH:mm')}</span>
                     <span className="min-w-0 flex-1 text-sm">
                       <span className="font-medium text-slate-900">{row.actor?.full_name ?? 'Sistem'}</span>
-                      {row.actor?.username && <span className="text-slate-400"> @{row.actor.username}</span>}
+                      {row.actor?.username && <span className="text-slate-500"> @{row.actor.username}</span>}
                     </span>
                     <Badge tone={actionTone(row.action)}>{actionLabel(row.action)}</Badge>
                     <ChevronDown className={cn('hidden h-4 w-4 text-slate-400 transition sm:block', expanded === row.id && 'rotate-180')} />

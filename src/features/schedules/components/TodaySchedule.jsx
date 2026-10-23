@@ -38,7 +38,7 @@ export function TodaySchedule({ isTeacher, linkTo }) {
               <li key={s.id} className={cn('flex items-center gap-3 rounded-xl px-3 py-2.5', now && 'bg-primary-50 ring-1 ring-primary-200', done && 'opacity-55')}>
                 <div className="w-14 shrink-0 text-right">
                   <p className="text-sm font-semibold text-slate-900">{hhmm(s.start_time)}</p>
-                  <p className="text-[11px] text-slate-400">{hhmm(s.end_time)}</p>
+                  <p className="text-[11px] text-slate-500">{hhmm(s.end_time)}</p>
                 </div>
                 <span className="h-10 w-1 shrink-0 rounded-full" style={{ backgroundColor: s.subject_color }} />
                 <div className="min-w-0 flex-1">

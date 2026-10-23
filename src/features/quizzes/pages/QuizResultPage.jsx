@@ -60,7 +60,7 @@ function ReviewItem({ q, index }) {
         </ul>
       ) : (
         <div className="space-y-1.5 text-sm">
-          <p className={cn('whitespace-pre-line rounded-lg px-3 py-2', unanswered ? 'italic text-slate-400' : 'bg-slate-50 text-slate-800')}>
+          <p className={cn('whitespace-pre-line rounded-lg px-3 py-2', unanswered ? 'italic text-slate-500' : 'bg-slate-50 text-slate-800')}>
             <span className="mr-1 text-xs font-semibold not-italic text-slate-500">Jawabanmu:</span>
             {unanswered ? 'tidak dijawab' : q.type === 'true_false' ? (q.my_text === 'true' ? 'Benar' : 'Salah') : q.my_text}
           </p>

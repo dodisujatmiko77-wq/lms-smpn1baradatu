@@ -28,7 +28,7 @@ export function NotificationBell() {
         <button onClick={toggle} className="relative rounded-lg p-2 text-slate-600 hover:bg-slate-100" aria-label={unread ? `Notifikasi, ${unread} belum dibaca` : 'Notifikasi'}>
           <Bell className="h-5 w-5" />
           {unread > 0 && (
-            <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-accent-500 px-1 text-[10px] font-bold leading-none text-white">
+            <span className="absolute right-1 top-1 grid h-4 min-w-4 place-items-center rounded-full bg-red-600 px-1 text-[10px] font-bold leading-none text-white">
               {unread > 99 ? '99+' : unread}
             </span>
           )}

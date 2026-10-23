@@ -82,7 +82,7 @@ export default function ProfilePage() {
             <InfoRow icon={Phone} label="Nomor HP" value={profile.phone} />
             <InfoRow icon={CalendarClock} label="Login terakhir" value={profile.last_login_at && formatDate(profile.last_login_at, 'd MMM yyyy, HH:mm')} />
           </div>
-          <p className="mt-3 text-xs text-slate-400">Perubahan nama atau email kontak dilakukan oleh administrator.</p>
+          <p className="mt-3 text-xs text-slate-500">Perubahan nama atau email kontak dilakukan oleh administrator.</p>
         </div>
       </Card>
 

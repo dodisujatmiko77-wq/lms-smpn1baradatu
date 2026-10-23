@@ -41,7 +41,7 @@ export function Sidebar({ groups, variant = 'rail', collapsed = false, onToggleC
         {groups.map((group, gi) => (
           <div key={group.label ?? gi}>
             {group.label && (
-              <p className={cn('mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-400', wide)}>
+              <p className={cn('mb-1.5 px-3 text-[11px] font-semibold uppercase tracking-wider text-slate-500', wide)}>
                 {group.label}
               </p>
             )}
@@ -69,7 +69,7 @@ export function Sidebar({ groups, variant = 'rail', collapsed = false, onToggleC
                         <item.icon className={cn('h-[18px] w-[18px] shrink-0', isActive ? 'text-primary-600' : 'text-slate-400 group-hover:text-slate-600')} />
                         <span className={cn('flex-1 truncate', wide)}>{item.label}</span>
                         {item.stage > CURRENT_STAGE && (
-                          <span className={cn('rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-400', wide)}>
+                          <span className={cn('rounded-md bg-slate-100 px-1.5 py-0.5 text-[10px] font-medium text-slate-500', wide)}>
                             T{item.stage}
                           </span>
                         )}

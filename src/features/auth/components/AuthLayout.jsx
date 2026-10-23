@@ -1,6 +1,7 @@
 import { BookOpenCheck, ClipboardCheck, MessagesSquare, TrendingUp } from 'lucide-react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { SchoolLogo } from '@/components/layout/SchoolLogo'
+import { cn } from '@/lib/utils'
 
 const FEATURES = [
   { icon: BookOpenCheck, text: 'Materi dan pertemuan terstruktur di setiap mata pelajaran' },
@@ -8,6 +9,23 @@ const FEATURES = [
   { icon: MessagesSquare, text: 'Forum diskusi kelas yang aman dan termoderasi' },
   { icon: TrendingUp, text: 'Pantau progress belajar secara nyata' },
 ]
+
+/** Ilustrasi guru & siswa SMPN 1 Baradatu (WebP, dua ukuran agar ringan di HP). */
+function HeroImage({ className, sizes }) {
+  return (
+    <img
+      src="/brand/login-hero-768.webp"
+      srcSet="/brand/login-hero-768.webp 768w, /brand/login-hero-1280.webp 1280w"
+      sizes={sizes}
+      width={1280}
+      height={853}
+      alt="Ilustrasi guru dan siswa SMP belajar bersama menggunakan laptop di kelas"
+      fetchPriority="high"
+      className={cn('block h-auto w-full', className)}
+      draggable={false}
+    />
+  )
+}
 
 /** Tata letak halaman autentikasi dengan identitas sekolah dari pengaturan terpusat. */
 export function AuthLayout({ children }) {
@@ -25,28 +43,30 @@ export function AuthLayout({ children }) {
         />
 
         <div className="relative flex items-center gap-3">
+          <SchoolLogo className="h-12 w-12 shadow-lg shadow-primary-950/30" />
           <div>
             <p className="font-display text-lg font-semibold">{app_name}</p>
             <p className="text-sm text-primary-100">{school_name}</p>
           </div>
         </div>
 
-        <div className="relative my-auto max-w-lg py-12">
-          <SchoolLogo className="mb-8 h-28 w-28 rounded-3xl shadow-2xl shadow-primary-950/40" />
+        <div className="relative my-auto max-w-xl py-8">
           <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-primary-50 ring-1 ring-white/20">
             <span className="h-1.5 w-1.5 rounded-full bg-accent-400" /> Transformasi Digital Sekolah
           </span>
-          <h2 className="mt-5 font-display text-4xl font-semibold leading-tight text-white xl:text-[2.75rem]">
+          <h2 className="mt-4 font-display text-4xl font-semibold leading-tight text-white xl:text-[2.6rem]">
             Ruang belajar digital untuk <span className="text-accent-300">guru</span> dan{' '}
             <span className="text-accent-300">siswa</span>.
           </h2>
-          <p className="mt-4 text-base text-primary-100">{tagline}</p>
+          <p className="mt-3 text-base text-primary-100">{tagline}</p>
 
-          <ul className="mt-10 space-y-4">
+          <HeroImage className="mt-7 max-h-[44vh] object-cover object-[50%_35%] rounded-3xl shadow-2xl shadow-primary-950/40 ring-1 ring-white/20" sizes="(min-width: 1024px) 45vw, 100vw" />
+
+          <ul className="mt-8 grid grid-cols-2 gap-3">
             {FEATURES.map(({ icon: Icon, text }) => (
-              <li key={text} className="flex items-center gap-3 text-sm text-primary-50">
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-white/10 ring-1 ring-white/15">
-                  <Icon className="h-[18px] w-[18px]" />
+              <li key={text} className="flex items-center gap-2.5 text-[13px] leading-snug text-primary-50">
+                <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-white/10 ring-1 ring-white/15">
+                  <Icon className="h-4 w-4" />
                 </span>
                 {text}
               </li>
@@ -61,6 +81,7 @@ export function AuthLayout({ children }) {
 
       <section className="flex flex-col justify-center bg-white px-5 py-10 sm:px-12">
         <div className="mx-auto w-full max-w-md">
+          <HeroImage className="mb-6 aspect-[16/9] rounded-2xl object-cover object-[50%_35%] shadow-card lg:hidden" sizes="(max-width: 640px) 100vw, 448px" />
           <div className="mb-8 flex items-center gap-3 lg:hidden">
             <SchoolLogo className="h-14 w-14 shadow-md shadow-primary-600/30" />
             <div>

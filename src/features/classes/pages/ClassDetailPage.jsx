@@ -79,7 +79,7 @@ function MembersTab({ cls }) {
         <DataTable
           rows={rows}
           columns={[
-            { key: 'no', header: 'No', className: 'w-12 text-slate-400', hideOnMobile: true, render: (r) => rows.indexOf(r) + 1 },
+            { key: 'no', header: 'No', className: 'w-12 text-slate-500', hideOnMobile: true, render: (r) => rows.indexOf(r) + 1 },
             {
               key: 'name',
               header: 'Nama',

@@ -55,7 +55,7 @@ function AnswerView({ q }) {
   const text = q.type === 'true_false' ? ({ true: 'Benar', false: 'Salah' })[q.my_text] : q.my_text
   return (
     <div className="space-y-1.5 text-sm">
-      <p className={cn('whitespace-pre-line rounded-lg px-3 py-2', text ? 'bg-slate-50 text-slate-800' : 'italic text-slate-400')}>{text || 'Tidak dijawab'}</p>
+      <p className={cn('whitespace-pre-line rounded-lg px-3 py-2', text ? 'bg-slate-50 text-slate-800' : 'italic text-slate-500')}>{text || 'Tidak dijawab'}</p>
       {q.type !== 'essay' && <p className="text-success-700"><span className="font-medium">Kunci:</span> {q.type === 'true_false' ? (q.answer_key === 'true' ? 'Benar' : 'Salah') : q.answer_key?.split(/\n|\|/).filter(Boolean).join(' · ')}</p>}
       {q.type === 'essay' && q.answer_key && <p className="text-slate-500"><span className="font-medium">Pedoman:</span> {q.answer_key}</p>}
     </div>
@@ -127,7 +127,7 @@ export function AttemptDetailModal({ row, quiz, canManage, onClose, onChanged })
                 </div>
                 <p className="whitespace-pre-line text-[15px] text-slate-900">{q.body}</p>
                 <AnswerView q={q} />
-                {canManage && data.status === 'submitted' && q.type === 'essay' && (q.my_text?.trim() ? <EssayGrader attemptId={data.id} q={q} onGraded={graded} /> : <p className="text-xs text-slate-400">Esai kosong otomatis bernilai 0.</p>)}
+                {canManage && data.status === 'submitted' && q.type === 'essay' && (q.my_text?.trim() ? <EssayGrader attemptId={data.id} q={q} onGraded={graded} /> : <p className="text-xs text-slate-500">Esai kosong otomatis bernilai 0.</p>)}
               </li>
             ))}
           </ol>

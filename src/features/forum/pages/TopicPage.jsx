@@ -210,7 +210,7 @@ export default function TopicPage() {
           <p className="flex items-center justify-center gap-2 py-2 text-sm text-slate-500"><Lock className="h-4 w-4" /> Topik ini dikunci guru. Balasan baru tidak dapat ditambahkan.</p>
         )}
       </Card>
-      <p className="flex items-center gap-1.5 px-1 text-xs text-slate-400"><Reply className="h-3.5 w-3.5" /> Gunakan bahasa yang sopan. Guru dapat menyembunyikan tulisan yang tidak pantas.</p>
+      <p className="flex items-center gap-1.5 px-1 text-xs text-slate-500"><Reply className="h-3.5 w-3.5" /> Gunakan bahasa yang sopan. Guru dapat menyembunyikan tulisan yang tidak pantas.</p>
 
       {editTopic && <TopicFormModal open topic={t} taId={t.teaching_assignment_id} onClose={() => setEditTopic(false)} onSaved={() => { setEditTopic(false); refresh() }} />}
       <ConfirmDialog

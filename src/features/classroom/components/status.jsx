@@ -23,10 +23,10 @@ export function PublishBadge({ status }) {
 }
 
 /** Progress bar sederhana (persen). */
-export function ProgressBar({ value, className, tone = 'primary' }) {
+export function ProgressBar({ value, className, tone = 'primary', label = 'Progress' }) {
   const pct = Math.max(0, Math.min(100, Math.round(value)))
   return (
-    <div className={cn('h-2 overflow-hidden rounded-full bg-slate-100', className)} role="progressbar" aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
+    <div className={cn('h-2 overflow-hidden rounded-full bg-slate-100', className)} role="progressbar" aria-label={label} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100}>
       <div className={cn('h-full rounded-full transition-all duration-500', tone === 'white' ? 'bg-white' : pct === 100 ? 'bg-success-500' : 'bg-primary-500')} style={{ width: `${pct}%` }} />
     </div>
   )

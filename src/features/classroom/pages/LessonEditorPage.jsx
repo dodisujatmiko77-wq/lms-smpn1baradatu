@@ -179,7 +179,7 @@ export default function LessonEditorPage() {
             />
             <CardBody>
               {materials.length === 0 ? (
-                <p className="py-4 text-center text-sm text-slate-400">Belum ada lampiran.</p>
+                <p className="py-4 text-center text-sm text-slate-500">Belum ada lampiran.</p>
               ) : (
                 <MaterialList materials={materials} mode="manage" onDelete={setRemoveMaterial} />
               )}
@@ -214,7 +214,7 @@ export default function LessonEditorPage() {
           {values.summary && <p className="rounded-xl bg-primary-50 p-3 text-sm text-primary-800">{values.summary}</p>}
           <RichContent html={values.content_html} />
           <MaterialList materials={materials} />
-          {!values.content_html && materials.length === 0 && <p className="text-sm text-slate-400">Belum ada isi.</p>}
+          {!values.content_html && materials.length === 0 && <p className="text-sm text-slate-500">Belum ada isi.</p>}
         </div>
       </Modal>
 

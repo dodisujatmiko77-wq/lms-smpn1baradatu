@@ -145,7 +145,7 @@ export function ImportModal({ open, type, classes, onClose, onDone }) {
               <tbody className="divide-y divide-slate-100">
                 {[...rows].sort((a, b) => b.errors.length - a.errors.length).slice(0, 300).map((r) => (
                   <tr key={r.rowNumber} className={r.errors.length ? 'bg-red-50/60' : ''}>
-                    <td className="px-3 py-2 text-slate-400">{r.rowNumber}</td>
+                    <td className="px-3 py-2 text-slate-500">{r.rowNumber}</td>
                     <td className="px-3 py-2 font-mono text-xs">{r.id || '—'}</td>
                     <td className="px-3 py-2">{r.name || '—'}</td>
                     <td className="px-3 py-2">{r.extra || '—'}</td>

@@ -77,11 +77,11 @@ export default function StudentReportPage() {
             rowKey={(s) => s.teaching_assignment_id}
             columns={[
               { key: 'm', header: 'Mapel', render: (s) => <div className="flex items-center gap-2.5"><span className="h-8 w-1.5 rounded-full" style={{ backgroundColor: s.subject_color }} /><div><p className="font-medium text-slate-900">{s.subject_name}</p><p className="text-xs text-slate-500">{s.teacher_name}</p></div></div> },
-              { key: 't', header: 'Tugas', render: (s) => <span><ScoreCell value={s.task_avg} kkm={r.kkm} /> <span className="text-xs text-slate-400">({s.task_count}/{s.task_total})</span></span> },
-              { key: 'q', header: 'Kuis', render: (s) => <span><ScoreCell value={s.quiz_avg} kkm={r.kkm} /> <span className="text-xs text-slate-400">({s.quiz_count})</span></span> },
+              { key: 't', header: 'Tugas', render: (s) => <span><ScoreCell value={s.task_avg} kkm={r.kkm} /> <span className="text-xs text-slate-500">({s.task_count}/{s.task_total})</span></span> },
+              { key: 'q', header: 'Kuis', render: (s) => <span><ScoreCell value={s.quiz_avg} kkm={r.kkm} /> <span className="text-xs text-slate-500">({s.quiz_count})</span></span> },
               { key: 'a', header: 'Rata-rata', render: (s) => <ScoreCell value={s.overall_avg} kkm={r.kkm} /> },
               { key: 'p', header: 'Materi', render: (s) => <PercentBar value={s.lessons_total ? (s.lessons_done / s.lessons_total) * 100 : null} /> },
-              { key: 'x', header: 'Terlewat', render: (s) => (s.task_missing + s.quiz_missed ? <Badge tone="red">{s.task_missing} tugas · {s.quiz_missed} kuis</Badge> : <span className="text-slate-400">–</span>) },
+              { key: 'x', header: 'Terlewat', render: (s) => (s.task_missing + s.quiz_missed ? <Badge tone="red">{s.task_missing} tugas · {s.quiz_missed} kuis</Badge> : <span className="text-slate-500">–</span>) },
             ]}
           />
         )}

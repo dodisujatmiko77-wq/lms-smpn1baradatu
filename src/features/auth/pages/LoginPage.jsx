@@ -83,7 +83,7 @@ export default function LoginPage() {
         </Button>
       </form>
 
-      <p className="mt-8 text-center text-xs text-slate-400">
+      <p className="mt-8 text-center text-xs text-slate-500">
         Akun dibuat oleh administrator sekolah. Belum punya akun? Hubungi operator atau wali kelas Anda.
       </p>
     </AuthLayout>

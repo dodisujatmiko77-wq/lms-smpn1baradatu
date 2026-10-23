@@ -65,7 +65,7 @@ function TeacherActivity() {
             { key: 'konten', header: 'Materi · Tugas · Kuis', render: (r) => <span className="tabular-nums">{r.lessons} · {r.tasks} · {r.quizzes}</span> },
             { key: 'nilai', header: 'Penilaian', render: (r) => <span className="tabular-nums">{r.grades}</span> },
             { key: 'forum', header: 'Forum', render: (r) => <span className="tabular-nums">{r.forum}</span> },
-            { key: 'last', header: 'Aktif terakhir', render: (r) => (r.last_active_at ? formatRelative(r.last_active_at) : <span className="text-slate-400">Belum ada</span>) },
+            { key: 'last', header: 'Aktif terakhir', render: (r) => (r.last_active_at ? formatRelative(r.last_active_at) : <span className="text-slate-500">Belum ada</span>) },
           ]}
         />
       )}

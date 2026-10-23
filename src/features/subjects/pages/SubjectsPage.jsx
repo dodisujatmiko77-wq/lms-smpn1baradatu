@@ -145,7 +145,7 @@ export default function SubjectsPage() {
             {s.code.slice(0, 3)}
           </span>
           <div className="min-w-0">
-            <p className={cn('truncate font-medium', s.is_active ? 'text-slate-900' : 'text-slate-400 line-through')}>{s.name}</p>
+            <p className={cn('truncate font-medium', s.is_active ? 'text-slate-900' : 'text-slate-500 line-through')}>{s.name}</p>
             <p className="text-xs text-slate-500">{s.code}</p>
           </div>
         </div>

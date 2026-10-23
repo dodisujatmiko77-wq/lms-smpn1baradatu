@@ -1,6 +1,7 @@
 import { cn, initials } from '@/lib/utils'
 
-const PALETTE = ['bg-primary-600', 'bg-accent-500', 'bg-success-600', 'bg-violet-600', 'bg-sky-600', 'bg-rose-500']
+// Semua warna memenuhi kontras ≥ 4,5:1 dengan teks putih.
+const PALETTE = ['bg-primary-600', 'bg-accent-700', 'bg-success-700', 'bg-violet-600', 'bg-sky-700', 'bg-rose-600']
 
 function colorFor(name = '') {
   let sum = 0
