@@ -10,7 +10,7 @@ export function TaskCard({ task, showSubject = true }) {
     <Link to={`/siswa/tugas/${task.id}`} className="group flex items-center gap-4 rounded-xl border border-slate-200/70 bg-white p-4 shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover">
       <span className="h-12 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: task.subject_color }} />
       <div className="min-w-0 flex-1 space-y-1">
-        {showSubject && <p className="text-xs font-medium" style={{ color: task.subject_color }}>{task.subject_name}</p>}
+        {showSubject && <p className="subject-color text-xs font-medium" style={{ '--subject-color': task.subject_color }}>{task.subject_name}</p>}
         <p className="font-semibold leading-snug text-slate-900">{task.title}</p>
         <div className="flex flex-wrap items-center gap-2">
           <TaskStatusBadge status={status} />

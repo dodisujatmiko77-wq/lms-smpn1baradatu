@@ -18,7 +18,11 @@ Panduan singkat untuk **Admin/Operator**, **Guru**, **Wali Kelas**, dan **Siswa*
 
 **Notifikasi** 🔔 — ikon lonceng di kanan atas. Angka merah menunjukkan jumlah notifikasi yang belum dibaca. Klik notifikasi untuk langsung membuka materi/tugas/kuis terkait.
 
-**Profil** — klik nama/foto di kanan atas → **Profil Saya** untuk mengganti password.
+**Profil** — klik nama/foto di kanan atas → **Profil Saya**:
+- **Foto profil**: tekan ikon kamera pada foto → pilih foto (JPG/PNG/WebP). Foto otomatis dipotong persegi dan diperkecil. **Hapus foto** untuk kembali ke inisial nama. Foto hanya terlihat oleh Anda dan admin.
+- **Tampilan**: pilih **Terang**, **Gelap**, atau **Ikuti perangkat**. Bisa juga lewat ikon bulan/matahari di kanan atas (di HP: menu akun → Mode gelap/terang). Pilihan tersimpan di perangkat masing-masing.
+- **Ganti password** dan nomor HP.
+- **Tentang aplikasi**: versi LMS dan pengembang (Dodi Sujatmiko).
 
 ---
 

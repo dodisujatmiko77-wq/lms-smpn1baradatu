@@ -58,7 +58,7 @@ export default defineConfig(({ mode }) => ({
         cleanupOutdatedCaches: true,
         // Pra-unduh hanya kerangka aplikasi agar hemat kuota HP; potongan halaman lain
         // disimpan saat pertama kali dibuka (nama berkas ber-hash, aman disimpan lama).
-        globPatterns: ['index.html', 'assets/index-*.{js,css}', 'assets/rolldown-runtime-*.js', 'assets/App-*.js', 'favicon.ico', 'brand/icon-192.png', 'brand/logo-256.webp'],
+        globPatterns: ['index.html', 'assets/index-*.{js,css}', 'assets/rolldown-runtime-*.js', 'assets/App-*.js', 'favicon.ico', 'theme-init.js', 'brand/icon-192.png', 'brand/logo-256.webp'],
         runtimeCaching: [
           {
             urlPattern: ({ url, sameOrigin }) => sameOrigin && url.pathname.startsWith('/assets/'),

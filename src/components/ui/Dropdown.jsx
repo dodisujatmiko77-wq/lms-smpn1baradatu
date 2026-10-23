@@ -37,7 +37,7 @@ export function Dropdown({ trigger, children, align = 'right', className, panelC
   )
 }
 
-export function DropdownItem({ icon: Icon, children, onClick, danger, as: Comp = 'button', ...props }) {
+export function DropdownItem({ icon: Icon, children, onClick, danger, as: Comp = 'button', className, ...props }) {
   return (
     <Comp
       data-close
@@ -45,6 +45,7 @@ export function DropdownItem({ icon: Icon, children, onClick, danger, as: Comp =
       className={cn(
         'flex w-full items-center gap-2.5 rounded-lg px-2.5 py-2 text-left text-sm transition',
         danger ? 'text-red-600 hover:bg-red-50' : 'text-slate-700 hover:bg-slate-100',
+        className,
       )}
       {...props}
     >

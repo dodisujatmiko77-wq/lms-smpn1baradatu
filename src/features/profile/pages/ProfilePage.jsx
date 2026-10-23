@@ -2,15 +2,19 @@ import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { AtSign, CalendarClock, KeyRound, Mail, Phone, Save, ShieldCheck } from 'lucide-react'
+import { AtSign, CalendarClock, Code2, Info, KeyRound, Mail, Monitor, Moon, Palette, Phone, Save, ShieldCheck, Sun } from 'lucide-react'
 import { toast } from 'sonner'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { Avatar, Badge, Button, Card, CardBody, CardHeader, Input } from '@/components/ui'
+import { useSchoolSettings } from '@/app/providers/SettingsProvider'
+import { useTheme } from '@/app/providers/ThemeProvider'
+import { Badge, Button, Card, CardBody, CardHeader, Input } from '@/components/ui'
+import { APP_INFO } from '@/config/app'
 import { NewPasswordForm } from '@/features/auth/components/NewPasswordForm'
 import { ROLE_LABELS } from '@/lib/auth'
 import { toMessage } from '@/lib/errors'
 import { supabase } from '@/lib/supabase'
-import { formatDate } from '@/lib/utils'
+import { cn, formatDate } from '@/lib/utils'
+import { AvatarUploader } from '../components/AvatarUploader'
 
 const phoneSchema = z.object({
   phone: z.union([z.literal(''), z.string().trim().regex(/^[0-9+\-\s]{8,20}$/, 'Nomor HP tidak valid.')]),
@@ -26,8 +30,39 @@ function InfoRow({ icon: Icon, label, value }) {
   )
 }
 
+const THEME_OPTIONS = [
+  { value: 'light', label: 'Terang', icon: Sun },
+  { value: 'dark', label: 'Gelap', icon: Moon },
+  { value: 'system', label: 'Ikuti perangkat', icon: Monitor },
+]
+
+function ThemeChooser() {
+  const { theme, setTheme } = useTheme()
+  return (
+    <div role="radiogroup" aria-label="Tema tampilan" className="grid grid-cols-3 gap-2">
+      {THEME_OPTIONS.map(({ value, label, icon: Icon }) => (
+        <button
+          key={value}
+          type="button"
+          role="radio"
+          aria-checked={theme === value}
+          onClick={() => setTheme(value)}
+          className={cn(
+            'flex flex-col items-center gap-1.5 rounded-xl border px-2 py-3 text-sm font-medium transition',
+            theme === value ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-slate-200 text-slate-600 hover:bg-slate-50',
+          )}
+        >
+          <Icon className="h-5 w-5" />
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function ProfilePage() {
   const { profile, user, refreshProfile } = useAuth()
+  const { app_name, school_name } = useSchoolSettings()
   const [currentPassword, setCurrentPassword] = useState('')
   const [pwError, setPwError] = useState(null)
   const [pwFormKey, setPwFormKey] = useState(0)
@@ -66,8 +101,8 @@ export default function ProfilePage() {
       <Card className="overflow-hidden lg:col-span-1">
         <div className="h-24 bg-gradient-to-br from-primary-600 to-primary-500" />
         <div className="-mt-10 px-5 pb-5">
-          <Avatar name={profile.full_name} size="xl" className="ring-4 ring-white" />
-          <h2 className="mt-3 text-lg font-semibold">{profile.full_name}</h2>
+          <AvatarUploader />
+          <h2 className="mt-2 text-lg font-semibold">{profile.full_name}</h2>
           <p className="text-sm text-slate-500">@{profile.username}</p>
           <div className="mt-3 flex flex-wrap gap-1.5">
             {profile.roles.map((r) => (
@@ -82,7 +117,7 @@ export default function ProfilePage() {
             <InfoRow icon={Phone} label="Nomor HP" value={profile.phone} />
             <InfoRow icon={CalendarClock} label="Login terakhir" value={profile.last_login_at && formatDate(profile.last_login_at, 'd MMM yyyy, HH:mm')} />
           </div>
-          <p className="mt-3 text-xs text-slate-500">Perubahan nama atau email kontak dilakukan oleh administrator.</p>
+          <p className="mt-3 text-xs text-slate-500">Foto otomatis dipotong persegi dan diperkecil. Perubahan nama atau email kontak dilakukan oleh administrator.</p>
         </div>
       </Card>
 
@@ -100,6 +135,14 @@ export default function ProfilePage() {
         </Card>
 
         <Card>
+          <CardHeader icon={Palette} title="Tampilan" description="Mode gelap lebih nyaman di malam hari dan menghemat baterai HP berlayar OLED" />
+          <CardBody>
+            <ThemeChooser />
+            <p className="mt-2 text-xs text-slate-500">Pilihan ini tersimpan di perangkat ini.</p>
+          </CardBody>
+        </Card>
+
+        <Card>
           <CardHeader icon={ShieldCheck} title="Ganti password" description="Gunakan password yang tidak mudah ditebak dan jangan dibagikan" />
           <CardBody>
             <NewPasswordForm key={pwFormKey} onSubmit={changePassword} submitLabel="Ganti password">
@@ -113,6 +156,15 @@ export default function ProfilePage() {
                 onChange={(e) => setCurrentPassword(e.target.value)}
               />
             </NewPasswordForm>
+          </CardBody>
+        </Card>
+
+        <Card>
+          <CardHeader icon={Info} title="Tentang aplikasi" />
+          <CardBody className="divide-y divide-slate-100 py-1">
+            <InfoRow icon={Info} label="Aplikasi" value={`${app_name} · ${school_name}`} />
+            <InfoRow icon={Code2} label="Pengembang" value={APP_INFO.developer} />
+            <InfoRow icon={CalendarClock} label="Versi" value={APP_INFO.version} />
           </CardBody>
         </Card>
       </div>

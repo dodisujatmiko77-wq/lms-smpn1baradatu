@@ -56,6 +56,7 @@ Jalankan berkas di `supabase/migrations/` **berurutan**, satu per satu, dengan c
 | 10 | `0010_achievements.sql` | Badge |
 | 11 | `0011_reports.sql` | Monitoring & laporan |
 | 12 | `0012_hardening_performance.sql` | Pengerasan keamanan, indeks, pembersihan berkas |
+| 13 | `0013_avatars.sql` | Foto profil pengguna (bucket privat `avatars`) |
 
 Setiap berkas harus selesai dengan pesan **Success**. Jika ada error, berhenti dan catat pesannya.
 

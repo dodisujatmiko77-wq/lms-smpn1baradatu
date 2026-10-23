@@ -1,12 +1,24 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
-import { CalendarCheck2, CalendarX2, ChevronDown, ChevronRight, LogOut, Menu, Repeat, Search, UserRound, X } from 'lucide-react'
+import { CalendarCheck2, CalendarX2, ChevronDown, ChevronRight, LogOut, Menu, Moon, Repeat, Search, Sun, UserRound, X } from 'lucide-react'
+import { useTheme } from '@/app/providers/ThemeProvider'
 import { useAuth } from '@/app/providers/AuthProvider'
-import { Avatar, Dropdown, DropdownItem } from '@/components/ui'
+import { Dropdown, DropdownItem } from '@/components/ui'
 import { NotificationBell } from '@/features/notifications/components/NotificationBell'
 import { useActiveSemester } from '@/features/master/hooks'
+import { MyAvatar } from '@/features/profile/components/MyAvatar'
 import { ROLE_AREAS, ROLE_LABELS } from '@/lib/auth'
 import { MenuSearch } from './MenuSearch'
+import { ThemeToggle } from './ThemeToggle'
+
+function ThemeMenuItem() {
+  const { resolved, toggle } = useTheme()
+  return (
+    <DropdownItem icon={resolved === 'dark' ? Sun : Moon} onClick={toggle} className="sm:hidden">
+      {resolved === 'dark' ? 'Mode terang' : 'Mode gelap'}
+    </DropdownItem>
+  )
+}
 
 export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
   const { profile, roles } = useAuth()
@@ -63,13 +75,15 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
           {mobileSearch ? <X className="h-5 w-5" /> : <Search className="h-5 w-5" />}
         </button>
 
+        <ThemeToggle className="hidden sm:block" />
+
         <NotificationBell />
 
         <Dropdown
           trigger={({ toggle, open }) => (
             <button onClick={toggle} className="flex items-center gap-2 rounded-xl p-1 pr-1.5 hover:bg-slate-100" aria-expanded={open}>
               <span className="sr-only">Menu akun</span>
-              <Avatar name={profile?.full_name} size="sm" />
+              <MyAvatar size="sm" />
               <span className="hidden text-left lg:block">
                 <span className="block max-w-36 truncate text-sm font-medium leading-tight text-slate-800">{profile?.full_name}</span>
                 <span className="block text-xs text-slate-500">{ROLE_LABELS[area]}</span>
@@ -85,6 +99,7 @@ export function Header({ title, crumbs, area, groups, onOpenMenu, onLogout }) {
           <DropdownItem as={Link} to="/profil" icon={UserRound}>
             Profil Saya
           </DropdownItem>
+          <ThemeMenuItem />
           {otherRoles.map((r) => (
             <DropdownItem key={r} as={Link} to={ROLE_AREAS[r]} icon={Repeat}>
               Beralih ke {ROLE_LABELS[r]}

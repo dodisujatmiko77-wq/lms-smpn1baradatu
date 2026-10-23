@@ -9,7 +9,7 @@ export function QuizCard({ quiz, showSubject = true }) {
     <Link to={`/siswa/kuis/${quiz.id}`} className="group flex items-center gap-4 rounded-xl border border-slate-200/70 bg-white p-4 shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover">
       <span className="h-12 w-1.5 shrink-0 rounded-full" style={{ backgroundColor: quiz.subject_color }} />
       <div className="min-w-0 flex-1 space-y-1">
-        <p className="text-xs font-medium" style={{ color: quiz.subject_color }}>
+        <p className="subject-color text-xs font-medium" style={{ '--subject-color': quiz.subject_color }}>
           {KIND_LABEL[quiz.kind]}{showSubject && ` · ${quiz.subject_name}`}
         </p>
         <p className="font-semibold leading-snug text-slate-900">{quiz.title}</p>

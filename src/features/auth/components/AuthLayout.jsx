@@ -1,6 +1,8 @@
 import { BookOpenCheck, ClipboardCheck, MessagesSquare, TrendingUp } from 'lucide-react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
 import { SchoolLogo } from '@/components/layout/SchoolLogo'
+import { ThemeToggle } from '@/components/layout/ThemeToggle'
+import { APP_INFO } from '@/config/app'
 import { cn } from '@/lib/utils'
 
 const FEATURES = [
@@ -76,10 +78,13 @@ export function AuthLayout({ children }) {
 
         <p className="relative text-xs text-primary-200">
           © {year} {school_name} · {address}
+          <br />
+          Dikembangkan oleh {APP_INFO.developer}
         </p>
       </section>
 
-      <section className="flex flex-col justify-center bg-white px-5 py-10 sm:px-12">
+      <section className="relative flex flex-col justify-center bg-white px-5 py-10 sm:px-12">
+        <ThemeToggle className="absolute right-3 top-3" />
         <div className="mx-auto w-full max-w-md">
           <HeroImage className="mb-6 aspect-[16/9] rounded-2xl object-cover object-[50%_35%] shadow-card lg:hidden" sizes="(max-width: 640px) 100vw, 448px" />
           <div className="mb-8 flex items-center gap-3 lg:hidden">
@@ -90,6 +95,11 @@ export function AuthLayout({ children }) {
             </div>
           </div>
           {children}
+          <p className="mt-10 text-center text-xs text-slate-500 lg:hidden">
+            © {year} {school_name}
+            <br />
+            Dikembangkan oleh {APP_INFO.developer}
+          </p>
         </div>
       </section>
     </div>

@@ -131,7 +131,7 @@ export default function TaskSubmitPage() {
       </Link>
 
       <header className="space-y-3">
-        <p className="text-sm font-medium" style={{ color: row.subject_color }}>{row.subject_name} · {row.teacher_name}</p>
+        <p className="subject-color text-sm font-medium" style={{ '--subject-color': row.subject_color }}>{row.subject_name} · {row.teacher_name}</p>
         <h1 className="text-2xl font-semibold leading-tight sm:text-3xl">{t.title}</h1>
         <div className="flex flex-wrap items-center gap-3">
           <TaskStatusBadge status={status} />

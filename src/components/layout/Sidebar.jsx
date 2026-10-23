@@ -1,6 +1,7 @@
 import { NavLink } from 'react-router-dom'
 import { ChevronsLeft, ChevronsRight, LogOut, X } from 'lucide-react'
 import { useSchoolSettings } from '@/app/providers/SettingsProvider'
+import { APP_INFO } from '@/config/app'
 import { CURRENT_STAGE } from '@/config/navigation'
 import { cn } from '@/lib/utils'
 import { SchoolLogo } from './SchoolLogo'
@@ -105,6 +106,9 @@ export function Sidebar({ groups, variant = 'rail', collapsed = false, onToggleC
           <LogOut className="h-[18px] w-[18px] shrink-0" />
           <span className={wideFlex}>Keluar</span>
         </button>
+        <p className={cn('px-3 pt-1 text-[11px] leading-snug text-slate-500', wide)}>
+          Dikembangkan oleh <span className="font-medium text-slate-600">{APP_INFO.developer}</span>
+        </p>
       </div>
     </aside>
   )

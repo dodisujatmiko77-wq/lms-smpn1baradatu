@@ -42,7 +42,7 @@ export default function QuestionBanksPage() {
           {rows.map((b) => (
             <Link key={b.id} to={`/guru/bank-soal/${b.id}`} className="group relative flex flex-col overflow-hidden rounded-xl border border-slate-200/70 bg-white p-5 pl-6 shadow-card transition hover:-translate-y-0.5 hover:shadow-card-hover">
               <span className="absolute inset-y-0 left-0 w-1.5" style={{ backgroundColor: b.subject?.color }} />
-              <p className="text-xs font-medium" style={{ color: b.subject?.color }}>{b.subject?.name}{b.grade ? ` · Kelas ${b.grade}` : ''}</p>
+              <p className="subject-color text-xs font-medium" style={{ '--subject-color': b.subject?.color }}>{b.subject?.name}{b.grade ? ` · Kelas ${b.grade}` : ''}</p>
               <p className="mt-1 font-semibold leading-snug text-slate-900">{b.name}</p>
               {b.description && <p className="mt-1 line-clamp-2 text-sm text-slate-500">{b.description}</p>}
               <div className="mt-auto flex items-center justify-between pt-4">

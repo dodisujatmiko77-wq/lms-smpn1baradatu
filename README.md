@@ -2,6 +2,8 @@
 
 Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan, Lampung.
 
+**Pengembang:** Dodi Sujatmiko
+
 **Stack:** React 19 + Vite · Tailwind CSS 4 · React Router 7 · TanStack Query · Recharts · Lucide · Supabase (PostgreSQL, Auth, Storage, Edge Functions, RLS)
 
 **Status:** Tahap 1 — Fondasi ✅ · Tahap 2 — Data Master ✅ · Tahap 3 — Pembelajaran ✅ · Tahap 4 — Tugas ✅ · Tahap 5 — Kuis & CBT ✅ · Tahap 6 — Interaksi ✅ · Tahap 7 — Monitoring & Laporan ✅ · Tahap 8 — Penyempurnaan ✅
@@ -19,6 +21,7 @@ Learning Management System untuk UPT SMP Negeri 1 Baradatu, Kabupaten Way Kanan,
 | [`docs/09-tahap8-penyempurnaan.md`](docs/09-tahap8-penyempurnaan.md) | Migrasi 0012, audit keamanan, indeks, uji beban, aksesibilitas, PWA |
 | [`docs/10-panduan-deploy.md`](docs/10-panduan-deploy.md) | **Panduan deploy produksi** (Supabase + Netlify), perawatan, pemecahan masalah |
 | [`docs/11-panduan-pengguna.md`](docs/11-panduan-pengguna.md) | **Panduan pengguna**: admin, guru, wali kelas, siswa |
+| [`docs/12-foto-profil-mode-gelap.md`](docs/12-foto-profil-mode-gelap.md) | Migrasi 0013 (foto profil), mode gelap/terang, informasi pengembang |
 
 ## Menjalankan secara lokal (VS Code)
 

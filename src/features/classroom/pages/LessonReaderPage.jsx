@@ -63,7 +63,7 @@ export default function LessonReaderPage() {
 
       <article className="space-y-6">
         <header className="space-y-3">
-          <p className="text-sm font-medium" style={{ color: course.data?.subject_color }}>
+          <p className="subject-color text-sm font-medium" style={{ '--subject-color': course.data?.subject_color }}>
             Pertemuan {l.meeting_number ?? ''} · {course.data?.subject_name}
           </p>
           <h1 className="text-2xl font-semibold leading-tight sm:text-3xl">{l.title}</h1>

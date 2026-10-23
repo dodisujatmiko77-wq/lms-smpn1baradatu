@@ -9,9 +9,9 @@ function colorFor(name = '') {
   return PALETTE[sum % PALETTE.length]
 }
 
-export function Avatar({ name, src, size = 'md', className }) {
+export function Avatar({ name, src, size = 'md', className, onError }) {
   const sizes = { sm: 'h-8 w-8 text-xs', md: 'h-9 w-9 text-sm', lg: 'h-12 w-12 text-base', xl: 'h-20 w-20 text-2xl' }
-  if (src) return <img src={src} alt={name} className={cn('rounded-full object-cover', sizes[size], className)} />
+  if (src) return <img src={src} alt={name} onError={onError} className={cn('shrink-0 rounded-full object-cover', sizes[size], className)} />
   return (
     <span
       className={cn(

@@ -1,0 +1,376 @@
+/*
+ * Mode gelap
+ * ----------
+ * Aktif bila <html> memiliki kelas `dark` (lihat ThemeProvider & public/theme-init.js).
+ * 1. Skala abu-abu (slate) dibalik lewat variabel warna, sehingga teks, garis, dan
+ *    latar netral di seluruh aplikasi ikut berubah tanpa mengubah komponen.
+ * 2. Permukaan putih (kartu, header, modal) menjadi biru gelap.
+ * 3. Warna tipis (bg-*-50/100/200, border-*-100..300) menjadi rona transparan,
+ *    dan teks berwarna gelap (text-*-600..900) dicerahkan agar kontras tetap ≥ 4,5:1.
+ *    Tombol & spanduk berwarna solid (bg-*-500..800, gradien biru) tidak diubah.
+ * Aturan memakai :where(.dark) agar spesifisitasnya sama dengan utilitas Tailwind;
+ * karena ditulis sesudahnya, aturan ini menang, sedangkan varian hover tetap berfungsi.
+ */
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  .dark {
+    color-scheme: dark;
+    --color-slate-50: #0b1220;
+    --color-slate-100: #172033;
+    --color-slate-200: #243049;
+    --color-slate-300: #334360;
+    --color-slate-400: #6b7a90;
+    --color-slate-500: #94a3b8;
+    --color-slate-600: #b4c0d0;
+    --color-slate-700: #cbd5e1;
+    --color-slate-800: #e2e8f0;
+    --color-slate-900: #f1f5f9;
+    --color-slate-950: #f8fafc;
+    --color-gray-200: #243049;
+    --shadow-card: 0 1px 2px rgb(0 0 0 / 0.4), 0 4px 12px rgb(0 0 0 / 0.25);
+    --shadow-card-hover: 0 2px 4px rgb(0 0 0 / 0.4), 0 12px 24px rgb(0 0 0 / 0.35);
+    --shadow-pop: 0 10px 38px -10px rgb(0 0 0 / 0.7), 0 10px 20px -15px rgb(0 0 0 / 0.6);
+  }
+}
+
+@layer utilities {
+  /* Permukaan */
+  :where(.dark) .bg-white,
+  :where(.dark) .focus\:bg-white:focus { background-color: #111a2b; }
+  :where(.dark) .bg-white\/85 { background-color: rgb(17 26 43 / 0.85); }
+  :where(.dark) .bg-white\/90 { background-color: rgb(17 26 43 / 0.9); }
+  :where(.dark) .bg-white\/95 { background-color: rgb(17 26 43 / 0.95); }
+  :where(.dark) .ring-white { --tw-ring-color: #111a2b; }
+  :where(.dark) .bg-slate-900\/40 { background-color: rgb(2 6 23 / 0.6); }
+  :where(.dark) .bg-slate-900\/50 { background-color: rgb(2 6 23 / 0.7); }
+  :where(.dark) .from-slate-700 { --tw-gradient-from: #334155; }
+  :where(.dark) .to-slate-600 { --tw-gradient-to: #475569; }
+  :where(.dark) .scrollbar-thin { scrollbar-color: #334360 transparent; }
+
+  /* Grafik & cincin progres yang memakai warna tetap */
+  :where(.dark) .recharts-cartesian-grid line { stroke: #243049; }
+  :where(.dark) circle[stroke='#e2e8f0'] { stroke: #243049; }
+
+  /* Warna tipis & teks berwarna — dibuat oleh scripts/gen-dark-colors.mjs */
+  /* primary */
+  :where(.dark) .bg-primary-50 { background-color: color-mix(in srgb, #3b82f6 12%, transparent); }
+  :where(.dark) .bg-primary-50\/40 { background-color: color-mix(in srgb, #3b82f6 5%, transparent); }
+  :where(.dark) .bg-primary-50\/50 { background-color: color-mix(in srgb, #3b82f6 6%, transparent); }
+  :where(.dark) .bg-primary-50\/60 { background-color: color-mix(in srgb, #3b82f6 7%, transparent); }
+  :where(.dark) .bg-primary-50\/70 { background-color: color-mix(in srgb, #3b82f6 8%, transparent); }
+  :where(.dark) .hover\:bg-primary-50:hover { background-color: color-mix(in srgb, #3b82f6 18%, transparent); }
+  :where(.dark) .hover\:bg-primary-50\/40:hover { background-color: color-mix(in srgb, #3b82f6 12%, transparent); }
+  :where(.dark) .from-primary-50 { --tw-gradient-from: color-mix(in srgb, #3b82f6 12%, transparent); }
+  :where(.dark) .to-primary-50 { --tw-gradient-to: color-mix(in srgb, #3b82f6 12%, transparent); }
+  :where(.dark) .bg-primary-100 { background-color: color-mix(in srgb, #3b82f6 18%, transparent); }
+  :where(.dark) .hover\:bg-primary-100:hover { background-color: color-mix(in srgb, #3b82f6 24%, transparent); }
+  :where(.dark) .bg-primary-200 { background-color: color-mix(in srgb, #3b82f6 26%, transparent); }
+  :where(.dark) .hover\:bg-primary-200:hover { background-color: color-mix(in srgb, #3b82f6 32%, transparent); }
+  :where(.dark) .ring-primary-200 { --tw-ring-color: color-mix(in srgb, #3b82f6 40%, transparent); }
+  :where(.dark) .border-primary-100 { border-color: color-mix(in srgb, #3b82f6 22%, transparent); }
+  :where(.dark) .hover\:border-primary-100:hover { border-color: color-mix(in srgb, #3b82f6 32%, transparent); }
+  :where(.dark) .border-primary-200 { border-color: color-mix(in srgb, #3b82f6 30%, transparent); }
+  :where(.dark) .hover\:border-primary-200:hover { border-color: color-mix(in srgb, #3b82f6 40%, transparent); }
+  :where(.dark) .border-primary-300 { border-color: color-mix(in srgb, #3b82f6 42%, transparent); }
+  :where(.dark) .hover\:border-primary-300:hover { border-color: color-mix(in srgb, #3b82f6 52%, transparent); }
+  :where(.dark) .text-primary-600 { color: #93c5fd; }
+  :where(.dark) .hover\:text-primary-600:hover { color: #93c5fd; }
+  :where(.dark) .text-primary-700 { color: #93c5fd; }
+  :where(.dark) .hover\:text-primary-700:hover { color: #93c5fd; }
+  :where(.dark) .text-primary-800 { color: #93c5fd; }
+  :where(.dark) .hover\:text-primary-800:hover { color: #93c5fd; }
+  :where(.dark) .text-primary-900 { color: #93c5fd; }
+  :where(.dark) .hover\:text-primary-900:hover { color: #93c5fd; }
+  /* accent */
+  :where(.dark) .bg-accent-50 { background-color: color-mix(in srgb, #f97316 12%, transparent); }
+  :where(.dark) .bg-accent-50\/40 { background-color: color-mix(in srgb, #f97316 5%, transparent); }
+  :where(.dark) .bg-accent-50\/50 { background-color: color-mix(in srgb, #f97316 6%, transparent); }
+  :where(.dark) .bg-accent-50\/60 { background-color: color-mix(in srgb, #f97316 7%, transparent); }
+  :where(.dark) .bg-accent-50\/70 { background-color: color-mix(in srgb, #f97316 8%, transparent); }
+  :where(.dark) .hover\:bg-accent-50:hover { background-color: color-mix(in srgb, #f97316 18%, transparent); }
+  :where(.dark) .hover\:bg-accent-50\/40:hover { background-color: color-mix(in srgb, #f97316 12%, transparent); }
+  :where(.dark) .from-accent-50 { --tw-gradient-from: color-mix(in srgb, #f97316 12%, transparent); }
+  :where(.dark) .to-accent-50 { --tw-gradient-to: color-mix(in srgb, #f97316 12%, transparent); }
+  :where(.dark) .bg-accent-100 { background-color: color-mix(in srgb, #f97316 18%, transparent); }
+  :where(.dark) .hover\:bg-accent-100:hover { background-color: color-mix(in srgb, #f97316 24%, transparent); }
+  :where(.dark) .bg-accent-200 { background-color: color-mix(in srgb, #f97316 26%, transparent); }
+  :where(.dark) .hover\:bg-accent-200:hover { background-color: color-mix(in srgb, #f97316 32%, transparent); }
+  :where(.dark) .ring-accent-200 { --tw-ring-color: color-mix(in srgb, #f97316 40%, transparent); }
+  :where(.dark) .border-accent-100 { border-color: color-mix(in srgb, #f97316 22%, transparent); }
+  :where(.dark) .hover\:border-accent-100:hover { border-color: color-mix(in srgb, #f97316 32%, transparent); }
+  :where(.dark) .border-accent-200 { border-color: color-mix(in srgb, #f97316 30%, transparent); }
+  :where(.dark) .hover\:border-accent-200:hover { border-color: color-mix(in srgb, #f97316 40%, transparent); }
+  :where(.dark) .border-accent-300 { border-color: color-mix(in srgb, #f97316 42%, transparent); }
+  :where(.dark) .hover\:border-accent-300:hover { border-color: color-mix(in srgb, #f97316 52%, transparent); }
+  :where(.dark) .text-accent-600 { color: #fdba74; }
+  :where(.dark) .hover\:text-accent-600:hover { color: #fdba74; }
+  :where(.dark) .text-accent-700 { color: #fdba74; }
+  :where(.dark) .hover\:text-accent-700:hover { color: #fdba74; }
+  :where(.dark) .text-accent-800 { color: #fdba74; }
+  :where(.dark) .hover\:text-accent-800:hover { color: #fdba74; }
+  :where(.dark) .text-accent-900 { color: #fdba74; }
+  :where(.dark) .hover\:text-accent-900:hover { color: #fdba74; }
+  /* success */
+  :where(.dark) .bg-success-50 { background-color: color-mix(in srgb, #22c55e 12%, transparent); }
+  :where(.dark) .bg-success-50\/40 { background-color: color-mix(in srgb, #22c55e 5%, transparent); }
+  :where(.dark) .bg-success-50\/50 { background-color: color-mix(in srgb, #22c55e 6%, transparent); }
+  :where(.dark) .bg-success-50\/60 { background-color: color-mix(in srgb, #22c55e 7%, transparent); }
+  :where(.dark) .bg-success-50\/70 { background-color: color-mix(in srgb, #22c55e 8%, transparent); }
+  :where(.dark) .hover\:bg-success-50:hover { background-color: color-mix(in srgb, #22c55e 18%, transparent); }
+  :where(.dark) .hover\:bg-success-50\/40:hover { background-color: color-mix(in srgb, #22c55e 12%, transparent); }
+  :where(.dark) .from-success-50 { --tw-gradient-from: color-mix(in srgb, #22c55e 12%, transparent); }
+  :where(.dark) .to-success-50 { --tw-gradient-to: color-mix(in srgb, #22c55e 12%, transparent); }
+  :where(.dark) .bg-success-100 { background-color: color-mix(in srgb, #22c55e 18%, transparent); }
+  :where(.dark) .hover\:bg-success-100:hover { background-color: color-mix(in srgb, #22c55e 24%, transparent); }
+  :where(.dark) .bg-success-200 { background-color: color-mix(in srgb, #22c55e 26%, transparent); }
+  :where(.dark) .hover\:bg-success-200:hover { background-color: color-mix(in srgb, #22c55e 32%, transparent); }
+  :where(.dark) .ring-success-200 { --tw-ring-color: color-mix(in srgb, #22c55e 40%, transparent); }
+  :where(.dark) .border-success-100 { border-color: color-mix(in srgb, #22c55e 22%, transparent); }
+  :where(.dark) .hover\:border-success-100:hover { border-color: color-mix(in srgb, #22c55e 32%, transparent); }
+  :where(.dark) .border-success-200 { border-color: color-mix(in srgb, #22c55e 30%, transparent); }
+  :where(.dark) .hover\:border-success-200:hover { border-color: color-mix(in srgb, #22c55e 40%, transparent); }
+  :where(.dark) .border-success-300 { border-color: color-mix(in srgb, #22c55e 42%, transparent); }
+  :where(.dark) .hover\:border-success-300:hover { border-color: color-mix(in srgb, #22c55e 52%, transparent); }
+  :where(.dark) .text-success-600 { color: #86efac; }
+  :where(.dark) .hover\:text-success-600:hover { color: #86efac; }
+  :where(.dark) .text-success-700 { color: #86efac; }
+  :where(.dark) .hover\:text-success-700:hover { color: #86efac; }
+  :where(.dark) .text-success-800 { color: #86efac; }
+  :where(.dark) .hover\:text-success-800:hover { color: #86efac; }
+  :where(.dark) .text-success-900 { color: #86efac; }
+  :where(.dark) .hover\:text-success-900:hover { color: #86efac; }
+  /* red */
+  :where(.dark) .bg-red-50 { background-color: color-mix(in srgb, #ef4444 12%, transparent); }
+  :where(.dark) .bg-red-50\/40 { background-color: color-mix(in srgb, #ef4444 5%, transparent); }
+  :where(.dark) .bg-red-50\/50 { background-color: color-mix(in srgb, #ef4444 6%, transparent); }
+  :where(.dark) .bg-red-50\/60 { background-color: color-mix(in srgb, #ef4444 7%, transparent); }
+  :where(.dark) .bg-red-50\/70 { background-color: color-mix(in srgb, #ef4444 8%, transparent); }
+  :where(.dark) .hover\:bg-red-50:hover { background-color: color-mix(in srgb, #ef4444 18%, transparent); }
+  :where(.dark) .hover\:bg-red-50\/40:hover { background-color: color-mix(in srgb, #ef4444 12%, transparent); }
+  :where(.dark) .from-red-50 { --tw-gradient-from: color-mix(in srgb, #ef4444 12%, transparent); }
+  :where(.dark) .to-red-50 { --tw-gradient-to: color-mix(in srgb, #ef4444 12%, transparent); }
+  :where(.dark) .bg-red-100 { background-color: color-mix(in srgb, #ef4444 18%, transparent); }
+  :where(.dark) .hover\:bg-red-100:hover { background-color: color-mix(in srgb, #ef4444 24%, transparent); }
+  :where(.dark) .bg-red-200 { background-color: color-mix(in srgb, #ef4444 26%, transparent); }
+  :where(.dark) .hover\:bg-red-200:hover { background-color: color-mix(in srgb, #ef4444 32%, transparent); }
+  :where(.dark) .ring-red-200 { --tw-ring-color: color-mix(in srgb, #ef4444 40%, transparent); }
+  :where(.dark) .border-red-100 { border-color: color-mix(in srgb, #ef4444 22%, transparent); }
+  :where(.dark) .hover\:border-red-100:hover { border-color: color-mix(in srgb, #ef4444 32%, transparent); }
+  :where(.dark) .border-red-200 { border-color: color-mix(in srgb, #ef4444 30%, transparent); }
+  :where(.dark) .hover\:border-red-200:hover { border-color: color-mix(in srgb, #ef4444 40%, transparent); }
+  :where(.dark) .border-red-300 { border-color: color-mix(in srgb, #ef4444 42%, transparent); }
+  :where(.dark) .hover\:border-red-300:hover { border-color: color-mix(in srgb, #ef4444 52%, transparent); }
+  :where(.dark) .text-red-600 { color: #fca5a5; }
+  :where(.dark) .hover\:text-red-600:hover { color: #fca5a5; }
+  :where(.dark) .text-red-700 { color: #fca5a5; }
+  :where(.dark) .hover\:text-red-700:hover { color: #fca5a5; }
+  :where(.dark) .text-red-800 { color: #fca5a5; }
+  :where(.dark) .hover\:text-red-800:hover { color: #fca5a5; }
+  :where(.dark) .text-red-900 { color: #fca5a5; }
+  :where(.dark) .hover\:text-red-900:hover { color: #fca5a5; }
+  /* amber */
+  :where(.dark) .bg-amber-50 { background-color: color-mix(in srgb, #f59e0b 12%, transparent); }
+  :where(.dark) .bg-amber-50\/40 { background-color: color-mix(in srgb, #f59e0b 5%, transparent); }
+  :where(.dark) .bg-amber-50\/50 { background-color: color-mix(in srgb, #f59e0b 6%, transparent); }
+  :where(.dark) .bg-amber-50\/60 { background-color: color-mix(in srgb, #f59e0b 7%, transparent); }
+  :where(.dark) .bg-amber-50\/70 { background-color: color-mix(in srgb, #f59e0b 8%, transparent); }
+  :where(.dark) .hover\:bg-amber-50:hover { background-color: color-mix(in srgb, #f59e0b 18%, transparent); }
+  :where(.dark) .hover\:bg-amber-50\/40:hover { background-color: color-mix(in srgb, #f59e0b 12%, transparent); }
+  :where(.dark) .from-amber-50 { --tw-gradient-from: color-mix(in srgb, #f59e0b 12%, transparent); }
+  :where(.dark) .to-amber-50 { --tw-gradient-to: color-mix(in srgb, #f59e0b 12%, transparent); }
+  :where(.dark) .bg-amber-100 { background-color: color-mix(in srgb, #f59e0b 18%, transparent); }
+  :where(.dark) .hover\:bg-amber-100:hover { background-color: color-mix(in srgb, #f59e0b 24%, transparent); }
+  :where(.dark) .bg-amber-200 { background-color: color-mix(in srgb, #f59e0b 26%, transparent); }
+  :where(.dark) .hover\:bg-amber-200:hover { background-color: color-mix(in srgb, #f59e0b 32%, transparent); }
+  :where(.dark) .ring-amber-200 { --tw-ring-color: color-mix(in srgb, #f59e0b 40%, transparent); }
+  :where(.dark) .border-amber-100 { border-color: color-mix(in srgb, #f59e0b 22%, transparent); }
+  :where(.dark) .hover\:border-amber-100:hover { border-color: color-mix(in srgb, #f59e0b 32%, transparent); }
+  :where(.dark) .border-amber-200 { border-color: color-mix(in srgb, #f59e0b 30%, transparent); }
+  :where(.dark) .hover\:border-amber-200:hover { border-color: color-mix(in srgb, #f59e0b 40%, transparent); }
+  :where(.dark) .border-amber-300 { border-color: color-mix(in srgb, #f59e0b 42%, transparent); }
+  :where(.dark) .hover\:border-amber-300:hover { border-color: color-mix(in srgb, #f59e0b 52%, transparent); }
+  :where(.dark) .text-amber-600 { color: #fcd34d; }
+  :where(.dark) .hover\:text-amber-600:hover { color: #fcd34d; }
+  :where(.dark) .text-amber-700 { color: #fcd34d; }
+  :where(.dark) .hover\:text-amber-700:hover { color: #fcd34d; }
+  :where(.dark) .text-amber-800 { color: #fcd34d; }
+  :where(.dark) .hover\:text-amber-800:hover { color: #fcd34d; }
+  :where(.dark) .text-amber-900 { color: #fcd34d; }
+  :where(.dark) .hover\:text-amber-900:hover { color: #fcd34d; }
+  /* emerald */
+  :where(.dark) .bg-emerald-50 { background-color: color-mix(in srgb, #10b981 12%, transparent); }
+  :where(.dark) .bg-emerald-50\/40 { background-color: color-mix(in srgb, #10b981 5%, transparent); }
+  :where(.dark) .bg-emerald-50\/50 { background-color: color-mix(in srgb, #10b981 6%, transparent); }
+  :where(.dark) .bg-emerald-50\/60 { background-color: color-mix(in srgb, #10b981 7%, transparent); }
+  :where(.dark) .bg-emerald-50\/70 { background-color: color-mix(in srgb, #10b981 8%, transparent); }
+  :where(.dark) .hover\:bg-emerald-50:hover { background-color: color-mix(in srgb, #10b981 18%, transparent); }
+  :where(.dark) .hover\:bg-emerald-50\/40:hover { background-color: color-mix(in srgb, #10b981 12%, transparent); }
+  :where(.dark) .from-emerald-50 { --tw-gradient-from: color-mix(in srgb, #10b981 12%, transparent); }
+  :where(.dark) .to-emerald-50 { --tw-gradient-to: color-mix(in srgb, #10b981 12%, transparent); }
+  :where(.dark) .bg-emerald-100 { background-color: color-mix(in srgb, #10b981 18%, transparent); }
+  :where(.dark) .hover\:bg-emerald-100:hover { background-color: color-mix(in srgb, #10b981 24%, transparent); }
+  :where(.dark) .bg-emerald-200 { background-color: color-mix(in srgb, #10b981 26%, transparent); }
+  :where(.dark) .hover\:bg-emerald-200:hover { background-color: color-mix(in srgb, #10b981 32%, transparent); }
+  :where(.dark) .ring-emerald-200 { --tw-ring-color: color-mix(in srgb, #10b981 40%, transparent); }
+  :where(.dark) .border-emerald-100 { border-color: color-mix(in srgb, #10b981 22%, transparent); }
+  :where(.dark) .hover\:border-emerald-100:hover { border-color: color-mix(in srgb, #10b981 32%, transparent); }
+  :where(.dark) .border-emerald-200 { border-color: color-mix(in srgb, #10b981 30%, transparent); }
+  :where(.dark) .hover\:border-emerald-200:hover { border-color: color-mix(in srgb, #10b981 40%, transparent); }
+  :where(.dark) .border-emerald-300 { border-color: color-mix(in srgb, #10b981 42%, transparent); }
+  :where(.dark) .hover\:border-emerald-300:hover { border-color: color-mix(in srgb, #10b981 52%, transparent); }
+  :where(.dark) .text-emerald-600 { color: #6ee7b7; }
+  :where(.dark) .hover\:text-emerald-600:hover { color: #6ee7b7; }
+  :where(.dark) .text-emerald-700 { color: #6ee7b7; }
+  :where(.dark) .hover\:text-emerald-700:hover { color: #6ee7b7; }
+  :where(.dark) .text-emerald-800 { color: #6ee7b7; }
+  :where(.dark) .hover\:text-emerald-800:hover { color: #6ee7b7; }
+  :where(.dark) .text-emerald-900 { color: #6ee7b7; }
+  :where(.dark) .hover\:text-emerald-900:hover { color: #6ee7b7; }
+  /* sky */
+  :where(.dark) .bg-sky-50 { background-color: color-mix(in srgb, #0ea5e9 12%, transparent); }
+  :where(.dark) .bg-sky-50\/40 { background-color: color-mix(in srgb, #0ea5e9 5%, transparent); }
+  :where(.dark) .bg-sky-50\/50 { background-color: color-mix(in srgb, #0ea5e9 6%, transparent); }
+  :where(.dark) .bg-sky-50\/60 { background-color: color-mix(in srgb, #0ea5e9 7%, transparent); }
+  :where(.dark) .bg-sky-50\/70 { background-color: color-mix(in srgb, #0ea5e9 8%, transparent); }
+  :where(.dark) .hover\:bg-sky-50:hover { background-color: color-mix(in srgb, #0ea5e9 18%, transparent); }
+  :where(.dark) .hover\:bg-sky-50\/40:hover { background-color: color-mix(in srgb, #0ea5e9 12%, transparent); }
+  :where(.dark) .from-sky-50 { --tw-gradient-from: color-mix(in srgb, #0ea5e9 12%, transparent); }
+  :where(.dark) .to-sky-50 { --tw-gradient-to: color-mix(in srgb, #0ea5e9 12%, transparent); }
+  :where(.dark) .bg-sky-100 { background-color: color-mix(in srgb, #0ea5e9 18%, transparent); }
+  :where(.dark) .hover\:bg-sky-100:hover { background-color: color-mix(in srgb, #0ea5e9 24%, transparent); }
+  :where(.dark) .bg-sky-200 { background-color: color-mix(in srgb, #0ea5e9 26%, transparent); }
+  :where(.dark) .hover\:bg-sky-200:hover { background-color: color-mix(in srgb, #0ea5e9 32%, transparent); }
+  :where(.dark) .ring-sky-200 { --tw-ring-color: color-mix(in srgb, #0ea5e9 40%, transparent); }
+  :where(.dark) .border-sky-100 { border-color: color-mix(in srgb, #0ea5e9 22%, transparent); }
+  :where(.dark) .hover\:border-sky-100:hover { border-color: color-mix(in srgb, #0ea5e9 32%, transparent); }
+  :where(.dark) .border-sky-200 { border-color: color-mix(in srgb, #0ea5e9 30%, transparent); }
+  :where(.dark) .hover\:border-sky-200:hover { border-color: color-mix(in srgb, #0ea5e9 40%, transparent); }
+  :where(.dark) .border-sky-300 { border-color: color-mix(in srgb, #0ea5e9 42%, transparent); }
+  :where(.dark) .hover\:border-sky-300:hover { border-color: color-mix(in srgb, #0ea5e9 52%, transparent); }
+  :where(.dark) .text-sky-600 { color: #7dd3fc; }
+  :where(.dark) .hover\:text-sky-600:hover { color: #7dd3fc; }
+  :where(.dark) .text-sky-700 { color: #7dd3fc; }
+  :where(.dark) .hover\:text-sky-700:hover { color: #7dd3fc; }
+  :where(.dark) .text-sky-800 { color: #7dd3fc; }
+  :where(.dark) .hover\:text-sky-800:hover { color: #7dd3fc; }
+  :where(.dark) .text-sky-900 { color: #7dd3fc; }
+  :where(.dark) .hover\:text-sky-900:hover { color: #7dd3fc; }
+  /* indigo */
+  :where(.dark) .bg-indigo-50 { background-color: color-mix(in srgb, #6366f1 12%, transparent); }
+  :where(.dark) .bg-indigo-50\/40 { background-color: color-mix(in srgb, #6366f1 5%, transparent); }
+  :where(.dark) .bg-indigo-50\/50 { background-color: color-mix(in srgb, #6366f1 6%, transparent); }
+  :where(.dark) .bg-indigo-50\/60 { background-color: color-mix(in srgb, #6366f1 7%, transparent); }
+  :where(.dark) .bg-indigo-50\/70 { background-color: color-mix(in srgb, #6366f1 8%, transparent); }
+  :where(.dark) .hover\:bg-indigo-50:hover { background-color: color-mix(in srgb, #6366f1 18%, transparent); }
+  :where(.dark) .hover\:bg-indigo-50\/40:hover { background-color: color-mix(in srgb, #6366f1 12%, transparent); }
+  :where(.dark) .from-indigo-50 { --tw-gradient-from: color-mix(in srgb, #6366f1 12%, transparent); }
+  :where(.dark) .to-indigo-50 { --tw-gradient-to: color-mix(in srgb, #6366f1 12%, transparent); }
+  :where(.dark) .bg-indigo-100 { background-color: color-mix(in srgb, #6366f1 18%, transparent); }
+  :where(.dark) .hover\:bg-indigo-100:hover { background-color: color-mix(in srgb, #6366f1 24%, transparent); }
+  :where(.dark) .bg-indigo-200 { background-color: color-mix(in srgb, #6366f1 26%, transparent); }
+  :where(.dark) .hover\:bg-indigo-200:hover { background-color: color-mix(in srgb, #6366f1 32%, transparent); }
+  :where(.dark) .ring-indigo-200 { --tw-ring-color: color-mix(in srgb, #6366f1 40%, transparent); }
+  :where(.dark) .border-indigo-100 { border-color: color-mix(in srgb, #6366f1 22%, transparent); }
+  :where(.dark) .hover\:border-indigo-100:hover { border-color: color-mix(in srgb, #6366f1 32%, transparent); }
+  :where(.dark) .border-indigo-200 { border-color: color-mix(in srgb, #6366f1 30%, transparent); }
+  :where(.dark) .hover\:border-indigo-200:hover { border-color: color-mix(in srgb, #6366f1 40%, transparent); }
+  :where(.dark) .border-indigo-300 { border-color: color-mix(in srgb, #6366f1 42%, transparent); }
+  :where(.dark) .hover\:border-indigo-300:hover { border-color: color-mix(in srgb, #6366f1 52%, transparent); }
+  :where(.dark) .text-indigo-600 { color: #a5b4fc; }
+  :where(.dark) .hover\:text-indigo-600:hover { color: #a5b4fc; }
+  :where(.dark) .text-indigo-700 { color: #a5b4fc; }
+  :where(.dark) .hover\:text-indigo-700:hover { color: #a5b4fc; }
+  :where(.dark) .text-indigo-800 { color: #a5b4fc; }
+  :where(.dark) .hover\:text-indigo-800:hover { color: #a5b4fc; }
+  :where(.dark) .text-indigo-900 { color: #a5b4fc; }
+  :where(.dark) .hover\:text-indigo-900:hover { color: #a5b4fc; }
+  /* violet */
+  :where(.dark) .bg-violet-50 { background-color: color-mix(in srgb, #8b5cf6 12%, transparent); }
+  :where(.dark) .bg-violet-50\/40 { background-color: color-mix(in srgb, #8b5cf6 5%, transparent); }
+  :where(.dark) .bg-violet-50\/50 { background-color: color-mix(in srgb, #8b5cf6 6%, transparent); }
+  :where(.dark) .bg-violet-50\/60 { background-color: color-mix(in srgb, #8b5cf6 7%, transparent); }
+  :where(.dark) .bg-violet-50\/70 { background-color: color-mix(in srgb, #8b5cf6 8%, transparent); }
+  :where(.dark) .hover\:bg-violet-50:hover { background-color: color-mix(in srgb, #8b5cf6 18%, transparent); }
+  :where(.dark) .hover\:bg-violet-50\/40:hover { background-color: color-mix(in srgb, #8b5cf6 12%, transparent); }
+  :where(.dark) .from-violet-50 { --tw-gradient-from: color-mix(in srgb, #8b5cf6 12%, transparent); }
+  :where(.dark) .to-violet-50 { --tw-gradient-to: color-mix(in srgb, #8b5cf6 12%, transparent); }
+  :where(.dark) .bg-violet-100 { background-color: color-mix(in srgb, #8b5cf6 18%, transparent); }
+  :where(.dark) .hover\:bg-violet-100:hover { background-color: color-mix(in srgb, #8b5cf6 24%, transparent); }
+  :where(.dark) .bg-violet-200 { background-color: color-mix(in srgb, #8b5cf6 26%, transparent); }
+  :where(.dark) .hover\:bg-violet-200:hover { background-color: color-mix(in srgb, #8b5cf6 32%, transparent); }
+  :where(.dark) .ring-violet-200 { --tw-ring-color: color-mix(in srgb, #8b5cf6 40%, transparent); }
+  :where(.dark) .border-violet-100 { border-color: color-mix(in srgb, #8b5cf6 22%, transparent); }
+  :where(.dark) .hover\:border-violet-100:hover { border-color: color-mix(in srgb, #8b5cf6 32%, transparent); }
+  :where(.dark) .border-violet-200 { border-color: color-mix(in srgb, #8b5cf6 30%, transparent); }
+  :where(.dark) .hover\:border-violet-200:hover { border-color: color-mix(in srgb, #8b5cf6 40%, transparent); }
+  :where(.dark) .border-violet-300 { border-color: color-mix(in srgb, #8b5cf6 42%, transparent); }
+  :where(.dark) .hover\:border-violet-300:hover { border-color: color-mix(in srgb, #8b5cf6 52%, transparent); }
+  :where(.dark) .text-violet-600 { color: #c4b5fd; }
+  :where(.dark) .hover\:text-violet-600:hover { color: #c4b5fd; }
+  :where(.dark) .text-violet-700 { color: #c4b5fd; }
+  :where(.dark) .hover\:text-violet-700:hover { color: #c4b5fd; }
+  :where(.dark) .text-violet-800 { color: #c4b5fd; }
+  :where(.dark) .hover\:text-violet-800:hover { color: #c4b5fd; }
+  :where(.dark) .text-violet-900 { color: #c4b5fd; }
+  :where(.dark) .hover\:text-violet-900:hover { color: #c4b5fd; }
+  /* pink */
+  :where(.dark) .bg-pink-50 { background-color: color-mix(in srgb, #ec4899 12%, transparent); }
+  :where(.dark) .bg-pink-50\/40 { background-color: color-mix(in srgb, #ec4899 5%, transparent); }
+  :where(.dark) .bg-pink-50\/50 { background-color: color-mix(in srgb, #ec4899 6%, transparent); }
+  :where(.dark) .bg-pink-50\/60 { background-color: color-mix(in srgb, #ec4899 7%, transparent); }
+  :where(.dark) .bg-pink-50\/70 { background-color: color-mix(in srgb, #ec4899 8%, transparent); }
+  :where(.dark) .hover\:bg-pink-50:hover { background-color: color-mix(in srgb, #ec4899 18%, transparent); }
+  :where(.dark) .hover\:bg-pink-50\/40:hover { background-color: color-mix(in srgb, #ec4899 12%, transparent); }
+  :where(.dark) .from-pink-50 { --tw-gradient-from: color-mix(in srgb, #ec4899 12%, transparent); }
+  :where(.dark) .to-pink-50 { --tw-gradient-to: color-mix(in srgb, #ec4899 12%, transparent); }
+  :where(.dark) .bg-pink-100 { background-color: color-mix(in srgb, #ec4899 18%, transparent); }
+  :where(.dark) .hover\:bg-pink-100:hover { background-color: color-mix(in srgb, #ec4899 24%, transparent); }
+  :where(.dark) .bg-pink-200 { background-color: color-mix(in srgb, #ec4899 26%, transparent); }
+  :where(.dark) .hover\:bg-pink-200:hover { background-color: color-mix(in srgb, #ec4899 32%, transparent); }
+  :where(.dark) .ring-pink-200 { --tw-ring-color: color-mix(in srgb, #ec4899 40%, transparent); }
+  :where(.dark) .border-pink-100 { border-color: color-mix(in srgb, #ec4899 22%, transparent); }
+  :where(.dark) .hover\:border-pink-100:hover { border-color: color-mix(in srgb, #ec4899 32%, transparent); }
+  :where(.dark) .border-pink-200 { border-color: color-mix(in srgb, #ec4899 30%, transparent); }
+  :where(.dark) .hover\:border-pink-200:hover { border-color: color-mix(in srgb, #ec4899 40%, transparent); }
+  :where(.dark) .border-pink-300 { border-color: color-mix(in srgb, #ec4899 42%, transparent); }
+  :where(.dark) .hover\:border-pink-300:hover { border-color: color-mix(in srgb, #ec4899 52%, transparent); }
+  :where(.dark) .text-pink-600 { color: #f9a8d4; }
+  :where(.dark) .hover\:text-pink-600:hover { color: #f9a8d4; }
+  :where(.dark) .text-pink-700 { color: #f9a8d4; }
+  :where(.dark) .hover\:text-pink-700:hover { color: #f9a8d4; }
+  :where(.dark) .text-pink-800 { color: #f9a8d4; }
+  :where(.dark) .hover\:text-pink-800:hover { color: #f9a8d4; }
+  :where(.dark) .text-pink-900 { color: #f9a8d4; }
+  :where(.dark) .hover\:text-pink-900:hover { color: #f9a8d4; }
+  /* rose */
+  :where(.dark) .bg-rose-50 { background-color: color-mix(in srgb, #f43f5e 12%, transparent); }
+  :where(.dark) .bg-rose-50\/40 { background-color: color-mix(in srgb, #f43f5e 5%, transparent); }
+  :where(.dark) .bg-rose-50\/50 { background-color: color-mix(in srgb, #f43f5e 6%, transparent); }
+  :where(.dark) .bg-rose-50\/60 { background-color: color-mix(in srgb, #f43f5e 7%, transparent); }
+  :where(.dark) .bg-rose-50\/70 { background-color: color-mix(in srgb, #f43f5e 8%, transparent); }
+  :where(.dark) .hover\:bg-rose-50:hover { background-color: color-mix(in srgb, #f43f5e 18%, transparent); }
+  :where(.dark) .hover\:bg-rose-50\/40:hover { background-color: color-mix(in srgb, #f43f5e 12%, transparent); }
+  :where(.dark) .from-rose-50 { --tw-gradient-from: color-mix(in srgb, #f43f5e 12%, transparent); }
+  :where(.dark) .to-rose-50 { --tw-gradient-to: color-mix(in srgb, #f43f5e 12%, transparent); }
+  :where(.dark) .bg-rose-100 { background-color: color-mix(in srgb, #f43f5e 18%, transparent); }
+  :where(.dark) .hover\:bg-rose-100:hover { background-color: color-mix(in srgb, #f43f5e 24%, transparent); }
+  :where(.dark) .bg-rose-200 { background-color: color-mix(in srgb, #f43f5e 26%, transparent); }
+  :where(.dark) .hover\:bg-rose-200:hover { background-color: color-mix(in srgb, #f43f5e 32%, transparent); }
+  :where(.dark) .ring-rose-200 { --tw-ring-color: color-mix(in srgb, #f43f5e 40%, transparent); }
+  :where(.dark) .border-rose-100 { border-color: color-mix(in srgb, #f43f5e 22%, transparent); }
+  :where(.dark) .hover\:border-rose-100:hover { border-color: color-mix(in srgb, #f43f5e 32%, transparent); }
+  :where(.dark) .border-rose-200 { border-color: color-mix(in srgb, #f43f5e 30%, transparent); }
+  :where(.dark) .hover\:border-rose-200:hover { border-color: color-mix(in srgb, #f43f5e 40%, transparent); }
+  :where(.dark) .border-rose-300 { border-color: color-mix(in srgb, #f43f5e 42%, transparent); }
+  :where(.dark) .hover\:border-rose-300:hover { border-color: color-mix(in srgb, #f43f5e 52%, transparent); }
+  :where(.dark) .text-rose-600 { color: #fda4af; }
+  :where(.dark) .hover\:text-rose-600:hover { color: #fda4af; }
+  :where(.dark) .text-rose-700 { color: #fda4af; }
+  :where(.dark) .hover\:text-rose-700:hover { color: #fda4af; }
+  :where(.dark) .text-rose-800 { color: #fda4af; }
+  :where(.dark) .hover\:text-rose-800:hover { color: #fda4af; }
+  :where(.dark) .text-rose-900 { color: #fda4af; }
+  :where(.dark) .hover\:text-rose-900:hover { color: #fda4af; }
+}

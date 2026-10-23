@@ -60,7 +60,7 @@ export default function QuestionBankPage() {
       </Link>
       <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
         <div className="min-w-0">
-          <p className="text-sm font-medium" style={{ color: b.subject?.color }}>{b.subject?.name}{b.grade ? ` · Kelas ${b.grade}` : ''}</p>
+          <p className="subject-color text-sm font-medium" style={{ '--subject-color': b.subject?.color }}>{b.subject?.name}{b.grade ? ` · Kelas ${b.grade}` : ''}</p>
           <h2 className="text-xl font-semibold">{b.name}</h2>
           <p className="mt-1 text-sm text-slate-500">{all.length} soal · total {fmtScore(total)} poin{b.description ? ` · ${b.description}` : ''}</p>
         </div>
